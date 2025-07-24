@@ -9,34 +9,44 @@
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
     }
     .container {
       display: flex;
       flex-direction: column;
       padding: 2rem;
-      max-width: 1200px;
+      max-width: 1600px;
       margin: 0 auto;
     }
     h1 {
-      text-align: center;
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 1.5rem;
     }
-    .input-group {
-      margin-bottom: 1rem;
+    .section {
+      margin-bottom: 2rem;
     }
-    .input-group label {
-      display: block;
+    label {
       font-weight: 600;
+      display: block;
       margin-bottom: 0.3rem;
     }
-    .input-group input, .input-group select {
-      padding: 0.5rem;
+    input, select {
       width: 100%;
+      padding: 0.5rem;
       font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    .row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .column {
+      flex: 1;
+      min-width: 200px;
     }
     button {
       padding: 0.75rem 1.5rem;
@@ -46,6 +56,7 @@
       border-radius: 4px;
       font-size: 1rem;
       cursor: pointer;
+      width: 200px;
     }
     .results {
       margin-top: 2rem;
@@ -59,21 +70,74 @@
   <div class="container">
     <h1>Psychological Safety Deficit Calculator</h1>
 
-    <div class="input-group">
+    <div class="section">
       <label for="totalStaff">Total Staff Complement</label>
       <input type="number" id="totalStaff" placeholder="e.g. 1000" />
     </div>
 
-    <div class="input-group">
+    <div class="section">
+      <div class="row">
+        <div class="column">
+          <label for="black">% Black Employees</label>
+          <input type="number" id="black" placeholder="e.g. 70" />
+        </div>
+        <div class="column">
+          <label for="white">% White Employees</label>
+          <input type="number" id="white" placeholder="e.g. 20" />
+        </div>
+        <div class="column">
+          <label for="coloured">% Coloured Employees</label>
+          <input type="number" id="coloured" placeholder="e.g. 5" />
+        </div>
+        <div class="column">
+          <label for="indian">% Indian/Asian Employees</label>
+          <input type="number" id="indian" placeholder="e.g. 5" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="row">
+        <div class="column">
+          <label for="women">% Women</label>
+          <input type="number" id="women" placeholder="e.g. 40" />
+        </div>
+        <div class="column">
+          <label for="men">% Men</label>
+          <input type="number" id="men" placeholder="e.g. 60" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="row">
+        <div class="column">
+          <label for="salaryBlack">Avg Annual Salary (Black)</label>
+          <input type="number" id="salaryBlack" placeholder="e.g. 300000" />
+        </div>
+        <div class="column">
+          <label for="salaryWhite">Avg Annual Salary (White)</label>
+          <input type="number" id="salaryWhite" placeholder="e.g. 500000" />
+        </div>
+        <div class="column">
+          <label for="salaryColoured">Avg Annual Salary (Coloured)</label>
+          <input type="number" id="salaryColoured" placeholder="e.g. 350000" />
+        </div>
+        <div class="column">
+          <label for="salaryIndian">Avg Annual Salary (Indian/Asian)</label>
+          <input type="number" id="salaryIndian" placeholder="e.g. 450000" />
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <label for="culture">How would you rate your current culture?</label>
       <select id="culture">
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
       </select>
-    </div>
 
-    <div class="input-group">
       <label for="benefit">Expected Improvement from Programme</label>
       <select id="benefit">
         <option value="0.2">Mild (20%)</option>
@@ -82,65 +146,21 @@
       </select>
     </div>
 
-    <!-- Add more input groups for demographics and salary breakdowns as needed -->
-
     <button onclick="calculateCostSaving()">Calculate</button>
 
     <div class="results" id="results" style="display:none"></div>
   </div>
 
   <script>
-    const turnoverRates = {
-      Low: {
-        "Black Women": 0.08, "Black Men": 0.07,
-        "White Women": 0.015, "White Men": 0.01,
-        "Colored Women": 0.04, "Colored Men": 0.03,
-        "Indian/Asian Women": 0.04, "Indian/Asian Men": 0.03
-      },
-      Medium: {
-        "Black Women": 0.04, "Black Men": 0.03,
-        "White Women": 0.01, "White Men": 0.005,
-        "Colored Women": 0.02, "Colored Men": 0.01,
-        "Indian/Asian Women": 0.02, "Indian/Asian Men": 0.01
-      },
-      High: {
-        "Black Women": 0.02, "Black Men": 0.01,
-        "White Women": 0.005, "White Men": 0.0025,
-        "Colored Women": 0.01, "Colored Men": 0.005,
-        "Indian/Asian Women": 0.01, "Indian/Asian Men": 0.005
-      }
-    };
-
-    const absenteeismRates = {
-      Low: { Black: 2, White: 0.5, Colored: 1, "Indian/Asian": 1 },
-      Medium: { Black: 1, White: 0.25, Colored: 0.5, "Indian/Asian": 0.5 },
-      High: { Black: 0.5, White: 0.1, Colored: 0.25, "Indian/Asian": 0.25 }
-    };
-
     function calculateCostSaving() {
-      const staff = parseInt(document.getElementById('totalStaff').value);
-      const culture = document.getElementById('culture').value;
-      const benefit = parseFloat(document.getElementById('benefit').value);
-
-      if (!staff || staff <= 0) {
-        alert("Please enter a valid staff number.");
+      // To be filled in next step: logic using all inputs
+      const total = parseInt(document.getElementById('totalStaff').value);
+      if (!total || total <= 0) {
+        alert('Please enter a valid total staff number.');
         return;
       }
-
-      // Placeholder logic – replace with real calculation
-      const turnoverCost = staff * 0.1 * 500000 * benefit; // 10% turnover
-      const absenteeismCost = staff * 1 * (500000 / 260) * benefit; // 1 sick day
-
-      const total = turnoverCost + absenteeismCost;
-
       document.getElementById('results').style.display = 'block';
-      document.getElementById('results').innerHTML = `
-        <strong>Estimated Annual Cost Saving:</strong><br/>
-        Turnover Cost Saving: R ${turnoverCost.toLocaleString()}<br/>
-        Absenteeism Cost Saving: R ${absenteeismCost.toLocaleString()}<br/>
-        <hr>
-        <strong>Total Cost Saving: R ${total.toLocaleString()}</strong>
-      `;
+      document.getElementById('results').innerHTML = `<strong>Calculation logic still in progress</strong>`;
     }
   </script>
 </body>
