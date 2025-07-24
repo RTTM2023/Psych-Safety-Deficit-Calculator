@@ -9,7 +9,7 @@
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
-      background-color: #ffffff;
+      background-color: transparent;
     }
     .container {
       display: flex;
@@ -19,50 +19,51 @@
       margin: 0 auto;
     }
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 1.5rem;
-    }
-    .section {
       margin-bottom: 2rem;
     }
     label {
       font-weight: 600;
       display: block;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
     }
     input, select {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.75rem;
       font-size: 1rem;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 0;
       margin-bottom: 1rem;
+    }
+    .section {
+      margin-bottom: 2rem;
     }
     .row {
       display: flex;
-      gap: 1rem;
       flex-wrap: wrap;
+      gap: 1.5rem;
     }
     .column {
       flex: 1;
-      min-width: 200px;
+      min-width: 250px;
     }
     button {
-      padding: 0.75rem 1.5rem;
-      background-color: #0044cc;
-      color: #fff;
+      padding: 1rem 2rem;
+      background-color: #1e1e1e;
+      color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 0;
       font-size: 1rem;
       cursor: pointer;
-      width: 200px;
+      font-weight: 600;
+      max-width: 200px;
     }
     .results {
       margin-top: 2rem;
-      padding: 1rem;
-      background-color: #e6f7ff;
-      border-left: 5px solid #1890ff;
+      padding: 1.5rem;
+      background-color: #f3f3f3;
+      border-left: 5px solid #1e1e1e;
     }
   </style>
 </head>
@@ -153,7 +154,6 @@
 
   <script>
     function calculateCostSaving() {
-      // To be filled in next step: logic using all inputs
       const total = parseInt(document.getElementById('totalStaff').value);
       if (!total || total <= 0) {
         alert('Please enter a valid total staff number.');
