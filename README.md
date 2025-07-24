@@ -26,20 +26,21 @@
         gap: 2rem;
       }
     }
-    .calculator, .results-box {
+    .calculator {
+      flex: 1.8;
       background-color: white;
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .calculator {
-      flex: 1.3;
       border: 2px solid #f10178;
     }
     .results-box {
-      flex: 1;
+      flex: 1.2;
       background-color: #f10178;
       color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       min-height: 300px;
     }
     .results-box h2 {
