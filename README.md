@@ -18,58 +18,85 @@
       max-width: 1600px;
       margin: 0 auto;
     }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
+    @media (min-width: 1024px) {
+      .container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    .calculator, .results-box {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .calculator {
+      flex: 1.3;
+      margin-right: 2rem;
+      border: 2px solid #f10178;
+    }
+    .results-box {
+      flex: 1;
+      background-color: #f10178;
+      color: white;
+      height: auto;
+      min-height: 300px;
+      align-self: flex-start;
+    }
+    .results-box h2 {
+      font-size: 22px;
     }
     label {
-      font-weight: 600;
+      font-weight: bold;
       display: block;
-      margin-bottom: 0.5rem;
+      margin-top: 1.5rem;
     }
-    input, select {
+    input[type="number"], select {
       width: 100%;
-      padding: 0.75rem;
+      padding: 0.6rem;
       font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 0;
-      margin-bottom: 1rem;
-    }
-    .section {
-      margin-bottom: 2rem;
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-    .column {
-      flex: 1;
-      min-width: 250px;
+      border-radius: 30px;
+      border: 1px dashed #5b01fa;
+      font-family: 'Montserrat', sans-serif;
     }
     button {
-      padding: 1rem 2rem;
-      background-color: #1e1e1e;
+      margin-top: 1rem;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.2rem;
+      background-color: #f10178;
       color: white;
       border: none;
-      border-radius: 0;
-      font-size: 1rem;
+      border-radius: 30px;
       cursor: pointer;
-      font-weight: 600;
-      max-width: 200px;
+      font-family: 'Montserrat', sans-serif;
     }
-    .results {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      background-color: #f3f3f3;
-      border-left: 5px solid #1e1e1e;
+    .results-line-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.15rem 0;
+      font-size: 0.75rem;
+    }
+    .results-line-item.bold {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .total-line {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 2rem 0 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dotted white;
+      border-bottom: 1px dotted white;
+      padding: 0.5rem 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Psychological Safety Deficit Calculator</h1>
+    <div class="calculator">
+      <h1>Psychological Safety Deficit Calculator</h1>
 
     <div class="section">
       <label for="totalStaff">Total Staff Complement</label>
