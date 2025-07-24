@@ -22,6 +22,7 @@
       .container {
         flex-direction: row;
         justify-content: space-between;
+        align-items: flex-start;
       }
     }
     .calculator, .results-box {
@@ -29,19 +30,26 @@
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .calculator {
+        flex: 1.3;
+        margin-right: 2rem;
+      }
+      .results-box {
+        flex: 1;
+        margin-bottom: 0;
+      }
     }
     .calculator {
-      flex: 1.3;
-      margin-right: 2rem;
       border: 2px solid #f10178;
     }
     .results-box {
-      flex: 1;
       background-color: #f10178;
       color: white;
       height: auto;
       min-height: 300px;
-      align-self: flex-start;
     }
     .results-box h2 {
       font-size: 22px;
