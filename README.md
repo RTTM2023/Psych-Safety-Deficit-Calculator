@@ -35,7 +35,7 @@
       border: 2px solid #f10178;
     }
     .results-box {
-      flex: 1.2;
+      flex: 1.6;
       background-color: #f10178;
       color: white;
       padding: 2rem;
