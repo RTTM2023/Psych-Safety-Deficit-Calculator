@@ -222,7 +222,7 @@
     </div>
 
     <div class="results-box">
-      <h2>Estimated Cost Saving</h2>
+      <h2>Insights from Your Inputs</h2>
       <div id="results"></div>
     </div>
   </div>
