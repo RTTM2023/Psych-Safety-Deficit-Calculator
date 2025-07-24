@@ -27,7 +27,7 @@
       }
     }
     .calculator {
-      flex: 2.2;
+      flex: 1.5;
       background-color: white;
       padding: 2rem;
       border-radius: 20px;
@@ -35,7 +35,7 @@
       border: 2px solid #f10178;
     }
     .results-box {
-      flex: 1.2;
+      flex: 2;
       background-color: #f10178;
       color: white;
       padding: 2rem;
