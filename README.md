@@ -8,7 +8,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 2rem;
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
     h1, h2 {
@@ -18,7 +18,7 @@
       display: block;
       margin-top: 1rem;
     }
-    input {
+    input, select {
       padding: 0.5rem;
       width: 100%;
       box-sizing: border-box;
@@ -45,20 +45,38 @@
   <label>Total Staff Complement:</label>
   <input type="number" id="totalStaff" placeholder="e.g. 1000" />
 
-  <label>% Black Women:</label>
-  <input type="number" id="blackWomen" placeholder="e.g. 40" />
+  <h2>Workforce Breakdown by Race (%)</h2>
+  <label>Black:</label>
+  <input type="number" id="blackPct" />
+  <label>White:</label>
+  <input type="number" id="whitePct" />
+  <label>Coloured:</label>
+  <input type="number" id="colouredPct" />
+  <label>Indian/Asian:</label>
+  <input type="number" id="indianPct" />
 
-  <label>% Black Men:</label>
-  <input type="number" id="blackMen" placeholder="e.g. 30" />
+  <h2>Workforce Breakdown by Gender (%)</h2>
+  <label>Women:</label>
+  <input type="number" id="womenPct" />
+  <label>Men:</label>
+  <input type="number" id="menPct" />
 
-  <label>% White Men:</label>
-  <input type="number" id="whiteMen" placeholder="e.g. 15" />
+  <h2>Average Annual Salary per Race Group (ZAR)</h2>
+  <label>Black:</label>
+  <input type="number" id="blackSalary" />
+  <label>White:</label>
+  <input type="number" id="whiteSalary" />
+  <label>Coloured:</label>
+  <input type="number" id="colouredSalary" />
+  <label>Indian/Asian:</label>
+  <input type="number" id="indianSalary" />
 
-  <label>% Coloured:</label>
-  <input type="number" id="coloured" placeholder="e.g. 10" />
-
-  <label>% Indian/Asian:</label>
-  <input type="number" id="indianAsian" placeholder="e.g. 5" />
+  <h2>Inclusivity & Psychological Safety Rating</h2>
+  <select id="rating">
+    <option value="low">Low (No reduction)</option>
+    <option value="medium" selected>Medium (20% reduction)</option>
+    <option value="high">High (40% reduction)</option>
+  </select>
 
   <button onclick="calculateCosts()">Calculate Costs</button>
 
@@ -67,26 +85,37 @@
   <script>
     function calculateCosts() {
       const total = parseFloat(document.getElementById('totalStaff').value);
-      const pct = key => parseFloat(document.getElementById(key).value || 0) / 100;
+      const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+      const getVal = id => parseFloat(document.getElementById(id).value || 0);
 
-      const groups = {
-        blackWomen: { rate: 0.04 },
-        blackMen: { rate: 0.03 },
-        whiteMen: { rate: 0.005 },
-        coloured: { rate: 0.045 },
-        indianAsian: { rate: 0.045 }
+      const raceGroups = {
+        black: { pct: getPct('blackPct'), salary: getVal('blackSalary'), turnoverRate: 0.04 },
+        white: { pct: getPct('whitePct'), salary: getVal('whiteSalary'), turnoverRate: 0.015 },
+        coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary'), turnoverRate: 0.045 },
+        indian: { pct: getPct('indianPct'), salary: getVal('indianSalary'), turnoverRate: 0.045 }
       };
 
+      const absenteeismDays = 3;
+      const presenteeismRate = 0.03;
+      const rating = document.getElementById('rating').value;
+      const reductionFactor = rating === 'high' ? 0.6 : rating === 'medium' ? 0.8 : 1.0;
+
       let turnoverCost = 0;
-      for (const [key, { rate }] of Object.entries(groups)) {
-        const headcount = total * pct(key);
-        const exits = headcount * rate;
-        const costPerExit = 1.5 * 250000; // assume R250k avg salary * 1.5 replacement cost
-        turnoverCost += exits * costPerExit;
+      let absenteeismCost = 0;
+      let presenteeismCost = 0;
+
+      for (const group of Object.values(raceGroups)) {
+        const headcount = total * group.pct;
+        const exits = headcount * group.turnoverRate;
+        turnoverCost += exits * (1.5 * group.salary);
+        absenteeismCost += headcount * absenteeismDays * (group.salary / 260);
+        presenteeismCost += headcount * group.salary * presenteeismRate;
       }
 
-      const absenteeismCost = total * 3 * (250000 / 260 / 8); // 3 days lost * hourly rate
-      const presenteeismCost = total * 250000 * 0.03; // 3% underperformance waste
+      turnoverCost *= reductionFactor;
+      absenteeismCost *= reductionFactor;
+      presenteeismCost *= reductionFactor;
+
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
       document.getElementById('result').innerHTML = `
