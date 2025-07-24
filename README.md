@@ -153,14 +153,97 @@
   </div>
 
   <script>
-    function calculateCostSaving() {
-      const total = parseInt(document.getElementById('totalStaff').value);
-      if (!total || total <= 0) {
-        alert('Please enter a valid total staff number.');
-        return;
+    const turnoverRates = {
+      Low: {
+        "Black Women": 0.08, "Black Men": 0.07,
+        "White Women": 0.015, "White Men": 0.01,
+        "Coloured Women": 0.04, "Coloured Men": 0.03,
+        "Indian/Asian Women": 0.04, "Indian/Asian Men": 0.03
+      },
+      Medium: {
+        "Black Women": 0.04, "Black Men": 0.03,
+        "White Women": 0.01, "White Men": 0.005,
+        "Coloured Women": 0.02, "Coloured Men": 0.01,
+        "Indian/Asian Women": 0.02, "Indian/Asian Men": 0.01
+      },
+      High: {
+        "Black Women": 0.02, "Black Men": 0.01,
+        "White Women": 0.005, "White Men": 0.0025,
+        "Coloured Women": 0.01, "Coloured Men": 0.005,
+        "Indian/Asian Women": 0.01, "Indian/Asian Men": 0.005
       }
+    };
+
+    const absenteeismRates = {
+      Low: { Black: 2, White: 0.5, Coloured: 1, "Indian/Asian": 1 },
+      Medium: { Black: 1, White: 0.25, Coloured: 0.5, "Indian/Asian": 0.5 },
+      High: { Black: 0.5, White: 0.1, Coloured: 0.25, "Indian/Asian": 0.25 }
+    };
+
+    function calculateCostSaving() {
+      const staff = parseInt(document.getElementById('totalStaff').value);
+      const culture = document.getElementById('culture').value;
+      const benefit = parseFloat(document.getElementById('benefit').value);
+
+      const percentages = {
+        Black: parseFloat(document.getElementById('black').value) || 0,
+        White: parseFloat(document.getElementById('white').value) || 0,
+        Coloured: parseFloat(document.getElementById('coloured').value) || 0,
+        Indian: parseFloat(document.getElementById('indian').value) || 0
+      };
+
+      const gender = {
+        Women: parseFloat(document.getElementById('women').value) || 0,
+        Men: parseFloat(document.getElementById('men').value) || 0
+      };
+
+      const salaries = {
+        Black: parseFloat(document.getElementById('salaryBlack').value) || 0,
+        White: parseFloat(document.getElementById('salaryWhite').value) || 0,
+        Coloured: parseFloat(document.getElementById('salaryColoured').value) || 0,
+        Indian: parseFloat(document.getElementById('salaryIndian').value) || 0
+      };
+
+      let turnover = 0;
+      let absenteeism = 0;
+
+      function calcTurnover(race, salary, pct) {
+        const femaleRate = turnoverRates[culture][`${race} Women`] || 0;
+        const maleRate = turnoverRates[culture][`${race} Men`] || 0;
+        const racePct = pct / 100;
+        const womenPct = gender.Women / 100;
+        const menPct = gender.Men / 100;
+        const femaleHeadcount = staff * racePct * womenPct;
+        const maleHeadcount = staff * racePct * menPct;
+        return ((femaleHeadcount * salary * 0.5 * femaleRate) + (maleHeadcount * salary * 0.5 * maleRate)) * benefit;
+      }
+
+      function calcAbsenteeism(race, salary, pct) {
+        const days = absenteeismRates[culture][race] || 0;
+        const dailyRate = salary / 260;
+        return (staff * (pct / 100) * days * dailyRate) * benefit;
+      }
+
+      turnover += calcTurnover("Black", salaries.Black, percentages.Black);
+      turnover += calcTurnover("White", salaries.White, percentages.White);
+      turnover += calcTurnover("Coloured", salaries.Coloured, percentages.Coloured);
+      turnover += calcTurnover("Indian/Asian", salaries.Indian, percentages.Indian);
+
+      absenteeism += calcAbsenteeism("Black", salaries.Black, percentages.Black);
+      absenteeism += calcAbsenteeism("White", salaries.White, percentages.White);
+      absenteeism += calcAbsenteeism("Coloured", salaries.Coloured, percentages.Coloured);
+      absenteeism += calcAbsenteeism("Indian/Asian", salaries.Indian, percentages.Indian);
+
+      const total = turnover + absenteeism;
+
       document.getElementById('results').style.display = 'block';
-      document.getElementById('results').innerHTML = `<strong>Calculation logic still in progress</strong>`;
+      document.getElementById('results').innerHTML = `
+        <strong>Estimated Annual Cost Saving:</strong><br/>
+        Turnover Cost Saving: R ${Math.round(turnover).toLocaleString()}<br/>
+        Absenteeism Cost Saving: R ${Math.round(absenteeism).toLocaleString()}<br/>
+        <hr>
+        <strong>Total Cost Saving: R ${Math.round(total).toLocaleString()}</strong>
+      `;
     }
   </script>
 </body>
