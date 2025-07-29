@@ -71,13 +71,6 @@
   <label>Indian/Asian:</label>
   <input type="number" id="indianSalary" />
 
-  <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
-  <select id="rating">
-    <option value="low">Poor</option>
-    <option value="medium" selected>Moderate</option>
-    <option value="high">Strong</option>
-  </select>
-
   <button onclick="calculateCosts()">Calculate Costs</button>
 
   <div class="result" id="result"></div>
@@ -92,9 +85,6 @@
         men: getPct('menPct'),
         women: getPct('womenPct')
       };
-
-      const rating = document.getElementById('rating').value;
-      const reductionFactor = rating === 'high' ? 0.6 : rating === 'medium' ? 0.8 : 1.0;
 
       const turnoverRates = {
         black: { men: 0.03, women: 0.04 },
@@ -154,15 +144,12 @@
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
 
-      // Only apply reduction to turnover
-      const adjustedTurnoverCost = turnoverCost * reductionFactor;
-
-      const totalCost = adjustedTurnoverCost + absenteeismCost + presenteeismCost;
+      const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
       document.getElementById('result').innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
         <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
-        <p><strong>Turnover:</strong> R ${Math.round(adjustedTurnoverCost).toLocaleString()}</p>
+        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
         <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
         <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
         <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
