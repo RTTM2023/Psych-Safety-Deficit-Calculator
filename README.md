@@ -139,6 +139,7 @@
       let turnoverCost = 0;
       let absenteeismCost = 0;
       let presenteeismCost = 0;
+      let totalExits = 0;
 
       for (const [race, group] of Object.entries(raceGroups)) {
         const headcount = total * group.pct;
@@ -146,6 +147,7 @@
         const femaleHeadcount = headcount * genderSplit.women;
 
         const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
+        totalExits += exits;
         turnoverCost += exits * (1.5 * group.salary);
 
         absenteeismCost += headcount * absenteeismDays[race] * (group.salary / 260);
@@ -160,10 +162,11 @@
 
       document.getElementById('result').innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
-        <p><strong>Turnover:</strong> R ${turnoverCost.toLocaleString()}</p>
-        <p><strong>Absenteeism:</strong> R ${absenteeismCost.toLocaleString()}</p>
-        <p><strong>Presenteeism:</strong> R ${presenteeismCost.toLocaleString()}</p>
-        <p><strong>Total:</strong> <strong>R ${totalCost.toLocaleString()}</strong></p>
+        <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
+        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
+        <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
+        <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
+        <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
       `;
     }
   </script>
