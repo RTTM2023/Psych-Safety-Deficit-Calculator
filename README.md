@@ -88,44 +88,68 @@
       const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
       const getVal = id => parseFloat(document.getElementById(id).value || 0);
 
+      const genderSplit = {
+        men: getPct('menPct'),
+        women: getPct('womenPct')
+      };
+
+      const rating = document.getElementById('rating').value;
+      const reductionFactor = rating === 'high' ? 0.6 : rating === 'medium' ? 0.8 : 1.0;
+
+      const turnoverRates = {
+        black: { men: 0.03, women: 0.04 },
+        white: { men: 0.005, women: 0.01 },
+        coloured: { men: 0.01, women: 0.02 },
+        indian: { men: 0.01, women: 0.02 }
+      };
+
+      const absenteeismDays = {
+        black: 1.0,
+        white: 0.25,
+        coloured: 0.5,
+        indian: 0.5
+      };
+
+      const presenteeismRates = {
+        black: 0.075,
+        white: 0.015,
+        coloured: 0.045,
+        indian: 0.045
+      };
+
       const raceGroups = {
         black: {
           pct: getPct('blackPct'),
-          salary: getVal('blackSalary'),
-          turnoverRate: 0.04
+          salary: getVal('blackSalary')
         },
         white: {
           pct: getPct('whitePct'),
-          salary: getVal('whiteSalary'),
-          turnoverRate: 0.015
+          salary: getVal('whiteSalary')
         },
         coloured: {
           pct: getPct('colouredPct'),
-          salary: getVal('colouredSalary'),
-          turnoverRate: 0.045
+          salary: getVal('colouredSalary')
         },
         indian: {
           pct: getPct('indianPct'),
-          salary: getVal('indianSalary'),
-          turnoverRate: 0.045
+          salary: getVal('indianSalary')
         }
       };
-
-      const absenteeismDays = 3;
-      const presenteeismRate = 0.03;
-      const rating = document.getElementById('rating').value;
-      const reductionFactor = rating === 'high' ? 0.6 : rating === 'medium' ? 0.8 : 1.0;
 
       let turnoverCost = 0;
       let absenteeismCost = 0;
       let presenteeismCost = 0;
 
-      for (const group of Object.values(raceGroups)) {
+      for (const [race, group] of Object.entries(raceGroups)) {
         const headcount = total * group.pct;
-        const exits = headcount * group.turnoverRate;
+        const maleHeadcount = headcount * genderSplit.men;
+        const femaleHeadcount = headcount * genderSplit.women;
+
+        const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
         turnoverCost += exits * (1.5 * group.salary);
-        absenteeismCost += headcount * absenteeismDays * (group.salary / 260);
-        presenteeismCost += headcount * group.salary * presenteeismRate;
+
+        absenteeismCost += headcount * absenteeismDays[race] * (group.salary / 260);
+        presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
 
       turnoverCost *= reductionFactor;
