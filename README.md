@@ -71,11 +71,84 @@
   <label>Indian/Asian:</label>
   <input type="number" id="indianSalary" />
 
+  <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
+  <select id="cultureRating">
+    <option value="low">Low</option>
+    <option value="medium" selected>Medium</option>
+    <option value="high">High</option>
+  </select>
+
   <button onclick="calculateCosts()">Calculate Costs</button>
 
   <div class="result" id="result"></div>
 
   <script>
+    function getRates(level) {
+      const rates = {
+        low: {
+          turnoverRates: {
+            black: { men: 0.07, women: 0.08 },
+            white: { men: 0.01, women: 0.015 },
+            coloured: { men: 0.03, women: 0.04 },
+            indian: { men: 0.03, women: 0.04 }
+          },
+          absenteeismDays: {
+            black: 2,
+            white: 0.5,
+            coloured: 1,
+            indian: 1
+          },
+          presenteeismRates: {
+            black: 0.15,
+            white: 0.0375,
+            coloured: 0.09375,
+            indian: 0.09375
+          }
+        },
+        medium: {
+          turnoverRates: {
+            black: { men: 0.03, women: 0.04 },
+            white: { men: 0.005, women: 0.01 },
+            coloured: { men: 0.01, women: 0.02 },
+            indian: { men: 0.01, women: 0.02 }
+          },
+          absenteeismDays: {
+            black: 1,
+            white: 0.25,
+            coloured: 0.5,
+            indian: 0.5
+          },
+          presenteeismRates: {
+            black: 0.075,
+            white: 0.015,
+            coloured: 0.045,
+            indian: 0.045
+          }
+        },
+        high: {
+          turnoverRates: {
+            black: { men: 0.01, women: 0.02 },
+            white: { men: 0.0025, women: 0.005 },
+            coloured: { men: 0.005, women: 0.01 },
+            indian: { men: 0.005, women: 0.01 }
+          },
+          absenteeismDays: {
+            black: 0.5,
+            white: 0.1,
+            coloured: 0.25,
+            indian: 0.25
+          },
+          presenteeismRates: {
+            black: 0.0375,
+            white: 0.0075,
+            coloured: 0.01875,
+            indian: 0.01875
+          }
+        }
+      };
+      return rates[level];
+    }
+
     function calculateCosts() {
       const total = parseFloat(document.getElementById('totalStaff').value);
       const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
@@ -86,26 +159,8 @@
         women: getPct('womenPct')
       };
 
-      const turnoverRates = {
-        black: { men: 0.03, women: 0.04 },
-        white: { men: 0.005, women: 0.01 },
-        coloured: { men: 0.01, women: 0.02 },
-        indian: { men: 0.01, women: 0.02 }
-      };
-
-      const absenteeismDays = {
-        black: 1.0,
-        white: 0.25,
-        coloured: 0.5,
-        indian: 0.5
-      };
-
-      const presenteeismRates = {
-        black: 0.075,
-        white: 0.015,
-        coloured: 0.045,
-        indian: 0.045
-      };
+      const culture = document.getElementById('cultureRating').value;
+      const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
       const raceGroups = {
         black: {
