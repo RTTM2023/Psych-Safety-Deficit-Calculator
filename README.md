@@ -154,16 +154,15 @@
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
 
-      turnoverCost *= reductionFactor;
-      absenteeismCost *= reductionFactor;
-      presenteeismCost *= reductionFactor;
+      // Only apply reduction to turnover
+      const adjustedTurnoverCost = turnoverCost * reductionFactor;
 
-      const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
+      const totalCost = adjustedTurnoverCost + absenteeismCost + presenteeismCost;
 
       document.getElementById('result').innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
         <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
-        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
+        <p><strong>Turnover:</strong> R ${Math.round(adjustedTurnoverCost).toLocaleString()}</p>
         <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
         <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
         <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
