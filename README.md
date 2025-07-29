@@ -61,8 +61,15 @@
   <label>Men:</label>
   <input type="number" id="menPct" />
 
-  <h2>Average Annual Salary (across all groups)</h2>
-  <input type="number" id="avgSalary" placeholder="e.g. 250000" />
+  <h2>Average Annual Salary per Race Group (ZAR)</h2>
+  <label>Black:</label>
+  <input type="number" id="blackSalary" />
+  <label>White:</label>
+  <input type="number" id="whiteSalary" />
+  <label>Coloured:</label>
+  <input type="number" id="colouredSalary" />
+  <label>Indian/Asian:</label>
+  <input type="number" id="indianSalary" />
 
   <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
   <select id="rating">
@@ -79,13 +86,29 @@
     function calculateCosts() {
       const total = parseFloat(document.getElementById('totalStaff').value);
       const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
-      const avgSalary = parseFloat(document.getElementById('avgSalary').value || 0);
+      const getVal = id => parseFloat(document.getElementById(id).value || 0);
 
       const raceGroups = {
-        black: { pct: getPct('blackPct'), turnoverRate: 0.04 },
-        white: { pct: getPct('whitePct'), turnoverRate: 0.015 },
-        coloured: { pct: getPct('colouredPct'), turnoverRate: 0.045 },
-        indian: { pct: getPct('indianPct'), turnoverRate: 0.045 }
+        black: {
+          pct: getPct('blackPct'),
+          salary: getVal('blackSalary'),
+          turnoverRate: 0.04
+        },
+        white: {
+          pct: getPct('whitePct'),
+          salary: getVal('whiteSalary'),
+          turnoverRate: 0.015
+        },
+        coloured: {
+          pct: getPct('colouredPct'),
+          salary: getVal('colouredSalary'),
+          turnoverRate: 0.045
+        },
+        indian: {
+          pct: getPct('indianPct'),
+          salary: getVal('indianSalary'),
+          turnoverRate: 0.045
+        }
       };
 
       const absenteeismDays = 3;
@@ -100,9 +123,9 @@
       for (const group of Object.values(raceGroups)) {
         const headcount = total * group.pct;
         const exits = headcount * group.turnoverRate;
-        turnoverCost += exits * (1.5 * avgSalary);
-        absenteeismCost += headcount * absenteeismDays * (avgSalary / 260);
-        presenteeismCost += headcount * avgSalary * presenteeismRate;
+        turnoverCost += exits * (1.5 * group.salary);
+        absenteeismCost += headcount * absenteeismDays * (group.salary / 260);
+        presenteeismCost += headcount * group.salary * presenteeismRate;
       }
 
       turnoverCost *= reductionFactor;
