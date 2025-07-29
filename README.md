@@ -53,7 +53,7 @@
   <label>Coloured:</label>
   <input type="number" id="colouredPct" />
   <label>Indian/Asian:</label>
-  <input type="number" id="indianPct" />
+  <input type="number" id="indianasianPct" />
 
   <h2>Workforce Breakdown by Gender (%)</h2>
   <label>Women:</label>
@@ -69,7 +69,7 @@
   <label>Coloured:</label>
   <input type="number" id="colouredSalary" />
   <label>Indian/Asian:</label>
-  <input type="number" id="indianSalary" />
+  <input type="number" id="indianasianSalary" />
 
   <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
   <select id="cultureRating">
@@ -90,19 +90,19 @@
             black: { men: 0.07, women: 0.08 },
             white: { men: 0.01, women: 0.015 },
             coloured: { men: 0.03, women: 0.04 },
-            indian: { men: 0.03, women: 0.04 }
+            indianasian: { men: 0.03, women: 0.04 }
           },
           absenteeismDays: {
             black: 2,
             white: 0.5,
             coloured: 1,
-            indian: 1
+            indianasian: 1
           },
           presenteeismRates: {
             black: 0.15,
             white: 0.0375,
             coloured: 0.09375,
-            indian: 0.09375
+            indianasian: 0.09375
           }
         },
         medium: {
@@ -110,19 +110,19 @@
             black: { men: 0.03, women: 0.04 },
             white: { men: 0.005, women: 0.01 },
             coloured: { men: 0.01, women: 0.02 },
-            indian: { men: 0.01, women: 0.02 }
+            indianasian: { men: 0.01, women: 0.02 }
           },
           absenteeismDays: {
             black: 1,
             white: 0.25,
             coloured: 0.5,
-            indian: 0.5
+            indianasian: 0.5
           },
           presenteeismRates: {
             black: 0.075,
             white: 0.015,
             coloured: 0.045,
-            indian: 0.045
+            indianasian: 0.045
           }
         },
         high: {
@@ -130,19 +130,19 @@
             black: { men: 0.01, women: 0.02 },
             white: { men: 0.0025, women: 0.005 },
             coloured: { men: 0.005, women: 0.01 },
-            indian: { men: 0.005, women: 0.01 }
+            indianasian: { men: 0.005, women: 0.01 }
           },
           absenteeismDays: {
             black: 0.5,
             white: 0.1,
             coloured: 0.25,
-            indian: 0.25
+            indianasian: 0.25
           },
           presenteeismRates: {
             black: 0.0375,
             white: 0.0075,
             coloured: 0.01875,
-            indian: 0.01875
+            indianasian: 0.01875
           }
         }
       };
@@ -175,9 +175,9 @@
           pct: getPct('colouredPct'),
           salary: getVal('colouredSalary')
         },
-        indian: {
-          pct: getPct('indianPct'),
-          salary: getVal('indianSalary')
+        indianasian: {
+          pct: getPct('indianasianPct'),
+          salary: getVal('indianasianSalary')
         }
       };
 
