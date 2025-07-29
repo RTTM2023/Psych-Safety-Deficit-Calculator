@@ -12,14 +12,14 @@
       background-color: #f7f1fc;
     }
     .container {
-      max-width: 520px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
     }
     .card, .subcard {
       border-radius: 24px;
       padding: 2rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       border: 1px solid #E3C8F7;
     }
     .card {
@@ -32,12 +32,13 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      border: none;
     }
     .title-underline {
       display: none;
     }
     h2 {
-      font-size: 0.6rem;
+      font-size: 0.4rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
@@ -52,13 +53,13 @@
     input, select {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       border: none;
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
     .purple-card input, .purple-card select {
-      background-color: #e4c8f7;
+      background-color: white;
     }
     .card input, .card select {
       background-color: #E3C8F7;
@@ -101,6 +102,7 @@
       <h1>Psychological Safety Deficit Calculator</h1>
     </div>
 
+    <!-- Section 1 -->
     <div class="card purple-card">
       <h2>Total Staff Complement</h2>
       <input type="number" id="totalStaff" placeholder="e.g. 1000" />
@@ -139,6 +141,7 @@
       </div>
     </div>
 
+    <!-- Section 2 -->
     <div class="card">
       <h2>Average Annual Salary per Race Group (ZAR)</h2>
       <div class="grid">
@@ -161,6 +164,7 @@
       </div>
     </div>
 
+    <!-- Section 3 -->
     <div class="card purple-card">
       <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
       <select id="cultureRating">
