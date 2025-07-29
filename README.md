@@ -38,7 +38,7 @@
       display: none;
     }
     h2 {
-      font-size: 0.85rem;
+      font-size: 2rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
