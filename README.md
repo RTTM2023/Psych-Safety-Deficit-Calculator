@@ -195,7 +195,7 @@
         totalExits += exits;
         turnoverCost += exits * (0.5 * group.salary);
 
-        absenteeismCost += headcount * absenteeismDays[race] * (group.salary / 260);
+        absenteeismCost += headcount * absenteeismDays[race] * (group.salary / 220);
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
 
