@@ -34,11 +34,8 @@
       margin-bottom: 0.5rem;
       border: none;
     }
-    .title-underline {
-      display: none;
-    }
     h2 {
-      font-size: 2rem;
+      font-size: 0.8rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
@@ -104,7 +101,6 @@
 </head>
 <body>
   <div class="container">
-
     <div class="card">
       <h1>Psychological Safety Deficit Calculator</h1>
     </div>
@@ -185,5 +181,25 @@
     <button onclick="calculateCosts()">Calculate</button>
     <div class="result" id="result"></div>
   </div>
+
+  <script>
+    function calculateCosts() {
+      const totalStaff = parseInt(document.getElementById('totalStaff').value);
+      const resignations = totalStaff * 0.01825;
+      const turnover = resignations * 450000 * 0.25;
+      const absenteeism = totalStaff * 0.25 * 9 * (450000 / 260) / 2;
+      const presenteeism = totalStaff * 0.25 * 0.3 * 450000;
+      const total = turnover + absenteeism + presenteeism;
+
+      document.getElementById('result').innerHTML = `
+        <h2>Estimated Annual Cost of DEI Neglect</h2>
+        <p><strong>EXCESS Resignations:</strong> ${resignations.toFixed(1)}</p>
+        <p><strong>Turnover:</strong> R ${turnover.toLocaleString()}</p>
+        <p><strong>Absenteeism:</strong> R ${absenteeism.toLocaleString()}</p>
+        <p><strong>Presenteeism:</strong> R ${presenteeism.toLocaleString()}</p>
+        <p><strong>Total:</strong> R ${total.toLocaleString()}</p>
+      `;
+    }
+  </script>
 </body>
 </html>
