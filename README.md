@@ -38,7 +38,7 @@
       display: none;
     }
     h2 {
-      font-size: 0.35rem;
+      font-size: 0.85rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
@@ -80,7 +80,7 @@
       height: 2px;
       background-color: #ea0b82;
       width: 50%;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
     }
     button {
       width: 100%;
