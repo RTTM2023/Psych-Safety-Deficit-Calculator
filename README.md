@@ -183,21 +183,131 @@
   </div>
 
   <script>
+    function getRates(level) {
+      const rates = {
+        low: {
+          turnoverRates: {
+            black: { men: 0.07, women: 0.08 },
+            white: { men: 0.01, women: 0.015 },
+            coloured: { men: 0.03, women: 0.04 },
+            indianasian: { men: 0.03, women: 0.04 }
+          },
+          absenteeismDays: {
+            black: 2,
+            white: 0.5,
+            coloured: 1,
+            indianasian: 1
+          },
+          presenteeismRates: {
+            black: 0.15,
+            white: 0.0375,
+            coloured: 0.09375,
+            indianasian: 0.09375
+          }
+        },
+        medium: {
+          turnoverRates: {
+            black: { men: 0.03, women: 0.04 },
+            white: { men: 0.005, women: 0.01 },
+            coloured: { men: 0.01, women: 0.02 },
+            indianasian: { men: 0.01, women: 0.02 }
+          },
+          absenteeismDays: {
+            black: 1,
+            white: 0.25,
+            coloured: 0.5,
+            indianasian: 0.5
+          },
+          presenteeismRates: {
+            black: 0.075,
+            white: 0.015,
+            coloured: 0.045,
+            indianasian: 0.045
+          }
+        },
+        high: {
+          turnoverRates: {
+            black: { men: 0.01, women: 0.02 },
+            white: { men: 0.0025, women: 0.005 },
+            coloured: { men: 0.005, women: 0.01 },
+            indianasian: { men: 0.005, women: 0.01 }
+          },
+          absenteeismDays: {
+            black: 0.5,
+            white: 0.1,
+            coloured: 0.25,
+            indianasian: 0.25
+          },
+          presenteeismRates: {
+            black: 0.0375,
+            white: 0.0075,
+            coloured: 0.01875,
+            indianasian: 0.01875
+          }
+        }
+      };
+      return rates[level];
+    }
+
     function calculateCosts() {
-      const totalStaff = parseInt(document.getElementById('totalStaff').value);
-      const resignations = totalStaff * 0.01825;
-      const turnover = resignations * 450000 * 0.25;
-      const absenteeism = totalStaff * 0.25 * 9 * (450000 / 260) / 2;
-      const presenteeism = totalStaff * 0.25 * 0.3 * 450000;
-      const total = turnover + absenteeism + presenteeism;
+      const total = parseFloat(document.getElementById('totalStaff').value);
+      const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+      const getVal = id => parseFloat(document.getElementById(id).value || 0);
+
+      const genderSplit = {
+        men: getPct('menPct'),
+        women: getPct('womenPct')
+      };
+
+      const culture = document.getElementById('cultureRating').value;
+      const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
+
+      const raceGroups = {
+        black: {
+          pct: getPct('blackPct'),
+          salary: getVal('blackSalary')
+        },
+        white: {
+          pct: getPct('whitePct'),
+          salary: getVal('whiteSalary')
+        },
+        coloured: {
+          pct: getPct('colouredPct'),
+          salary: getVal('colouredSalary')
+        },
+        indianasian: {
+          pct: getPct('indianasianPct'),
+          salary: getVal('indianasianSalary')
+        }
+      };
+
+      let turnoverCost = 0;
+      let absenteeismCost = 0;
+      let presenteeismCost = 0;
+      let totalExits = 0;
+
+      for (const [race, group] of Object.entries(raceGroups)) {
+        const headcount = total * group.pct;
+        const maleHeadcount = headcount * genderSplit.men;
+        const femaleHeadcount = headcount * genderSplit.women;
+
+        const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
+        totalExits += exits;
+        turnoverCost += exits * (0.5 * group.salary);
+
+        absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
+        presenteeismCost += headcount * group.salary * presenteeismRates[race];
+      }
+
+      const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
       document.getElementById('result').innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
-        <p><strong>EXCESS Resignations:</strong> ${resignations.toFixed(1)}</p>
-        <p><strong>Turnover:</strong> R ${turnover.toLocaleString()}</p>
-        <p><strong>Absenteeism:</strong> R ${absenteeism.toLocaleString()}</p>
-        <p><strong>Presenteeism:</strong> R ${presenteeism.toLocaleString()}</p>
-        <p><strong>Total:</strong> R ${total.toLocaleString()}</p>
+        <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
+        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
+        <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
+        <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
+        <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
       `;
     }
   </script>
