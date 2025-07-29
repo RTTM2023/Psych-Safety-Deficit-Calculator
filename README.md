@@ -12,8 +12,8 @@
       background-color: #f7f1fc;
     }
     .container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: 600px;
+      margin: 0;
       padding: 2rem;
     }
     .card, .subcard {
@@ -38,7 +38,7 @@
       display: none;
     }
     h2 {
-      font-size: 0.4rem;
+      font-size: 0.35rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
@@ -58,7 +58,14 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-    .purple-card input, .purple-card select {
+    .purple-card input#totalStaff,
+    .purple-card input#womenPct,
+    .purple-card input#menPct,
+    .purple-card input#blackPct,
+    .purple-card input#whitePct,
+    .purple-card input#colouredPct,
+    .purple-card input#indianasianPct,
+    .purple-card select#cultureRating {
       background-color: white;
     }
     .card input, .card select {
