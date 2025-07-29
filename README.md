@@ -193,7 +193,7 @@
 
         const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
         totalExits += exits;
-        turnoverCost += exits * (1.5 * group.salary);
+        turnoverCost += exits * (0.5 * group.salary);
 
         absenteeismCost += headcount * absenteeismDays[race] * (group.salary / 260);
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
