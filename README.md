@@ -12,7 +12,7 @@
       background-color: #f7f1fc;
     }
     .container {
-      max-width: 600px;
+      max-width: 520px;
       margin: 0 auto;
       padding: 2rem;
     }
@@ -37,10 +37,10 @@
       height: 2px;
       background-color: #5200ff;
       width: 75%;
-      margin: 0.5rem 0 1rem 0;
+      margin: 0.5rem 0 0 0;
     }
     h2 {
-      font-size: 1rem;
+      font-size: 0.85rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
@@ -57,8 +57,11 @@
       margin-bottom: 1rem;
       border: none;
       border-radius: 30px;
-      background-color: white;
+      background-color: #e4c8f7;
       font-family: 'Montserrat', sans-serif;
+    }
+    .card input, .card select {
+      background-color: white;
     }
     .grid {
       display: grid;
@@ -137,24 +140,24 @@
       </div>
     </div>
 
-    <div class="subcard">
+    <div class="card">
       <h2>Average Annual Salary per Race Group (ZAR)</h2>
       <div class="grid">
         <div>
           <label>Black</label>
-          <input type="number" id="blackSalary" />
+          <input type="number" id="blackSalary" class="purple-card" />
         </div>
         <div>
           <label>White</label>
-          <input type="number" id="whiteSalary" />
+          <input type="number" id="whiteSalary" class="purple-card" />
         </div>
         <div>
           <label>Coloured</label>
-          <input type="number" id="colouredSalary" />
+          <input type="number" id="colouredSalary" class="purple-card" />
         </div>
         <div>
           <label>Indian/Asian</label>
-          <input type="number" id="indianasianSalary" />
+          <input type="number" id="indianasianSalary" class="purple-card" />
         </div>
       </div>
     </div>
