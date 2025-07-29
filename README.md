@@ -20,10 +20,10 @@
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 1rem;
+      border: 1px solid #E3C8F7;
     }
     .card {
       background-color: white;
-      border: 1px solid #ccc;
     }
     .purple-card {
       background-color: #e4c8f7;
@@ -34,16 +34,14 @@
       margin-bottom: 0.5rem;
     }
     .title-underline {
-      height: 2px;
-      background-color: #5200ff;
-      width: 75%;
-      margin: 0.5rem 0 0 0;
+      display: none;
     }
     h2 {
-      font-size: 0.85rem;
+      font-size: 0.6rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
+      border: none;
     }
     label {
       font-weight: 500;
@@ -57,11 +55,13 @@
       margin-bottom: 1rem;
       border: none;
       border-radius: 30px;
-      background-color: #e4c8f7;
       font-family: 'Montserrat', sans-serif;
     }
+    .purple-card input, .purple-card select {
+      background-color: #e4c8f7;
+    }
     .card input, .card select {
-      background-color: white;
+      background-color: #E3C8F7;
     }
     .grid {
       display: grid;
@@ -99,7 +99,6 @@
 
     <div class="card">
       <h1>Psychological Safety Deficit Calculator</h1>
-      <div class="title-underline"></div>
     </div>
 
     <div class="card purple-card">
@@ -145,19 +144,19 @@
       <div class="grid">
         <div>
           <label>Black</label>
-          <input type="number" id="blackSalary" class="purple-card" />
+          <input type="number" id="blackSalary" />
         </div>
         <div>
           <label>White</label>
-          <input type="number" id="whiteSalary" class="purple-card" />
+          <input type="number" id="whiteSalary" />
         </div>
         <div>
           <label>Coloured</label>
-          <input type="number" id="colouredSalary" class="purple-card" />
+          <input type="number" id="colouredSalary" />
         </div>
         <div>
           <label>Indian/Asian</label>
-          <input type="number" id="indianasianSalary" class="purple-card" />
+          <input type="number" id="indianasianSalary" />
         </div>
       </div>
     </div>
