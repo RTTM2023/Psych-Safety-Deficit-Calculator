@@ -77,7 +77,7 @@
       height: 2px;
       background-color: #ea0b82;
       width: 50%;
-      margin: 1.5rem auto;
+      margin: 1.5rem 0;
     }
     button {
       width: 100%;
@@ -92,7 +92,14 @@
       cursor: pointer;
     }
     .result {
+      background-color: white;
+      border-radius: 16px;
+      padding: 1rem;
+      margin-top: 2rem;
       display: none;
+    }
+    .result h2 {
+      border: none;
     }
   </style>
 </head>
@@ -298,8 +305,9 @@
 
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
-      const resultEl = document.getElementById('result');
-      resultEl.innerHTML = `
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
         <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
         <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
@@ -307,7 +315,6 @@
         <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
         <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
       `;
-      resultEl.style.display = 'block';
     }
   </script>
 </body>
