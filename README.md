@@ -22,6 +22,7 @@
     }
     .container {
       flex: 2;
+      max-width: 600px;
     }
     .card, .subcard {
       border-radius: 24px;
@@ -62,14 +63,7 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-    .purple-card input#totalStaff,
-    .purple-card input#womenPct,
-    .purple-card input#menPct,
-    .purple-card input#blackPct,
-    .purple-card input#whitePct,
-    .purple-card input#colouredPct,
-    .purple-card input#indianasianPct,
-    .purple-card select#cultureRating {
+    .purple-card input, .purple-card select {
       background-color: white;
     }
     .card input, .card select {
@@ -83,8 +77,8 @@
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
-      width: 50%;
-      margin: 1.5rem 0 1.5rem 0;
+      width: calc(100% - 2rem);
+      margin: 1.5rem 1rem;
     }
     button {
       width: 100%;
@@ -105,13 +99,44 @@
       border-radius: 16px;
       padding: 2rem;
       display: none;
+      align-self: flex-start;
+      height: fit-content;
     }
     .result h2 {
       color: white;
-      font-size: 1.25rem;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
     }
     .result p {
       margin: 0.5rem 0;
+      text-align: right;
+    }
+    .result strong {
+      font-size: 1.1rem;
+    }
+    .dotted-line {
+      border-top: 2px dotted white;
+      margin: 1rem 0;
+    }
+    .result-buttons {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .btn {
+      background-color: white;
+      color: #5200ff;
+      font-weight: 700;
+      padding: 0.75rem;
+      border-radius: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .btn.pink {
+      background-color: #ff1e84;
+      color: white;
     }
   </style>
 </head>
