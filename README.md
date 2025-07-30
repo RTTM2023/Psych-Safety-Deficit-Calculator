@@ -18,7 +18,7 @@
       padding: 2rem;
     }
     .container {
-      max-width: 600px;
+      width: 600px;
       padding: 0;
       flex-shrink: 0;
     }
@@ -38,14 +38,11 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      border: none;
     }
     h2 {
-      font-size: 0.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-top: 1rem;
-      margin-bottom: 0.5rem;
-      border: none;
+      margin: 1.5rem 0 1rem 0;
     }
     label {
       font-weight: 500;
@@ -76,7 +73,7 @@
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
-      width: 50%;
+      width: 90%;
       margin: 1.5rem 0;
     }
     button {
@@ -92,8 +89,8 @@
       cursor: pointer;
     }
     .result-box {
-      background-color: white;
-      border: 1px solid #E3C8F7;
+      background-color: #5700ff;
+      color: white;
       border-radius: 24px;
       padding: 1.5rem;
       max-width: 400px;
@@ -102,6 +99,7 @@
     .result-box h2 {
       font-size: 1.2rem;
       margin-bottom: 1rem;
+      text-align: left;
     }
     .result-item {
       display: flex;
@@ -109,7 +107,7 @@
       margin-bottom: 0.5rem;
     }
     .total-cost {
-      font-size: 1.25rem;
+      font-size: 1.55rem;
       font-weight: bold;
       border-top: 2px dotted #ccc;
       border-bottom: 2px dotted #ccc;
@@ -126,18 +124,32 @@
     }
     .button-group button {
       width: 100%;
+      font-weight: 700;
+      padding: 1rem;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
     }
     .reset {
       background-color: #ea0b82;
+      color: white;
+    }
+    .download {
+      background-color: white;
+      color: #5200ff;
+    }
+    .enquire {
+      background-color: white;
+      color: #5200ff;
     }
   </style>
 </head>
 <body>
-  <div class="main-wrapper">
-    <div class="container">
-      <div class="card">
-        <h1>Psychological Safety Deficit Calculator</h1>
-      </div>
+  <div class="container">
+    <div class="card">
+      <h1>Psychological Safety Deficit Calculator</h1>
+    </div>
 
     <!-- Section 1 -->
     <div class="card purple-card">
@@ -215,47 +227,9 @@
     <button onclick="calculateCosts()">Calculate</button>
     <div class="result" id="result"></div>
   </div>
-<div class="result-box" id="resultBox">
-      <h2>Estimated Annual Cost of DEI Neglect</h2>
-      <div class="result-item">
-        <span>Excess Resignations:</span>
-        <span id="excess"></span>
-      </div>
-      <div class="result-item">
-        <span>Turnover:</span>
-        <span id="turnover"></span>
-      </div>
-      <div class="result-item">
-        <span>Absenteeism:</span>
-        <span id="absenteeism"></span>
-      </div>
-      <div class="result-item">
-        <span>Presenteeism:</span>
-        <span id="presenteeism"></span>
-      </div>
-      <div class="total-cost">
-        <span>Total:</span>
-        <span id="total"></span>
-      </div>
-      <div class="button-group">
-        <button>Download PDF</button>
-        <button>Enquire About our Solutions</button>
-        <button class="reset">Reset Calculator</button>
-      </div>
-    </div>
-  </div>
+
   <script>
-    function calculateCosts() {
-      const resultBox = document.getElementById("resultBox");
-      resultBox.style.display = "block";
-      document.getElementById("excess").textContent = "123";
-      document.getElementById("turnover").textContent = "R 456,000";
-      document.getElementById("absenteeism").textContent = "R 78,000";
-      document.getElementById("presenteeism").textContent = "R 32,000";
-      document.getElementById("total").textContent = "R 566,000";
-    }
-  </script>    
-  function getRates(level) {
+    function getRates(level) {
       const rates = {
         low: {
           turnoverRates: {
