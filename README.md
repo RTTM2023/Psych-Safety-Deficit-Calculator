@@ -11,16 +11,10 @@
       margin: 0;
       background-color: #f7f1fc;
     }
-    .main-wrapper {
-      display: flex;
-      gap: 2rem;
-      align-items: flex-start;
-      padding: 2rem;
-    }
     .container {
-      width: 600px;
-      padding: 0;
-      flex-shrink: 0;
+      max-width: 600px;
+      margin: 0;
+      padding: 2rem;
     }
     .card, .subcard {
       border-radius: 24px;
@@ -38,11 +32,14 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      border: none;
     }
     h2 {
-      font-size: 2rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      margin: 1.5rem 0 1rem 0;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      border: none;
     }
     label {
       font-weight: 500;
@@ -58,8 +55,14 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-    .purple-card input,
-    .purple-card select {
+    .purple-card input#totalStaff,
+    .purple-card input#womenPct,
+    .purple-card input#menPct,
+    .purple-card input#blackPct,
+    .purple-card input#whitePct,
+    .purple-card input#colouredPct,
+    .purple-card input#indianasianPct,
+    .purple-card select#cultureRating {
       background-color: white;
     }
     .card input, .card select {
@@ -73,7 +76,7 @@
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
-      width: 90%;
+      width: 50%;
       margin: 1.5rem 0;
     }
     button {
@@ -88,60 +91,15 @@
       margin: 0;
       cursor: pointer;
     }
-    .result-box {
-      background-color: #5700ff;
-      color: white;
-      border-radius: 24px;
-      padding: 1.5rem;
-      max-width: 400px;
+    .result {
+      background-color: white;
+      border-radius: 16px;
+      padding: 1rem;
+      margin-top: 2rem;
       display: none;
     }
-    .result-box h2 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-    .result-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-    .total-cost {
-      font-size: 1.55rem;
-      font-weight: bold;
-      border-top: 2px dotted #ccc;
-      border-bottom: 2px dotted #ccc;
-      padding: 1rem 0;
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1rem;
-    }
-    .button-group {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .button-group button {
-      width: 100%;
-      font-weight: 700;
-      padding: 1rem;
+    .result h2 {
       border: none;
-      border-radius: 20px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    .reset {
-      background-color: #ea0b82;
-      color: white;
-    }
-    .download {
-      background-color: white;
-      color: #5200ff;
-    }
-    .enquire {
-      background-color: white;
-      color: #5200ff;
     }
   </style>
 </head>
