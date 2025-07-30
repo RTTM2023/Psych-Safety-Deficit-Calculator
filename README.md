@@ -11,10 +11,16 @@
       margin: 0;
       background-color: #f7f1fc;
     }
+    .main-wrapper {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding: 2rem;
+    }
     .container {
       max-width: 600px;
-      margin: 0;
-      padding: 2rem;
+      padding: 0;
+      flex-shrink: 0;
     }
     .card, .subcard {
       border-radius: 24px;
@@ -55,14 +61,8 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-    .purple-card input#totalStaff,
-    .purple-card input#womenPct,
-    .purple-card input#menPct,
-    .purple-card input#blackPct,
-    .purple-card input#whitePct,
-    .purple-card input#colouredPct,
-    .purple-card input#indianasianPct,
-    .purple-card select#cultureRating {
+    .purple-card input,
+    .purple-card select {
       background-color: white;
     }
     .card input, .card select {
@@ -91,23 +91,53 @@
       margin: 0;
       cursor: pointer;
     }
-    .result {
+    .result-box {
       background-color: white;
-      border-radius: 16px;
-      padding: 1rem;
-      margin-top: 2rem;
+      border: 1px solid #E3C8F7;
+      border-radius: 24px;
+      padding: 1.5rem;
+      max-width: 400px;
       display: none;
     }
-    .result h2 {
-      border: none;
+    .result-box h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .total-cost {
+      font-size: 1.25rem;
+      font-weight: bold;
+      border-top: 2px dotted #ccc;
+      border-bottom: 2px dotted #ccc;
+      padding: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    .button-group {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .button-group button {
+      width: 100%;
+    }
+    .reset {
+      background-color: #ea0b82;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <h1>Psychological Safety Deficit Calculator</h1>
-    </div>
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="card">
+        <h1>Psychological Safety Deficit Calculator</h1>
+      </div>
 
     <!-- Section 1 -->
     <div class="card purple-card">
@@ -185,9 +215,47 @@
     <button onclick="calculateCosts()">Calculate</button>
     <div class="result" id="result"></div>
   </div>
-
+<div class="result-box" id="resultBox">
+      <h2>Estimated Annual Cost of DEI Neglect</h2>
+      <div class="result-item">
+        <span>Excess Resignations:</span>
+        <span id="excess"></span>
+      </div>
+      <div class="result-item">
+        <span>Turnover:</span>
+        <span id="turnover"></span>
+      </div>
+      <div class="result-item">
+        <span>Absenteeism:</span>
+        <span id="absenteeism"></span>
+      </div>
+      <div class="result-item">
+        <span>Presenteeism:</span>
+        <span id="presenteeism"></span>
+      </div>
+      <div class="total-cost">
+        <span>Total:</span>
+        <span id="total"></span>
+      </div>
+      <div class="button-group">
+        <button>Download PDF</button>
+        <button>Enquire About our Solutions</button>
+        <button class="reset">Reset Calculator</button>
+      </div>
+    </div>
+  </div>
   <script>
-    function getRates(level) {
+    function calculateCosts() {
+      const resultBox = document.getElementById("resultBox");
+      resultBox.style.display = "block";
+      document.getElementById("excess").textContent = "123";
+      document.getElementById("turnover").textContent = "R 456,000";
+      document.getElementById("absenteeism").textContent = "R 78,000";
+      document.getElementById("presenteeism").textContent = "R 32,000";
+      document.getElementById("total").textContent = "R 566,000";
+    }
+  </script>    
+  function getRates(level) {
       const rates = {
         low: {
           turnoverRates: {
