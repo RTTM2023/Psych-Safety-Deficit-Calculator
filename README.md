@@ -9,76 +9,85 @@
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
-      background-color: transparent;
+      background-color: #f7f1fc;
+    }
+    .main-wrapper {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .container {
-      display: flex;
-      flex-direction: column;
-      padding: 2rem;
-      max-width: 1600px;
-      margin: 0 auto;
-      box-sizing: border-box;
+      width: 600px;
+      padding: 0;
+      flex-shrink: 0;
     }
-    @media (min-width: 1024px) {
-      .container {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-    }
-    .calculator, .results-box {
-      background-color: white;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-    }
-    .calculator {
-      flex: 1.3;
-      margin-right: 2rem;
-      border: 2px solid #f10178;
-    }
-    .results-box {
+    .result-wrapper {
       flex: 1;
-      background-color: #f10178;
-      color: white;
-      min-height: 300px;
-      align-self: flex-start;
+      background-color: white;
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid #E3C8F7;
       display: none;
     }
-    .results-box h2 {
-      font-size: 22px;
+    .card, .subcard {
+      border-radius: 24px;
+      padding: 2rem;
+      margin-bottom: 0;
+      border: 1px solid #E3C8F7;
+    }
+    .card {
+      background-color: white;
+    }
+    .purple-card {
+      background-color: #e4c8f7;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border: none;
+    }
+    h2 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+      border: none;
     }
     label {
-      font-weight: bold;
+      font-weight: 500;
+      font-size: 0.9rem;
       display: block;
-      margin-top: 1.5rem;
+      margin-bottom: 0.25rem;
     }
-    input[type="number"], select {
+    input, select {
       width: 100%;
-      padding: 0.6rem;
-      font-size: 1rem;
-      border-radius: 30px;
-      border: 1px dashed #5b01fa;
-      font-family: 'Montserrat', sans-serif;
-      margin-top: 0.5rem;
-    }
-    button {
-      margin-top: 1.5rem;
-      width: 100%;
-      padding: 1rem;
-      font-size: 1.2rem;
-      background-color: #f10178;
-      color: white;
+      padding: 0.75rem;
+      margin-bottom: 0;
       border: none;
       border-radius: 30px;
-      cursor: pointer;
       font-family: 'Montserrat', sans-serif;
+    }
+    .purple-card input#totalStaff,
+    .purple-card input#womenPct,
+    .purple-card input#menPct,
+    .purple-card input#blackPct,
+    .purple-card input#whitePct,
+    .purple-card input#colouredPct,
+    .purple-card input#indianasianPct,
+    .purple-card select#cultureRating {
+      background-color: white;
+    }
+    .card input, .card select {
+      background-color: #E3C8F7;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
-      margin-top: 1rem;
     }
     .pink-line {
       height: 2px;
@@ -86,102 +95,113 @@
       width: 50%;
       margin: 1.5rem 0;
     }
-    .results-line-item {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.15rem 0;
-      font-size: 0.85rem;
-    }
-    .results-line-item.bold {
+    button {
+      width: 100%;
+      background-color: #5200ff;
+      color: white;
+      font-weight: 700;
+      padding: 1rem;
+      border: none;
+      border-radius: 20px;
       font-size: 1rem;
-      font-weight: bold;
+      margin: 0;
+      cursor: pointer;
     }
-    .total-line {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin: 2rem 0 1rem 0;
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px dotted white;
-      border-bottom: 1px dotted white;
-      padding: 0.5rem 0;
+    .result-wrapper h2 {
+      margin-top: 0;
+      font-size: 1.25rem;
+    }
+    .result-wrapper p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+    .result-wrapper p strong {
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="calculator">
-      <h1>Psychological Safety Deficit Calculator</h1>
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="card">
+        <h1>Psychological Safety Deficit Calculator</h1>
+      </div>
 
-      <h2>Total Staff Complement</h2>
-      <input type="number" id="totalStaff" placeholder="e.g. 1000" />
-      <div class="pink-line"></div>
+      <div class="card purple-card">
+        <h2>Total Staff Complement</h2>
+        <input type="number" id="totalStaff" placeholder="e.g. 1000" />
+        <div class="pink-line"></div>
 
-      <div class="grid">
-        <div>
-          <label>% Black</label>
-          <input type="number" id="blackPct" />
+        <div class="grid">
+          <div>
+            <label>% Black</label>
+            <input type="number" id="blackPct" />
+          </div>
+          <div>
+            <label>% White</label>
+            <input type="number" id="whitePct" />
+          </div>
+          <div>
+            <label>% Coloured</label>
+            <input type="number" id="colouredPct" />
+          </div>
+          <div>
+            <label>% Indian/Asian</label>
+            <input type="number" id="indianasianPct" />
+          </div>
         </div>
-        <div>
-          <label>% White</label>
-          <input type="number" id="whitePct" />
-        </div>
-        <div>
-          <label>% Coloured</label>
-          <input type="number" id="colouredPct" />
-        </div>
-        <div>
-          <label>% Indian/Asian</label>
-          <input type="number" id="indianasianPct" />
+
+        <div class="pink-line"></div>
+
+        <div class="grid">
+          <div>
+            <label>% Women</label>
+            <input type="number" id="womenPct" />
+          </div>
+          <div>
+            <label>% Men</label>
+            <input type="number" id="menPct" />
+          </div>
         </div>
       </div>
 
-      <div class="pink-line"></div>
-
-      <div class="grid">
-        <div>
-          <label>% Women</label>
-          <input type="number" id="womenPct" />
-        </div>
-        <div>
-          <label>% Men</label>
-          <input type="number" id="menPct" />
-        </div>
-      </div>
-
-      <h2>Average Annual Salary per Race Group (ZAR)</h2>
-      <div class="grid">
-        <div>
-          <label>Black</label>
-          <input type="number" id="blackSalary" />
-        </div>
-        <div>
-          <label>White</label>
-          <input type="number" id="whiteSalary" />
-        </div>
-        <div>
-          <label>Coloured</label>
-          <input type="number" id="colouredSalary" />
-        </div>
-        <div>
-          <label>Indian/Asian</label>
-          <input type="number" id="indianasianSalary" />
+      <div class="card">
+        <h2>Average Annual Salary per Race Group (ZAR)</h2>
+        <div class="grid">
+          <div>
+            <label>Black</label>
+            <input type="number" id="blackSalary" />
+          </div>
+          <div>
+            <label>White</label>
+            <input type="number" id="whiteSalary" />
+          </div>
+          <div>
+            <label>Coloured</label>
+            <input type="number" id="colouredSalary" />
+          </div>
+          <div>
+            <label>Indian/Asian</label>
+            <input type="number" id="indianasianSalary" />
+          </div>
         </div>
       </div>
 
-      <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
-      <select id="cultureRating">
-        <option value="" disabled selected hidden>Select</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+      <div class="card purple-card">
+        <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
+        <select id="cultureRating">
+          <option value="" disabled selected hidden>Select</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
 
       <button onclick="calculateCosts()">Calculate</button>
     </div>
 
-    <div class="results-box" id="result">
-      <!-- Results injected by JS -->
+    <div class="result-wrapper" id="result">
+      <!-- JS output -->
     </div>
   </div>
 
@@ -263,30 +283,13 @@
       };
 
       const culture = document.getElementById('cultureRating').value;
-      if (!culture) {
-        alert("Please select a culture rating.");
-        return;
-      }
-
       const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
       const raceGroups = {
-        black: {
-          pct: getPct('blackPct'),
-          salary: getVal('blackSalary')
-        },
-        white: {
-          pct: getPct('whitePct'),
-          salary: getVal('whiteSalary')
-        },
-        coloured: {
-          pct: getPct('colouredPct'),
-          salary: getVal('colouredSalary')
-        },
-        indianasian: {
-          pct: getPct('indianasianPct'),
-          salary: getVal('indianasianSalary')
-        }
+        black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
+        white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
+        coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
+        indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
       };
 
       let turnoverCost = 0;
@@ -313,11 +316,11 @@
       resultDiv.style.display = 'block';
       resultDiv.innerHTML = `
         <h2>Estimated Annual Cost of DEI Neglect</h2>
-        <div class="results-line-item"><span><strong>EXCESS Resignations:</strong></span><span>${totalExits.toFixed(1)}</span></div>
-        <div class="results-line-item"><span>Turnover:</span><span>R ${Math.round(turnoverCost).toLocaleString()}</span></div>
-        <div class="results-line-item"><span>Absenteeism:</span><span>R ${Math.round(absenteeismCost).toLocaleString()}</span></div>
-        <div class="results-line-item"><span>Presenteeism:</span><span>R ${Math.round(presenteeismCost).toLocaleString()}</span></div>
-        <div class="total-line"><span>Total:</span><span>R ${Math.round(totalCost).toLocaleString()}</span></div>
+        <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
+        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
+        <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
+        <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
+        <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
       `;
     }
   </script>
