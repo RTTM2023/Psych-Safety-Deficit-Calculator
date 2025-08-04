@@ -179,6 +179,9 @@
   font-size: 1rem;
   cursor: pointer;
 }
+#enquiryModal.show {
+  display: flex !important;
+}
   </style>
 </head>
 <body>
@@ -329,6 +332,33 @@
       document.getElementById('calcBox').classList.add('shrink');
       document.getElementById('resultBox').style.display = 'block';
     }
+    // Show Enquiry Modal
+document.querySelector('.result-buttons .primary:nth-child(2)').addEventListener('click', function () {
+  document.getElementById('enquiryModal').style.display = 'flex';
+});
+
+// Close Modal
+function closeModal() {
+  document.getElementById('enquiryModal').style.display = 'none';
+}
   </script>
+  <div id="enquiryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
+    <button onclick="closeModal()" style="position:absolute; top:10px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+    <h2 style="margin-top:0;">Enquire About Our Solution</h2>
+    <form action="https://formspree.io/f/yourFormID" method="POST">
+      <label for="name">Name</label>
+      <input type="text" name="name" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;">
+
+      <label for="email">Email</label>
+      <input type="email" name="email" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;">
+
+      <label for="message">Message</label>
+      <textarea name="message" rows="4" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:20px; border:1px solid #ccc;"></textarea>
+
+      <button type="submit" style="background-color:#5700ff; color:white; border:none; padding:1rem 2rem; border-radius:999px; font-weight:500; cursor:pointer;">Send</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
