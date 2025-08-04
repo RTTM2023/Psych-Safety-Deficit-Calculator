@@ -22,8 +22,13 @@
     }
 
     .container {
-      width: 600px;
+      width: 580px;
       flex-shrink: 0;
+      transition: width 0.3s ease;
+    }
+
+    .container.shrink {
+      width: 480px;
     }
 
     .result-wrapper {
@@ -32,10 +37,10 @@
       color: white;
       min-height: 300px;
       align-self: flex-start;
+      display: none;
       border-radius: 20px;
       padding: 2rem;
       box-sizing: border-box;
-      display: none;
     }
 
     .card, .subcard {
@@ -57,7 +62,6 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      border: none;
     }
 
     h2 {
@@ -65,7 +69,6 @@
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
-      border: none;
     }
 
     label {
@@ -115,7 +118,6 @@
       border: none;
       border-radius: 20px;
       font-size: 1rem;
-      margin: 0;
       cursor: pointer;
     }
 
@@ -318,6 +320,7 @@
       document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
       document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
 
+      document.getElementById('calcBox').classList.add('shrink');
       document.getElementById('resultBox').style.display = 'block';
     }
   </script>
