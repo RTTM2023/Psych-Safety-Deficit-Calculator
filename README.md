@@ -14,7 +14,7 @@
 
     .main-wrapper {
       display: flex;
-      gap: 2rem;
+      gap: 1rem;
       align-items: flex-start;
       padding: 2rem;
       max-width: 1200px;
@@ -22,8 +22,7 @@
     }
 
     .container {
-      width: 600px;
-      padding: 0;
+      width: 580px;
       flex-shrink: 0;
     }
 
@@ -33,20 +32,16 @@
       color: white;
       min-height: 300px;
       align-self: flex-start;
-      display: none;
       border-radius: 20px;
       padding: 2rem;
       box-sizing: border-box;
     }
 
-    .card, .subcard {
+    .card {
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 0;
       border: 1px solid #E3C8F7;
-    }
-
-    .card {
       background-color: white;
     }
 
@@ -58,7 +53,6 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      border: none;
     }
 
     h2 {
@@ -66,7 +60,6 @@
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
-      border: none;
     }
 
     label {
@@ -79,20 +72,13 @@
     input, select {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 0;
       border: none;
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
 
-    .purple-card input#totalStaff,
-    .purple-card input#womenPct,
-    .purple-card input#menPct,
-    .purple-card input#blackPct,
-    .purple-card input#whitePct,
-    .purple-card input#colouredPct,
-    .purple-card input#indianasianPct,
-    .purple-card select#cultureRating {
+    .purple-card input,
+    .purple-card select {
       background-color: white;
     }
 
@@ -122,7 +108,6 @@
       border: none;
       border-radius: 20px;
       font-size: 1rem;
-      margin: 0;
       cursor: pointer;
     }
 
@@ -149,11 +134,40 @@
       font-size: 1.05rem;
       font-weight: bold;
     }
+
+    .result-buttons {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .result-buttons .primary {
+      background-color: white;
+      color: #5700ff;
+      font-weight: 700;
+      padding: 1rem;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .result-buttons .secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+      font-weight: 700;
+      padding: 1rem;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="calculator" id="calcBox">
+  <div class="main-wrapper">
+    <div class="container" id="calcBox">
       <div class="card">
         <h1>Psychological Safety Deficit Calculator</h1>
       </div>
@@ -194,13 +208,13 @@
       <button class="calculate" onclick="calculateCosts()">Calculate</button>
     </div>
 
-    <div class="results-box" id="resultBox">
+    <div class="result-wrapper" id="resultBox">
       <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
-      <div class="results-line-item"><span>Excess Resignations:</span><span id="resignations">RXXX</span></div>
-      <div class="results-line-item"><span>Turnover:</span><span id="turnover">RXXX</span></div>
-      <div class="results-line-item"><span>Absenteeism:</span><span id="absenteeism">RXXX</span></div>
-      <div class="results-line-item"><span>Presenteeism:</span><span id="presenteeism">RXXX</span></div>
-      <div class="total-line"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
+      <div class="result-line"><span>Excess Resignations:</span><span id="resignations">RXXX</span></div>
+      <div class="result-line"><span>Turnover:</span><span id="turnover">RXXX</span></div>
+      <div class="result-line"><span>Absenteeism:</span><span id="absenteeism">RXXX</span></div>
+      <div class="result-line"><span>Presenteeism:</span><span id="presenteeism">RXXX</span></div>
+      <div class="result-line total-divider"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
       <div class="result-buttons">
         <button class="primary">Download as PDF</button>
         <button class="primary">Enquire about our Solution</button>
@@ -220,16 +234,10 @@
             indianasian: { men: 0.03, women: 0.04 }
           },
           absenteeismDays: {
-            black: 2,
-            white: 0.5,
-            coloured: 1,
-            indianasian: 1
+            black: 2, white: 0.5, coloured: 1, indianasian: 1
           },
           presenteeismRates: {
-            black: 0.15,
-            white: 0.0375,
-            coloured: 0.09375,
-            indianasian: 0.09375
+            black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375
           }
         },
         medium: {
@@ -240,16 +248,10 @@
             indianasian: { men: 0.01, women: 0.02 }
           },
           absenteeismDays: {
-            black: 1,
-            white: 0.25,
-            coloured: 0.5,
-            indianasian: 0.5
+            black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5
           },
           presenteeismRates: {
-            black: 0.075,
-            white: 0.015,
-            coloured: 0.045,
-            indianasian: 0.045
+            black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045
           }
         },
         high: {
@@ -260,16 +262,10 @@
             indianasian: { men: 0.005, women: 0.01 }
           },
           absenteeismDays: {
-            black: 0.5,
-            white: 0.1,
-            coloured: 0.25,
-            indianasian: 0.25
+            black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25
           },
           presenteeismRates: {
-            black: 0.0375,
-            white: 0.0075,
-            coloured: 0.01875,
-            indianasian: 0.01875
+            black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875
           }
         }
       };
@@ -313,9 +309,6 @@
       document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
       document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
       document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
-
-      document.getElementById('calcBox').classList.add('shrink');
-      document.getElementById('resultBox').classList.add('show');
     }
   </script>
 </body>
