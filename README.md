@@ -11,76 +11,105 @@
       margin: 0;
       background-color: #f7f1fc;
     }
-
-    .main-wrapper {
+    .container {
       display: flex;
-      gap: 1rem; /* Reduced gap for more space */
-      align-items: flex-start;
+      gap: 1rem;
       padding: 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
-
-    .container {
-      width: 600px;
-      padding: 0;
-      flex-shrink: 0;
-      transition: width 0.3s ease;
+    .calculator {
+      flex: 1 1 60%;
+      transition: flex 0.5s ease;
     }
-
-    .container.shrinked {
-      width: 450px;
+    .calculator.shrink {
+      flex: 1 1 50%;
     }
-
-    .result-wrapper {
-      flex-grow: 1;
+    .results-box {
+      display: none;
+      flex: 1 1 40%;
       background-color: #5700ff;
       color: white;
-      min-height: 300px;
-      align-self: flex-start;
-      display: none;
       border-radius: 20px;
       padding: 2rem;
-      box-sizing: border-box;
     }
-
+    .results-box.show {
+      display: block;
+    }
+    .results-box h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .results-line-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+    }
+    .total-line {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-top: 2px dotted white;
+      border-bottom: 2px dotted white;
+      padding: 0.5rem 0;
+      font-weight: bold;
+    }
+    .result-buttons {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .result-buttons button {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      border: none;
+    }
+    .result-buttons .primary {
+      background-color: white;
+      color: #5700ff;
+    }
+    .result-buttons .secondary {
+      background: linear-gradient(to right, #f10178, #ea0b82);
+      color: white;
+    }
     .card, .subcard {
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 0;
       border: 1px solid #E3C8F7;
     }
-
     .card {
       background-color: white;
     }
-
     .purple-card {
       background-color: #e4c8f7;
     }
-
     h1 {
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      border: none;
     }
-
     h2 {
       font-size: 0.8rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
-      border: none;
     }
-
     label {
       font-weight: 500;
       font-size: 0.9rem;
       display: block;
       margin-bottom: 0.25rem;
     }
-
     input, select {
       width: 100%;
       padding: 0.75rem;
@@ -89,36 +118,25 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-
-    .purple-card input#totalStaff,
-    .purple-card input#womenPct,
-    .purple-card input#menPct,
-    .purple-card input#blackPct,
-    .purple-card input#whitePct,
-    .purple-card input#colouredPct,
-    .purple-card input#indianasianPct,
-    .purple-card select#cultureRating {
+    .purple-card input,
+    .purple-card select {
       background-color: white;
     }
-
     .card input, .card select {
       background-color: #E3C8F7;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
     }
-
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
       width: 50%;
       margin: 1.5rem 0;
     }
-
-    button {
+    button.calculate {
       width: 100%;
       background-color: #5200ff;
       color: white;
@@ -130,59 +148,30 @@
       margin: 0;
       cursor: pointer;
     }
-
-    .result-wrapper h2 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid white;
-      padding-bottom: 0.5rem;
-    }
-
-    .result-line {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.4rem 0;
-      font-size: 0.95rem;
-    }
-
-    .result-line.total-divider {
-      margin: 1.5rem 0 0.5rem 0;
-      border-top: 2px dotted white;
-      border-bottom: 2px dotted white;
-      padding: 1rem 0;
-      font-size: 1.05rem;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
-  <div class="main-wrapper">
-    <div class="container" id="calculatorContainer">
+  <div class="container">
+    <div class="calculator" id="calcBox">
       <div class="card">
         <h1>Psychological Safety Deficit Calculator</h1>
       </div>
-
       <div class="card purple-card">
         <h2>Total Staff Complement</h2>
         <input type="number" id="totalStaff" placeholder="e.g. 1000" />
         <div class="pink-line"></div>
-
         <div class="grid">
           <div><label>% Black</label><input type="number" id="blackPct" /></div>
           <div><label>% White</label><input type="number" id="whitePct" /></div>
           <div><label>% Coloured</label><input type="number" id="colouredPct" /></div>
           <div><label>% Indian/Asian</label><input type="number" id="indianasianPct" /></div>
         </div>
-
         <div class="pink-line"></div>
-
         <div class="grid">
           <div><label>% Women</label><input type="number" id="womenPct" /></div>
           <div><label>% Men</label><input type="number" id="menPct" /></div>
         </div>
       </div>
-
       <div class="card">
         <h2>Average Annual Salary per Race Group (ZAR)</h2>
         <div class="grid">
@@ -192,7 +181,6 @@
           <div><label>Indian/Asian</label><input type="number" id="indianasianSalary" /></div>
         </div>
       </div>
-
       <div class="card purple-card">
         <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
         <select id="cultureRating">
@@ -202,16 +190,27 @@
           <option value="high">High</option>
         </select>
       </div>
-
-      <button onclick="calculateCosts()">Calculate</button>
+      <button class="calculate" onclick="calculateCosts()">Calculate</button>
     </div>
 
-    <div class="result-wrapper" id="result"></div>
+    <div class="results-box" id="resultBox">
+      <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
+      <div class="results-line-item"><span>Excess Resignations:</span><span id="resignations">RXXX</span></div>
+      <div class="results-line-item"><span>Turnover:</span><span id="turnover">RXXX</span></div>
+      <div class="results-line-item"><span>Absenteeism:</span><span id="absenteeism">RXXX</span></div>
+      <div class="results-line-item"><span>Presenteeism:</span><span id="presenteeism">RXXX</span></div>
+      <div class="total-line"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
+      <div class="result-buttons">
+        <button class="primary">Download as PDF</button>
+        <button class="primary">Enquire about our Solution</button>
+        <button class="secondary">Reset Calculator</button>
+      </div>
+    </div>
   </div>
 
   <script>
     function getRates(level) {
-      return {
+      const rates = {
         low: {
           turnoverRates: {
             black: { men: 0.07, women: 0.08 },
@@ -219,8 +218,18 @@
             coloured: { men: 0.03, women: 0.04 },
             indianasian: { men: 0.03, women: 0.04 }
           },
-          absenteeismDays: { black: 2, white: 0.5, coloured: 1, indianasian: 1 },
-          presenteeismRates: { black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375 }
+          absenteeismDays: {
+            black: 2,
+            white: 0.5,
+            coloured: 1,
+            indianasian: 1
+          },
+          presenteeismRates: {
+            black: 0.15,
+            white: 0.0375,
+            coloured: 0.09375,
+            indianasian: 0.09375
+          }
         },
         medium: {
           turnoverRates: {
@@ -229,8 +238,18 @@
             coloured: { men: 0.01, women: 0.02 },
             indianasian: { men: 0.01, women: 0.02 }
           },
-          absenteeismDays: { black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5 },
-          presenteeismRates: { black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045 }
+          absenteeismDays: {
+            black: 1,
+            white: 0.25,
+            coloured: 0.5,
+            indianasian: 0.5
+          },
+          presenteeismRates: {
+            black: 0.075,
+            white: 0.015,
+            coloured: 0.045,
+            indianasian: 0.045
+          }
         },
         high: {
           turnoverRates: {
@@ -239,21 +258,33 @@
             coloured: { men: 0.005, women: 0.01 },
             indianasian: { men: 0.005, women: 0.01 }
           },
-          absenteeismDays: { black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25 },
-          presenteeismRates: { black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875 }
+          absenteeismDays: {
+            black: 0.5,
+            white: 0.1,
+            coloured: 0.25,
+            indianasian: 0.25
+          },
+          presenteeismRates: {
+            black: 0.0375,
+            white: 0.0075,
+            coloured: 0.01875,
+            indianasian: 0.01875
+          }
         }
-      }[level];
+      };
+      return rates[level];
     }
 
     function calculateCosts() {
       const total = parseFloat(document.getElementById('totalStaff').value);
       const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
       const getVal = id => parseFloat(document.getElementById(id).value || 0);
-
-      const genderSplit = { men: getPct('menPct'), women: getPct('womenPct') };
+      const genderSplit = {
+        men: getPct('menPct'),
+        women: getPct('womenPct')
+      };
       const culture = document.getElementById('cultureRating').value;
       const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
-
       const raceGroups = {
         black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
         white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
@@ -276,18 +307,14 @@
 
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
-      const resultDiv = document.getElementById('result');
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = `
-        <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
-        <div class="result-line"><span>Excess Resignations:</span><span>R ${totalExits.toFixed(1)}</span></div>
-        <div class="result-line"><span>Turnover:</span><span>R ${Math.round(turnoverCost).toLocaleString()}</span></div>
-        <div class="result-line"><span>Absenteeism:</span><span>R ${Math.round(absenteeismCost).toLocaleString()}</span></div>
-        <div class="result-line"><span>Presenteeism:</span><span>R ${Math.round(presenteeismCost).toLocaleString()}</span></div>
-        <div class="result-line total-divider"><span>Total Estimated Cost</span><span>R ${Math.round(totalCost).toLocaleString()}</span></div>
-      `;
+      document.getElementById('resignations').textContent = totalExits.toFixed(1);
+      document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
+      document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
+      document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
+      document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
 
-      document.getElementById('calculatorContainer').classList.add('shrinked');
+      document.getElementById('calcBox').classList.add('shrink');
+      document.getElementById('resultBox').classList.add('show');
     }
   </script>
 </body>
