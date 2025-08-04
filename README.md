@@ -158,27 +158,27 @@
       gap: 1rem;
     }
 
-    .result-buttons .primary {
-      background-color: white;
-      color: #5700ff;
-      font-weight: 700;
-      padding: 1rem;
-      border: none;
-      border-radius: 20px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+.result-buttons .primary {
+  background-color: white;
+  color: #5700ff;
+  border: 2px dotted #ea0b82;
+  font-weight: 500; /* not bold */
+  padding: 1rem 1.5rem;
+  border-radius: 999px; /* pill shape */
+  font-size: 1rem;
+  cursor: pointer;
+}
 
-    .result-buttons .secondary {
-      background-color: transparent;
-      color: white;
-      border: 2px solid white;
-      font-weight: 700;
-      padding: 1rem;
-      border-radius: 20px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+.result-buttons .secondary {
+  background-color: #ea0b82;
+  color: white;
+  border: none;
+  font-weight: 500; /* not bold */
+  padding: 1rem 1.5rem;
+  border-radius: 999px; /* pill shape */
+  font-size: 1rem;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
