@@ -14,7 +14,7 @@
 
     .main-wrapper {
       display: flex;
-      gap: 2rem;
+      gap: 1rem; /* Reduced gap for more space */
       align-items: flex-start;
       padding: 2rem;
       max-width: 1200px;
@@ -25,11 +25,15 @@
       width: 600px;
       padding: 0;
       flex-shrink: 0;
+      transition: width 0.3s ease;
+    }
+
+    .container.shrinked {
+      width: 450px;
     }
 
     .result-wrapper {
-      width: 520px;
-      flex-grow: 0;
+      flex-grow: 1;
       background-color: #5700ff;
       color: white;
       min-height: 300px;
@@ -154,7 +158,7 @@
 </head>
 <body>
   <div class="main-wrapper">
-    <div class="container">
+    <div class="container" id="calculatorContainer">
       <div class="card">
         <h1>Psychological Safety Deficit Calculator</h1>
       </div>
@@ -165,57 +169,27 @@
         <div class="pink-line"></div>
 
         <div class="grid">
-          <div>
-            <label>% Black</label>
-            <input type="number" id="blackPct" />
-          </div>
-          <div>
-            <label>% White</label>
-            <input type="number" id="whitePct" />
-          </div>
-          <div>
-            <label>% Coloured</label>
-            <input type="number" id="colouredPct" />
-          </div>
-          <div>
-            <label>% Indian/Asian</label>
-            <input type="number" id="indianasianPct" />
-          </div>
+          <div><label>% Black</label><input type="number" id="blackPct" /></div>
+          <div><label>% White</label><input type="number" id="whitePct" /></div>
+          <div><label>% Coloured</label><input type="number" id="colouredPct" /></div>
+          <div><label>% Indian/Asian</label><input type="number" id="indianasianPct" /></div>
         </div>
 
         <div class="pink-line"></div>
 
         <div class="grid">
-          <div>
-            <label>% Women</label>
-            <input type="number" id="womenPct" />
-          </div>
-          <div>
-            <label>% Men</label>
-            <input type="number" id="menPct" />
-          </div>
+          <div><label>% Women</label><input type="number" id="womenPct" /></div>
+          <div><label>% Men</label><input type="number" id="menPct" /></div>
         </div>
       </div>
 
       <div class="card">
         <h2>Average Annual Salary per Race Group (ZAR)</h2>
         <div class="grid">
-          <div>
-            <label>Black</label>
-            <input type="number" id="blackSalary" />
-          </div>
-          <div>
-            <label>White</label>
-            <input type="number" id="whiteSalary" />
-          </div>
-          <div>
-            <label>Coloured</label>
-            <input type="number" id="colouredSalary" />
-          </div>
-          <div>
-            <label>Indian/Asian</label>
-            <input type="number" id="indianasianSalary" />
-          </div>
+          <div><label>Black</label><input type="number" id="blackSalary" /></div>
+          <div><label>White</label><input type="number" id="whiteSalary" /></div>
+          <div><label>Coloured</label><input type="number" id="colouredSalary" /></div>
+          <div><label>Indian/Asian</label><input type="number" id="indianasianSalary" /></div>
         </div>
       </div>
 
@@ -232,14 +206,12 @@
       <button onclick="calculateCosts()">Calculate</button>
     </div>
 
-    <div class="result-wrapper" id="result">
-      <!-- JS Injected Results -->
-    </div>
+    <div class="result-wrapper" id="result"></div>
   </div>
 
   <script>
     function getRates(level) {
-      const rates = {
+      return {
         low: {
           turnoverRates: {
             black: { men: 0.07, women: 0.08 },
@@ -247,18 +219,8 @@
             coloured: { men: 0.03, women: 0.04 },
             indianasian: { men: 0.03, women: 0.04 }
           },
-          absenteeismDays: {
-            black: 2,
-            white: 0.5,
-            coloured: 1,
-            indianasian: 1
-          },
-          presenteeismRates: {
-            black: 0.15,
-            white: 0.0375,
-            coloured: 0.09375,
-            indianasian: 0.09375
-          }
+          absenteeismDays: { black: 2, white: 0.5, coloured: 1, indianasian: 1 },
+          presenteeismRates: { black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375 }
         },
         medium: {
           turnoverRates: {
@@ -267,18 +229,8 @@
             coloured: { men: 0.01, women: 0.02 },
             indianasian: { men: 0.01, women: 0.02 }
           },
-          absenteeismDays: {
-            black: 1,
-            white: 0.25,
-            coloured: 0.5,
-            indianasian: 0.5
-          },
-          presenteeismRates: {
-            black: 0.075,
-            white: 0.015,
-            coloured: 0.045,
-            indianasian: 0.045
-          }
+          absenteeismDays: { black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5 },
+          presenteeismRates: { black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045 }
         },
         high: {
           turnoverRates: {
@@ -287,21 +239,10 @@
             coloured: { men: 0.005, women: 0.01 },
             indianasian: { men: 0.005, women: 0.01 }
           },
-          absenteeismDays: {
-            black: 0.5,
-            white: 0.1,
-            coloured: 0.25,
-            indianasian: 0.25
-          },
-          presenteeismRates: {
-            black: 0.0375,
-            white: 0.0075,
-            coloured: 0.01875,
-            indianasian: 0.01875
-          }
+          absenteeismDays: { black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25 },
+          presenteeismRates: { black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875 }
         }
-      };
-      return rates[level];
+      }[level];
     }
 
     function calculateCosts() {
@@ -309,11 +250,7 @@
       const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
       const getVal = id => parseFloat(document.getElementById(id).value || 0);
 
-      const genderSplit = {
-        men: getPct('menPct'),
-        women: getPct('womenPct')
-      };
-
+      const genderSplit = { men: getPct('menPct'), women: getPct('womenPct') };
       const culture = document.getElementById('cultureRating').value;
       const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
@@ -324,20 +261,15 @@
         indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
       };
 
-      let turnoverCost = 0;
-      let absenteeismCost = 0;
-      let presenteeismCost = 0;
-      let totalExits = 0;
+      let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
 
       for (const [race, group] of Object.entries(raceGroups)) {
         const headcount = total * group.pct;
         const maleHeadcount = headcount * genderSplit.men;
         const femaleHeadcount = headcount * genderSplit.women;
-
         const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
         totalExits += exits;
         turnoverCost += exits * (0.5 * group.salary);
-
         absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
@@ -354,6 +286,8 @@
         <div class="result-line"><span>Presenteeism:</span><span>R ${Math.round(presenteeismCost).toLocaleString()}</span></div>
         <div class="result-line total-divider"><span>Total Estimated Cost</span><span>R ${Math.round(totalCost).toLocaleString()}</span></div>
       `;
+
+      document.getElementById('calculatorContainer').classList.add('shrinked');
     }
   </script>
 </body>
