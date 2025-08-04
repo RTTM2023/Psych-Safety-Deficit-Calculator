@@ -11,6 +11,7 @@
       margin: 0;
       background-color: #f7f1fc;
     }
+
     .main-wrapper {
       display: flex;
       gap: 2rem;
@@ -19,37 +20,47 @@
       max-width: 1200px;
       margin: 0 auto;
     }
+
     .container {
       width: 600px;
       padding: 0;
       flex-shrink: 0;
     }
+
     .result-wrapper {
       flex: 1;
-      background-color: white;
-      border-radius: 16px;
-      padding: 2rem;
-      border: 1px solid #E3C8F7;
+      background-color: #5700ff;
+      color: white;
+      min-height: 300px;
+      align-self: flex-start;
       display: none;
+      border-radius: 20px;
+      padding: 2rem;
+      box-sizing: border-box;
     }
+
     .card, .subcard {
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 0;
       border: 1px solid #E3C8F7;
     }
+
     .card {
       background-color: white;
     }
+
     .purple-card {
       background-color: #e4c8f7;
     }
+
     h1 {
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       border: none;
     }
+
     h2 {
       font-size: 0.8rem;
       font-weight: 700;
@@ -57,12 +68,14 @@
       margin-bottom: 0.5rem;
       border: none;
     }
+
     label {
       font-weight: 500;
       font-size: 0.9rem;
       display: block;
       margin-bottom: 0.25rem;
     }
+
     input, select {
       width: 100%;
       padding: 0.75rem;
@@ -71,6 +84,7 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
+
     .purple-card input#totalStaff,
     .purple-card input#womenPct,
     .purple-card input#menPct,
@@ -81,20 +95,24 @@
     .purple-card select#cultureRating {
       background-color: white;
     }
+
     .card input, .card select {
       background-color: #E3C8F7;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
     }
+
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
       width: 50%;
       margin: 1.5rem 0;
     }
+
     button {
       width: 100%;
       background-color: #5200ff;
@@ -107,16 +125,29 @@
       margin: 0;
       cursor: pointer;
     }
+
     .result-wrapper h2 {
-      margin-top: 0;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid white;
+      padding-bottom: 0.5rem;
     }
-    .result-wrapper p {
-      margin: 0.5rem 0;
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.4rem 0;
       font-size: 0.95rem;
     }
-    .result-wrapper p strong {
-      font-weight: 700;
+
+    .result-line.total-divider {
+      margin: 1.5rem 0 0.5rem 0;
+      border-top: 2px dotted white;
+      border-bottom: 2px dotted white;
+      padding: 1rem 0;
+      font-size: 1.05rem;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -201,7 +232,7 @@
     </div>
 
     <div class="result-wrapper" id="result">
-      <!-- JS output -->
+      <!-- JS Injected Results -->
     </div>
   </div>
 
@@ -315,12 +346,12 @@
       const resultDiv = document.getElementById('result');
       resultDiv.style.display = 'block';
       resultDiv.innerHTML = `
-        <h2>Estimated Annual Cost of DEI Neglect</h2>
-        <p><strong>EXCESS Resignations:</strong> ${totalExits.toFixed(1)}</p>
-        <p><strong>Turnover:</strong> R ${Math.round(turnoverCost).toLocaleString()}</p>
-        <p><strong>Absenteeism:</strong> R ${Math.round(absenteeismCost).toLocaleString()}</p>
-        <p><strong>Presenteeism:</strong> R ${Math.round(presenteeismCost).toLocaleString()}</p>
-        <p><strong>Total:</strong> <strong>R ${Math.round(totalCost).toLocaleString()}</strong></p>
+        <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
+        <div class="result-line"><span>Excess Resignations:</span><span>R ${totalExits.toFixed(1)}</span></div>
+        <div class="result-line"><span>Turnover:</span><span>R ${Math.round(turnoverCost).toLocaleString()}</span></div>
+        <div class="result-line"><span>Absenteeism:</span><span>R ${Math.round(absenteeismCost).toLocaleString()}</span></div>
+        <div class="result-line"><span>Presenteeism:</span><span>R ${Math.round(presenteeismCost).toLocaleString()}</span></div>
+        <div class="result-line total-divider"><span>Total Estimated Cost</span><span>R ${Math.round(totalCost).toLocaleString()}</span></div>
       `;
     }
   </script>
