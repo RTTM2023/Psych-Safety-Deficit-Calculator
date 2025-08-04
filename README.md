@@ -11,105 +11,71 @@
       margin: 0;
       background-color: #f7f1fc;
     }
-    .container {
+
+    .main-wrapper {
       display: flex;
-      gap: 1rem;
+      gap: 2rem;
+      align-items: flex-start;
       padding: 2rem;
       max-width: 1200px;
       margin: 0 auto;
     }
-    .calculator {
-      flex: 1 1 60%;
-      transition: flex 0.5s ease;
+
+    .container {
+      width: 600px;
+      padding: 0;
+      flex-shrink: 0;
     }
-    .calculator.shrink {
-      flex: 1 1 50%;
-    }
-    .results-box {
-      display: none;
-      flex: 1 1 40%;
+
+    .result-wrapper {
+      flex: 1;
       background-color: #5700ff;
       color: white;
+      min-height: 300px;
+      align-self: flex-start;
+      display: none;
       border-radius: 20px;
       padding: 2rem;
+      box-sizing: border-box;
     }
-    .results-box.show {
-      display: block;
-    }
-    .results-box h2 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .results-line-item {
-      display: flex;
-      justify-content: space-between;
-      margin: 0.25rem 0;
-      font-size: 0.9rem;
-    }
-    .total-line {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-      border-top: 2px dotted white;
-      border-bottom: 2px dotted white;
-      padding: 0.5rem 0;
-      font-weight: bold;
-    }
-    .result-buttons {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .result-buttons button {
-      width: 100%;
-      padding: 0.85rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 30px;
-      font-family: 'Montserrat', sans-serif;
-      cursor: pointer;
-      border: none;
-    }
-    .result-buttons .primary {
-      background-color: white;
-      color: #5700ff;
-    }
-    .result-buttons .secondary {
-      background: linear-gradient(to right, #f10178, #ea0b82);
-      color: white;
-    }
+
     .card, .subcard {
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 0;
       border: 1px solid #E3C8F7;
     }
+
     .card {
       background-color: white;
     }
+
     .purple-card {
       background-color: #e4c8f7;
     }
+
     h1 {
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      border: none;
     }
+
     h2 {
       font-size: 0.8rem;
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
+      border: none;
     }
+
     label {
       font-weight: 500;
       font-size: 0.9rem;
       display: block;
       margin-bottom: 0.25rem;
     }
+
     input, select {
       width: 100%;
       padding: 0.75rem;
@@ -118,25 +84,36 @@
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
     }
-    .purple-card input,
-    .purple-card select {
+
+    .purple-card input#totalStaff,
+    .purple-card input#womenPct,
+    .purple-card input#menPct,
+    .purple-card input#blackPct,
+    .purple-card input#whitePct,
+    .purple-card input#colouredPct,
+    .purple-card input#indianasianPct,
+    .purple-card select#cultureRating {
       background-color: white;
     }
+
     .card input, .card select {
       background-color: #E3C8F7;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
     }
+
     .pink-line {
       height: 2px;
       background-color: #ea0b82;
       width: 50%;
       margin: 1.5rem 0;
     }
-    button.calculate {
+
+    button {
       width: 100%;
       background-color: #5200ff;
       color: white;
@@ -147,6 +124,30 @@
       font-size: 1rem;
       margin: 0;
       cursor: pointer;
+    }
+
+    .result-wrapper h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid white;
+      padding-bottom: 0.5rem;
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+    }
+
+    .result-line.total-divider {
+      margin: 1.5rem 0 0.5rem 0;
+      border-top: 2px dotted white;
+      border-bottom: 2px dotted white;
+      padding: 1rem 0;
+      font-size: 1.05rem;
+      font-weight: bold;
     }
   </style>
 </head>
