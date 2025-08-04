@@ -28,7 +28,8 @@
     }
 
     .result-wrapper {
-      flex: 1;
+      width: 520px;
+      flex-grow: 0;
       background-color: #5700ff;
       color: white;
       min-height: 300px;
