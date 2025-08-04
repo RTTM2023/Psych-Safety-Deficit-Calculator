@@ -87,10 +87,16 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-    .purple-card input,
-    .purple-card select {
-      background-color: white;
-    }
+.purple-card input#totalStaff,
+.purple-card input#womenPct,
+.purple-card input#menPct,
+.purple-card input#blackPct,
+.purple-card input#whitePct,
+.purple-card input#colouredPct,
+.purple-card input#indianasianPct,
+.purple-card select#cultureRating {
+  background-color: white;
+}
 
     .card input, .card select {
       background-color: #E3C8F7;
