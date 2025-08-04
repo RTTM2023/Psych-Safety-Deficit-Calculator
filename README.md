@@ -22,7 +22,7 @@
     }
 
     .container {
-      width: 580px;
+      width: 600px;
       flex-shrink: 0;
     }
 
@@ -35,13 +35,17 @@
       border-radius: 20px;
       padding: 2rem;
       box-sizing: border-box;
+      display: none;
     }
 
-    .card {
+    .card, .subcard {
       border-radius: 24px;
       padding: 2rem;
       margin-bottom: 0;
       border: 1px solid #E3C8F7;
+    }
+
+    .card {
       background-color: white;
     }
 
@@ -53,6 +57,7 @@
       font-size: 1.75rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      border: none;
     }
 
     h2 {
@@ -60,6 +65,7 @@
       font-weight: 700;
       margin-top: 1rem;
       margin-bottom: 0.5rem;
+      border: none;
     }
 
     label {
@@ -72,6 +78,7 @@
     input, select {
       width: 100%;
       padding: 0.75rem;
+      margin-bottom: 0;
       border: none;
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
@@ -108,6 +115,7 @@
       border: none;
       border-radius: 20px;
       font-size: 1rem;
+      margin: 0;
       cursor: pointer;
     }
 
@@ -309,6 +317,8 @@
       document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
       document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
       document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
+
+      document.getElementById('resultBox').style.display = 'block';
     }
   </script>
 </body>
