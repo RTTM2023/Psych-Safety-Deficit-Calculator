@@ -328,7 +328,7 @@ select {
       <div class="result-buttons">
 <button class="primary" onclick="openEmailModal()">Email Me This Report</button>
         <button class="primary">Enquire about our Solution</button>
-        <button class="secondary">Reset Calculator</button>
+<button class="secondary" onclick="resetCalculator()">Reset Calculator</button>
       </div>
     </div>
   </div>
@@ -433,6 +433,24 @@ select {
 function closeEmailModal() {
   document.getElementById('emailModal').style.display = 'none';
 }
+    function resetCalculator() {
+  // Clear all inputs
+  const inputs = document.querySelectorAll('input, select');
+  inputs.forEach(input => {
+    if (input.tagName === 'SELECT') {
+      input.selectedIndex = 0;
+    } else {
+      input.value = '';
+    }
+  });
+
+  // Hide the results box
+  document.getElementById('resultBox').style.display = 'none';
+
+  // Expand calculator box
+  document.getElementById('calcBox').classList.remove('shrink');
+}
+
     // Show Enquiry Modal
 document.querySelector('.result-buttons .primary:nth-child(2)').addEventListener('click', function () {
   document.getElementById('enquiryModal').style.display = 'flex';
