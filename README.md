@@ -429,7 +429,14 @@ select {
       }
       const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
 const genderTotal = getPct('menPct') + getPct('womenPct');
-
+      
+if (!culture) {
+  document.getElementById('cultureRating').classList.add('input-error');
+  const errorBox = document.getElementById('error-message');
+  errorBox.textContent = 'Please select your organisation\'s level of psychological safety.';
+  errorBox.style.display = 'block';
+  return;
+}
 // Clear previous errors
 document.getElementById('error-message').style.display = 'none';
 document.getElementById('error-message').textContent = '';
@@ -548,8 +555,10 @@ function closeModal() {
 <script>
   document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', () => {
-      input.classList.remove('input-error');
-      document.getElementById('error-message').style.display = 'none';
+input.classList.remove('input-error');
+if (input.id === 'cultureRating') {
+  input.style.backgroundColor = '#fff'; // Optional: reset dropdown colour if modified
+}      document.getElementById('error-message').style.display = 'none';
     });
   });
 </script>
