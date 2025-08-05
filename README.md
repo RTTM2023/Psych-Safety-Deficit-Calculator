@@ -400,41 +400,29 @@ select {
     }
 
 function calculateCosts() {
-  const total = parseFloat(document.getElementById('totalStaff').value);
-  const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
-  const getVal = id => parseFloat(document.getElementById(id).value || 0);
-  const genderSplit = {
-    men: getPct('menPct'),
-    women: getPct('womenPct')
-  };
-const select = document.getElementById('cultureRating');
-const culture = select.options[select.selectedIndex].value;
-  const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
-  const raceGroups = {
-    black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
-    white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
-    coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
-    indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
-  };
-
-  // 1. Clear all old errors
-  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  const select = document.getElementById('cultureRating');
+  const culture = select.value;
+  const total = parseInt(document.getElementById('totalStaff').value || 0);
   const errorBox = document.getElementById('error-message');
-  errorBox.textContent = '';
-  errorBox.style.display = 'none';
-
-  // 2. Validate required fields
-  const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
-  const genderTotal = getPct('menPct') + getPct('womenPct');
-
   let hasError = false;
   let message = '';
 
-if (select.selectedIndex === 0) {
-  select.classList.add('input-error');
-  message += 'Please select your organisation\'s level of psychological safety.\n';
-  hasError = true;
-}
+  // Clear previous errors
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  errorBox.textContent = '';
+  errorBox.style.display = 'none';
+
+  // Validation: Psychological safety dropdown
+  if (!culture) {
+    select.classList.add('input-error');
+    message += 'Please select your organisation\'s level of psychological safety.\n';
+    hasError = true;
+  }
+
+  // Get race & gender percentages
+  const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+  const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
+  const genderTotal = getPct('menPct') + getPct('womenPct');
 
   if (Math.abs(raceTotal - 1) > 0.01) {
     ['blackPct', 'whitePct', 'colouredPct', 'indianasianPct'].forEach(id =>
@@ -458,8 +446,27 @@ if (select.selectedIndex === 0) {
     return;
   }
 
-  // 3. Proceed with calculations
-  let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
+  // Retrieve data from form
+  const getVal = id => parseFloat(document.getElementById(id).value || 0);
+  const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
+
+  const raceGroups = {
+    black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
+    white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
+    coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
+    indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
+  };
+
+  const genderSplit = {
+    men: getPct('menPct'),
+    women: getPct('womenPct')
+  };
+
+  // Cost Calculations
+  let turnoverCost = 0;
+  let absenteeismCost = 0;
+  let presenteeismCost = 0;
+  let totalExits = 0;
 
   for (const [race, group] of Object.entries(raceGroups)) {
     const headcount = total * group.pct;
@@ -467,6 +474,7 @@ if (select.selectedIndex === 0) {
     const femaleHeadcount = headcount * genderSplit.women;
     const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
     totalExits += exits;
+
     turnoverCost += exits * (0.5 * group.salary);
     absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
     presenteeismCost += headcount * group.salary * presenteeismRates[race];
@@ -474,15 +482,18 @@ if (select.selectedIndex === 0) {
 
   const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
+  // Display Results
   document.getElementById('resignations').textContent = totalExits.toFixed(1);
   document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
   document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
   document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
   document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
 
+  // Show results
   document.getElementById('calcBox').classList.add('shrink');
   document.getElementById('resultBox').style.display = 'block';
 }
+
           function openEmailModal() {
   document.getElementById('emailModal').style.display = 'flex';
 
