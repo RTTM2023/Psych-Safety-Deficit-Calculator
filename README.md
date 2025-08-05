@@ -258,7 +258,6 @@ select {
 <body>
   <div class="main-wrapper">
     <div class="container" id="calcBox">
-      <div id="error-message"></div>
       <div class="card">
         <h1>Psychological Safety Deficit Calculator</h1>
       </div>
@@ -301,6 +300,7 @@ select {
         </select>
       </div>
       <button class="calculate" onclick="calculateCosts()">Calculate</button>
+            <div id="error-message"></div>
     </div>
 
     <div class="result-wrapper" id="resultBox">
@@ -545,12 +545,13 @@ function closeModal() {
     </form>
   </div>
 </div>
-document.querySelectorAll('input').forEach(input => {
-  input.addEventListener('input', () => {
-    input.classList.remove('input-error');
-    document.getElementById('error-message').style.display = 'none';
+<script>
+  document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('input', () => {
+      input.classList.remove('input-error');
+      document.getElementById('error-message').style.display = 'none';
+    });
   });
-});
-
+</script>
 </body>
 </html>
