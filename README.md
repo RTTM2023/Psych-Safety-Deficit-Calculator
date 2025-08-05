@@ -215,7 +215,13 @@
   z-index: 999;
   text-align: left;
 }
-
+.container h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #5700ff; /* Match calculator box design */
+  padding-bottom: 0.5rem;
+}
   </style>
 </head>
 <body>
