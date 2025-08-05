@@ -430,11 +430,11 @@ const culture = select.options[select.selectedIndex].value;
   let hasError = false;
   let message = '';
 
-  if (!culture) {
-    document.getElementById('cultureRating').classList.add('input-error');
-    message += 'Please select your organisation\'s level of psychological safety.\n';
-    hasError = true;
-  }
+if (select.selectedIndex === 0) {
+  select.classList.add('input-error');
+  message += 'Please select your organisation\'s level of psychological safety.\n';
+  hasError = true;
+}
 
   if (Math.abs(raceTotal - 1) > 0.01) {
     ['blackPct', 'whitePct', 'colouredPct', 'indianasianPct'].forEach(id =>
