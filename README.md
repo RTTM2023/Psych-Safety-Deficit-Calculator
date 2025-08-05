@@ -410,6 +410,14 @@ select {
         absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
         presenteeismCost += headcount * group.salary * presenteeismRates[race];
       }
+      const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
+const genderTotal = getPct('menPct') + getPct('womenPct');
+
+if (Math.abs(raceTotal - 1) > 0.01 || Math.abs(genderTotal - 1) > 0.01) {
+  alert('Please ensure that race and gender percentages each add up to exactly 100%.');
+  return; // Stop further calculation
+}
+
 
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
