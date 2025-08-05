@@ -222,6 +222,9 @@
   padding-bottom: 0.5rem;
   border-bottom: none; /* Explicitly remove underline */
 }
+h2 > a {
+  display: none;
+}
   </style>
 </head>
 <body>
