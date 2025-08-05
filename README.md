@@ -407,7 +407,8 @@ function calculateCosts() {
     men: getPct('menPct'),
     women: getPct('womenPct')
   };
-  const culture = document.getElementById('cultureRating').value;
+const select = document.getElementById('cultureRating');
+const culture = select.options[select.selectedIndex].value;
   const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
   const raceGroups = {
     black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
