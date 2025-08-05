@@ -193,6 +193,7 @@
   height: 16px;
   margin-left: 4px;
   vertical-align: middle;
+  background-color: transparent; /* Ensure no added background */
 }
 
 .tooltip:hover::after {
