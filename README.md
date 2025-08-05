@@ -399,80 +399,89 @@ select {
       return rates[level];
     }
 
-    function calculateCosts() {
-      const total = parseFloat(document.getElementById('totalStaff').value);
-      const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
-      const getVal = id => parseFloat(document.getElementById(id).value || 0);
-      const genderSplit = {
-        men: getPct('menPct'),
-        women: getPct('womenPct')
-      };
-      const culture = document.getElementById('cultureRating').value;
-      const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
-      const raceGroups = {
-        black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
-        white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
-        coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
-        indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
-      };
-      let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
+function calculateCosts() {
+  const total = parseFloat(document.getElementById('totalStaff').value);
+  const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+  const getVal = id => parseFloat(document.getElementById(id).value || 0);
+  const genderSplit = {
+    men: getPct('menPct'),
+    women: getPct('womenPct')
+  };
+  const culture = document.getElementById('cultureRating').value;
+  const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
+  const raceGroups = {
+    black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
+    white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
+    coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
+    indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
+  };
 
-      for (const [race, group] of Object.entries(raceGroups)) {
-        const headcount = total * group.pct;
-        const maleHeadcount = headcount * genderSplit.men;
-        const femaleHeadcount = headcount * genderSplit.women;
-        const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
-        totalExits += exits;
-        turnoverCost += exits * (0.5 * group.salary);
-        absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
-        presenteeismCost += headcount * group.salary * presenteeismRates[race];
-      }
-      const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
-const genderTotal = getPct('menPct') + getPct('womenPct');
-      
-if (!culture) {
-  document.getElementById('cultureRating').classList.add('input-error');
+  // 1. Clear all old errors
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
   const errorBox = document.getElementById('error-message');
-  errorBox.textContent = 'Please select your organisation\'s level of psychological safety.';
-  errorBox.style.display = 'block';
-  return;
-}
-// Clear previous errors
-document.getElementById('error-message').style.display = 'none';
-document.getElementById('error-message').textContent = '';
-document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  errorBox.textContent = '';
+  errorBox.style.display = 'none';
 
-if (Math.abs(raceTotal - 1) > 0.01 || Math.abs(genderTotal - 1) > 0.01) {
-  let errorMessage = 'Please ensure that ';
+  // 2. Validate required fields
+  const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
+  const genderTotal = getPct('menPct') + getPct('womenPct');
+
+  let hasError = false;
+  let message = '';
+
+  if (!culture) {
+    document.getElementById('cultureRating').classList.add('input-error');
+    message += 'Please select your organisation\'s level of psychological safety.\n';
+    hasError = true;
+  }
+
   if (Math.abs(raceTotal - 1) > 0.01) {
-    errorMessage += 'race ';
     ['blackPct', 'whitePct', 'colouredPct', 'indianasianPct'].forEach(id =>
       document.getElementById(id).classList.add('input-error')
     );
+    message += 'Race percentages must add up to 100%.\n';
+    hasError = true;
   }
+
   if (Math.abs(genderTotal - 1) > 0.01) {
-    errorMessage += (Math.abs(raceTotal - 1) > 0.01 ? 'and gender ' : 'gender ');
     ['womenPct', 'menPct'].forEach(id =>
       document.getElementById(id).classList.add('input-error')
     );
+    message += 'Gender percentages must add up to 100%.\n';
+    hasError = true;
   }
-  errorMessage += 'percentages each add up to exactly 100%.';
-  const errorBox = document.getElementById('error-message');
-  errorBox.textContent = errorMessage;
-  errorBox.style.display = 'block';
-  return;
+
+  if (hasError) {
+    errorBox.textContent = message.trim();
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  // 3. Proceed with calculations
+  let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
+
+  for (const [race, group] of Object.entries(raceGroups)) {
+    const headcount = total * group.pct;
+    const maleHeadcount = headcount * genderSplit.men;
+    const femaleHeadcount = headcount * genderSplit.women;
+    const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
+    totalExits += exits;
+    turnoverCost += exits * (0.5 * group.salary);
+    absenteeismCost += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
+    presenteeismCost += headcount * group.salary * presenteeismRates[race];
+  }
+
+  const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
+
+  document.getElementById('resignations').textContent = totalExits.toFixed(1);
+  document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
+  document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
+  document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
+  document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
+
+  document.getElementById('calcBox').classList.add('shrink');
+  document.getElementById('resultBox').style.display = 'block';
 }
-      const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
-
-      document.getElementById('resignations').textContent = totalExits.toFixed(1);
-      document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
-      document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
-      document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
-      document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
-
-      document.getElementById('calcBox').classList.add('shrink');
-      document.getElementById('resultBox').style.display = 'block';
-    }
           function openEmailModal() {
   document.getElementById('emailModal').style.display = 'flex';
 
