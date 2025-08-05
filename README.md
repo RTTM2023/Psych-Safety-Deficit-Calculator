@@ -182,6 +182,39 @@
 #enquiryModal.show {
   display: flex !important;
 }
+.tooltip {
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.tooltip img {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.tooltip:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 0.6rem 0.8rem;
+  border-radius: 5px;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: block;
+  max-width: 240px;
+  width: max-content;
+  min-width: 120px;
+  white-space: normal;
+  font-size: 0.8rem;
+  z-index: 999;
+  text-align: left;
+}
+
   </style>
 </head>
 <body>
@@ -216,8 +249,12 @@
         </div>
       </div>
       <div class="card purple-card">
-        <h2>How would you rate your organisation's culture of Inclusivity & Psychological Safety?</h2>
-        <select id="cultureRating">
+<h2>
+  How would you rate your organisation's culture of Inclusivity & Psychological Safety?
+  <span class="tooltip" data-tooltip="TO BE COMPLETED">
+    <img src="whiteback.png" alt="info icon" />
+  </span>
+</h2>        <select id="cultureRating">
           <option value="" disabled selected hidden>Select</option>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -229,11 +266,43 @@
 
     <div class="result-wrapper" id="resultBox">
       <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
-      <div class="result-line"><span>Excess Resignations:</span><span id="resignations">RXXX</span></div>
-      <div class="result-line"><span>Turnover:</span><span id="turnover">RXXX</span></div>
-      <div class="result-line"><span>Absenteeism:</span><span id="absenteeism">RXXX</span></div>
-      <div class="result-line"><span>Presenteeism:</span><span id="presenteeism">RXXX</span></div>
-      <div class="result-line total-divider"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
+<div class="result-line">
+  <span>
+    Excess Resignations:
+    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+      <img src="whiteback.png" alt="info icon" />
+    </span>
+  </span>
+  <span id="resignations">RXXX</span>
+  </div>  
+<div class="result-line">
+  <span>
+    Turnover:
+    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+      <img src="whiteback.png" alt="info icon" />
+    </span>
+  </span>
+  <span id="turnover">RXXX</span>
+</div>      
+<div class="result-line">
+  <span>
+    Absenteeism:
+    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+      <img src="whiteback.png" alt="info icon" />
+    </span>
+  </span>
+  <span id="absenteeism">RXXX</span>
+</div>
+<div class="result-line">
+  <span>
+    Presenteeism:
+    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+      <img src="whiteback.png" alt="info icon" />
+    </span>
+  </span>
+  <span id="presenteeism">RXXX</span>
+</div>
+<div class="result-line total-divider"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
       <div class="result-buttons">
         <button class="primary">Download as PDF</button>
         <button class="primary">Enquire about our Solution</button>
