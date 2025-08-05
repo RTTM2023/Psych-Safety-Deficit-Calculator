@@ -187,7 +187,7 @@
   vertical-align: top;
   display: inline-block;
   top: -0.4em;
-  margin-left: 2px; /* adjust this */
+  margin-left: 1px; /* adjust this */
 }
 
 .tooltip img {
