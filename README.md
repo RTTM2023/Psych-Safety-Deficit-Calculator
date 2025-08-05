@@ -186,8 +186,8 @@
   position: relative;
   vertical-align: top;
   display: inline-block;
-  top: -0.4em; /* raises the icon */
-  margin-left: 4px;
+  top: -0.4em;
+  margin-left: 2px; /* adjust this */
 }
 
 .tooltip img {
