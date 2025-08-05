@@ -398,19 +398,6 @@ select {
         coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
         indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
       };
-      function openEmailModal() {
-  document.getElementById('emailModal').style.display = 'flex';
-
-  // Populate hidden field with result
-  const totalCost = document.getElementById('total').textContent;
-  document.getElementById('hiddenTotalCost').value = totalCost;
-}
-
-function closeEmailModal() {
-  document.getElementById('emailModal').style.display = 'none';
-}
-
-
       let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
 
       for (const [race, group] of Object.entries(raceGroups)) {
@@ -435,6 +422,17 @@ function closeEmailModal() {
       document.getElementById('calcBox').classList.add('shrink');
       document.getElementById('resultBox').style.display = 'block';
     }
+          function openEmailModal() {
+  document.getElementById('emailModal').style.display = 'flex';
+
+  // Populate hidden field with result
+  const totalCost = document.getElementById('total').textContent;
+  document.getElementById('hiddenTotalCost').value = totalCost;
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').style.display = 'none';
+}
     // Show Enquiry Modal
 document.querySelector('.result-buttons .primary:nth-child(2)').addEventListener('click', function () {
   document.getElementById('enquiryModal').style.display = 'flex';
