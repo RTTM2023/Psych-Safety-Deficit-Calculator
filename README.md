@@ -237,11 +237,28 @@ select {
   background-position: right 1rem center;
   background-size: 1rem;
 }
+#error-message {
+  color: #a80000;
+  background-color: #fdecea;
+  border: 1px solid #f5c2c0;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  display: none;
+  font-size: 0.9rem;
+}
+
+.input-error {
+  border: 2px solid #ea0b82 !important;
+  background-color: #fff0f5 !important;
+}
+
   </style>
 </head>
 <body>
   <div class="main-wrapper">
     <div class="container" id="calcBox">
+      <div id="error-message"></div>
       <div class="card">
         <h1>Psychological Safety Deficit Calculator</h1>
       </div>
@@ -413,12 +430,31 @@ select {
       const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
 const genderTotal = getPct('menPct') + getPct('womenPct');
 
+// Clear previous errors
+document.getElementById('error-message').style.display = 'none';
+document.getElementById('error-message').textContent = '';
+document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+
 if (Math.abs(raceTotal - 1) > 0.01 || Math.abs(genderTotal - 1) > 0.01) {
-  alert('Please ensure that race and gender percentages each add up to exactly 100%.');
-  return; // Stop further calculation
+  let errorMessage = 'Please ensure that ';
+  if (Math.abs(raceTotal - 1) > 0.01) {
+    errorMessage += 'race ';
+    ['blackPct', 'whitePct', 'colouredPct', 'indianasianPct'].forEach(id =>
+      document.getElementById(id).classList.add('input-error')
+    );
+  }
+  if (Math.abs(genderTotal - 1) > 0.01) {
+    errorMessage += (Math.abs(raceTotal - 1) > 0.01 ? 'and gender ' : 'gender ');
+    ['womenPct', 'menPct'].forEach(id =>
+      document.getElementById(id).classList.add('input-error')
+    );
+  }
+  errorMessage += 'percentages each add up to exactly 100%.';
+  const errorBox = document.getElementById('error-message');
+  errorBox.textContent = errorMessage;
+  errorBox.style.display = 'block';
+  return;
 }
-
-
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
       document.getElementById('resignations').textContent = totalExits.toFixed(1);
@@ -509,6 +545,12 @@ function closeModal() {
     </form>
   </div>
 </div>
+document.querySelectorAll('input').forEach(input => {
+  input.addEventListener('input', () => {
+    input.classList.remove('input-error');
+    document.getElementById('error-message').style.display = 'none';
+  });
+});
 
 </body>
 </html>
