@@ -184,18 +184,21 @@
 }
 .tooltip {
   position: relative;
-  vertical-align: top;
   display: inline-block;
-  top: -0.4em;
-  margin-left: 1px; /* adjust this */
+  vertical-align: super; /* move icon up */
+  margin-left: 2px; /* tighter spacing */
+  top: -0.2em; /* fine-tune vertical position */
 }
 
 .tooltip img {
-  width: 16px;
-  height: 16px;
-  margin-left: 4px;
+  width: 14px;
+  height: 14px;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
   vertical-align: middle;
-  background-color: transparent; /* Ensure no added background */
+  line-height: 1;
 }
 
 .tooltip:hover::after {
