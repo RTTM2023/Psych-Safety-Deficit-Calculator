@@ -252,7 +252,7 @@
 <h2>
   How would you rate your organisation's culture of Inclusivity & Psychological Safety?
   <span class="tooltip" data-tooltip="TO BE COMPLETED">
-    <img src="whiteback.png" alt="info icon" />
+    <img src="Untitled design.png" alt="info icon" />
   </span>
 </h2>        <select id="cultureRating">
           <option value="" disabled selected hidden>Select</option>
@@ -270,7 +270,7 @@
   <span>
     Excess Resignations:
     <span class="tooltip" data-tooltip="TO BE COMPLETED">
-      <img src="whiteback.png" alt="info icon" />
+      <img src="Untitled design.png" alt="info icon" />
     </span>
   </span>
   <span id="resignations">RXXX</span>
@@ -279,7 +279,7 @@
   <span>
     Turnover:
     <span class="tooltip" data-tooltip="TO BE COMPLETED">
-      <img src="whiteback.png" alt="info icon" />
+      <img src="Untitled design.png" alt="info icon" />
     </span>
   </span>
   <span id="turnover">RXXX</span>
@@ -288,7 +288,7 @@
   <span>
     Absenteeism:
     <span class="tooltip" data-tooltip="TO BE COMPLETED">
-      <img src="whiteback.png" alt="info icon" />
+      <img src="Untitled design.png" alt="info icon" />
     </span>
   </span>
   <span id="absenteeism">RXXX</span>
@@ -297,7 +297,7 @@
   <span>
     Presenteeism:
     <span class="tooltip" data-tooltip="TO BE COMPLETED">
-      <img src="whiteback.png" alt="info icon" />
+      <img src="Untitled design.png" alt="info icon" />
     </span>
   </span>
   <span id="presenteeism">RXXX</span>
