@@ -252,7 +252,7 @@
       <div class="card purple-card">
 <h2>
   How would you rate your organisation's current level of psychological safety?
-  <span class="tooltip" data-tooltip="TO BE COMPLETED">
+  <span class="tooltip" data-tooltip="This is a self-assessment of your organisation’s culture of psychological safety. You can base it on employee feedback, surveys, exit interviews, or observed behaviours — whatever best reflects your current reality.">
     <img src="Untitled design.svg" alt="info icon" />
   </span>
 </h2>        <select id="cultureRating">
@@ -279,7 +279,7 @@
 <div class="result-line">
   <span>
     Cost of Excess Staff Turnover:
-    <span class="tooltip" data-tooltip="Cost of staff churn based on X% of XXX.">
+    <span class="tooltip" data-tooltip="Cost of staff churn calculated at 50% of average annual salary per demographic group.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -288,7 +288,7 @@
 <div class="result-line">
   <span>
     Absenteeism:
-    <span class="tooltip" data-tooltip="Cost of excess leave taken calculated at X% of XXX.">
+    <span class="tooltip" data-tooltip="Based on excess leave days multiplied by daily salary and adjusted by 88% to reflect average working time.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -297,7 +297,7 @@
 <div class="result-line">
   <span>
     Presenteeism:
-    <span class="tooltip" data-tooltip="Cost of on-the-job underperformance calculated at X5 of XXX.">
+    <span class="tooltip" data-tooltip="Calculated using average presenteeism rates (%) applied to total salary cost per demographic group.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
