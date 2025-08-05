@@ -3,11 +3,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      background-color: #f7f1fc;
-    }
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  background-color: transparent;
+}
 
     .main-wrapper {
       display: flex;
