@@ -251,7 +251,7 @@
       </div>
       <div class="card purple-card">
 <h2>
-  How would you rate your organisation's culture of Inclusivity & Psychological Safety?
+  How would you rate your organisation's current level of psychological safety?
   <span class="tooltip" data-tooltip="TO BE COMPLETED">
     <img src="Untitled design.svg" alt="info icon" />
   </span>
@@ -270,7 +270,7 @@
 <div class="result-line">
   <span>
     Excess Resignations:
-    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+    <span class="tooltip" data-tooltip="Number of unnecessary staff churn owing to lower levels of psychological safety calculated at X% of XXX when XXX level of psychological safety selected.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -278,8 +278,8 @@
   </div>  
 <div class="result-line">
   <span>
-    Turnover:
-    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+    Cost of Excess Staff Turnover:
+    <span class="tooltip" data-tooltip="Cost of staff churn based on X% of XXX.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -288,7 +288,7 @@
 <div class="result-line">
   <span>
     Absenteeism:
-    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+    <span class="tooltip" data-tooltip="Cost of excess leave taken calculated at X% of XXX.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -297,7 +297,7 @@
 <div class="result-line">
   <span>
     Presenteeism:
-    <span class="tooltip" data-tooltip="TO BE COMPLETED">
+    <span class="tooltip" data-tooltip="Cost of on-the-job underperformance calculated at X5 of XXX.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
