@@ -184,8 +184,10 @@
 }
 .tooltip {
   position: relative;
-  cursor: pointer;
-  vertical-align: middle;
+  vertical-align: top;
+  display: inline-block;
+  top: -0.4em; /* raises the icon */
+  margin-left: 4px;
 }
 
 .tooltip img {
@@ -224,6 +226,16 @@
 }
 h2 > a {
   display: none;
+}
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem; /* extra space for arrow */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
 }
   </style>
 </head>
