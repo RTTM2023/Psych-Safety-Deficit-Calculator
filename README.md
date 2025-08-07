@@ -277,15 +277,10 @@ select {
           <div><label>% Men</label><input type="number" id="menPct" /></div>
         </div>
       </div>
-      <div class="card">
-        <h2>Average Annual Salary per Race Group (ZAR)</h2>
-        <div class="grid">
-          <div><label>Black</label><input type="number" id="blackSalary" /></div>
-          <div><label>White</label><input type="number" id="whiteSalary" /></div>
-          <div><label>Coloured</label><input type="number" id="colouredSalary" /></div>
-          <div><label>Indian/Asian</label><input type="number" id="indianasianSalary" /></div>
-        </div>
-      </div>
+<div class="card">
+  <h2>Average Annual Salary (ZAR)</h2>
+  <input type="number" id="avgSalary" placeholder="e.g. 350000" />
+</div>
       <div class="card purple-card">
 <h2>
   How would you rate your organisation's current level of psychological safety?
@@ -447,15 +442,16 @@ function calculateCosts() {
   }
 
   // Retrieve data from form
-  const getVal = id => parseFloat(document.getElementById(id).value || 0);
+const getVal = id => parseFloat(document.getElementById(id).value || 0);
+const avgSalary = getVal('avgSalary');
   const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
-  const raceGroups = {
-    black: { pct: getPct('blackPct'), salary: getVal('blackSalary') },
-    white: { pct: getPct('whitePct'), salary: getVal('whiteSalary') },
-    coloured: { pct: getPct('colouredPct'), salary: getVal('colouredSalary') },
-    indianasian: { pct: getPct('indianasianPct'), salary: getVal('indianasianSalary') }
-  };
+const raceGroups = {
+  black: { pct: getPct('blackPct'), salary: avgSalary },
+  white: { pct: getPct('whitePct'), salary: avgSalary },
+  coloured: { pct: getPct('colouredPct'), salary: avgSalary },
+  indianasian: { pct: getPct('indianasianPct'), salary: avgSalary }
+};
 
   const genderSplit = {
     men: getPct('menPct'),
