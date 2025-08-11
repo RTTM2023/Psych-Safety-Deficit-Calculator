@@ -307,7 +307,7 @@ select {
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
-  <span id="resignations">RXXX</span>
+<span id="resignations">XXX</span>
   </div>  
 <div class="result-line">
   <span>
@@ -393,11 +393,53 @@ select {
       };
       return rates[level];
     }
+<script>
+// ===== 1) HELPERS + LIVE SANITIZERS =====
+
+// read whole numbers only (e.g. "47,500" -> "47500")
+function readInt(id) {
+  const el = document.getElementById(id);
+  el.value = el.value.replace(/[^\d]/g, ''); // keep digits only
+  return parseInt(el.value || '0', 10);
+}
+
+// read decimals, allow only ONE dot, remove commas/spaces
+function readNumber(id) {
+  const el = document.getElementById(id);
+  let v = el.value.replace(/[, ]+/g, '');
+  const parts = v.split('.');
+  if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+  el.value = v;
+  return parseFloat(v || '0');
+}
+
+// live-clean while typing
+(function setupInputCleaning(){
+  const totalEl = document.getElementById('totalStaff');
+  if (totalEl) {
+    totalEl.setAttribute('inputmode','numeric');
+    totalEl.setAttribute('pattern','[0-9]*');
+    totalEl.addEventListener('input', () => {
+      totalEl.value = totalEl.value.replace(/[^\d]/g, '');
+    });
+  }
+  const salaryEl = document.getElementById('avgSalary');
+  if (salaryEl) {
+    salaryEl.setAttribute('inputmode','decimal');
+    salaryEl.addEventListener('input', () => {
+      let v = salaryEl.value.replace(/[, ]+/g, '');
+      const parts = v.split('.');
+      if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+      salaryEl.value = v;
+    });
+  }
+})();
+</script>
 
 function calculateCosts() {
   const select = document.getElementById('cultureRating');
   const culture = select.value;
-  const total = parseInt(document.getElementById('totalStaff').value || 0);
+const total = readInt('totalStaff');
   const errorBox = document.getElementById('error-message');
   let hasError = false;
   let message = '';
@@ -443,7 +485,7 @@ function calculateCosts() {
 
   // Retrieve data from form
 const getVal = id => parseFloat(document.getElementById(id).value || 0);
-const avgSalary = getVal('avgSalary');
+const avgSalary = readNumber('avgSalary');
   const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
 const raceGroups = {
@@ -479,7 +521,7 @@ const raceGroups = {
   const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
   // Display Results
-  document.getElementById('resignations').textContent = totalExits.toFixed(1);
+document.getElementById('resignations').textContent = totalExits.toFixed(1);
   document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
   document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
   document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
@@ -488,6 +530,8 @@ const raceGroups = {
   // Show results
   document.getElementById('calcBox').classList.add('shrink');
   document.getElementById('resultBox').style.display = 'block';
+  document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 }
 
           function openEmailModal() {
