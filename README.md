@@ -9,9 +9,19 @@
       margin: 0;
       background-color: transparent;
     }
-.page-header h1.project-name {
+
+/* Keep my app title visible */
+#appTitle { display: block !important; }
+
+/* Hide the GitHub Pages/Jekyll theme header (Cayman & others) */
+section.page-header,
+header.page-header,
+.page-header .project-name,
+.page-header .project-tagline,
+header[role="banner"] {
   display: none !important;
 }
+
 
     .main-wrapper {
       display: flex;
@@ -164,7 +174,7 @@
   <div class="main-wrapper">
     <div class="container" id="calcBox">
       <div class="card">
-        <h1>How Much Does Psychological (Un)Safety Cost Us?</h1>
+<h1 id="appTitle">How Much Does Psychological (Un)Safety Cost Us?</h1>
       </div>
 
       <div class="card purple-card">
