@@ -9,6 +9,9 @@
       margin: 0;
       background-color: transparent;
     }
+h1:first-of-type {
+  display: none;
+}
 
     .main-wrapper {
       display: flex;
