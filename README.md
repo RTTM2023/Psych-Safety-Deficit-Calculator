@@ -298,291 +298,292 @@
     </div>
   </div>
 
-  <script>
-    // -------- Rates --------
-    function getRates(level) {
-      const rates = {
-        low: {
-          turnoverRates: {
-            black: { men: 0.07, women: 0.08 },
-            white: { men: 0.01, women: 0.015 },
-            coloured: { men: 0.03, women: 0.04 },
-            indianasian: { men: 0.03, women: 0.04 }
-          },
-          absenteeismDays: { black: 2, white: 0.5, coloured: 1, indianasian: 1 },
-          presenteeismRates: { black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375 }
+<script>
+  // -------- Rates --------
+  function getRates(level) {
+    const rates = {
+      low: {
+        turnoverRates: {
+          black: { men: 0.07, women: 0.08 },
+          white: { men: 0.01, women: 0.015 },
+          coloured: { men: 0.03, women: 0.04 },
+          indianasian: { men: 0.03, women: 0.04 }
         },
-        medium: {
-          turnoverRates: {
-            black: { men: 0.03, women: 0.04 },
-            white: { men: 0.005, women: 0.01 },
-            coloured: { men: 0.01, women: 0.02 },
-            indianasian: { men: 0.01, women: 0.02 }
-          },
-          absenteeismDays: { black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5 },
-          presenteeismRates: { black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045 }
+        absenteeismDays: { black: 2, white: 0.5, coloured: 1, indianasian: 1 },
+        presenteeismRates: { black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375 }
+      },
+      medium: {
+        turnoverRates: {
+          black: { men: 0.03, women: 0.04 },
+          white: { men: 0.005, women: 0.01 },
+          coloured: { men: 0.01, women: 0.02 },
+          indianasian: { men: 0.01, women: 0.02 }
         },
-        high: {
-          turnoverRates: {
-            black: { men: 0.01, women: 0.02 },
-            white: { men: 0.0025, women: 0.005 },
-            coloured: { men: 0.005, women: 0.01 },
-            indianasian: { men: 0.005, women: 0.01 }
-          },
-          absenteeismDays: { black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25 },
-          presenteeismRates: { black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875 }
-        }
-      };
-      return rates[level];
+        absenteeismDays: { black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5 },
+        presenteeismRates: { black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045 }
+      },
+      high: {
+        turnoverRates: {
+          black: { men: 0.01, women: 0.02 },
+          white: { men: 0.0025, women: 0.005 },
+          coloured: { men: 0.005, women: 0.01 },
+          indianasian: { men: 0.005, women: 0.01 }
+        },
+        absenteeismDays: { black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25 },
+        presenteeismRates: { black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875 }
+      }
+    };
+    return rates[level];
+  }
+
+  // -------- Calculator --------
+  function calculateCosts() {
+    const errorBox = document.getElementById('error-message');
+
+    // Clear previous errors
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    errorBox.textContent = '';
+    errorBox.style.display = 'none';
+
+    const select = document.getElementById('cultureRating');
+    const culture = select.value;
+
+    // salary + total staff must be digits only (no , or .)
+    const salaryEl = document.getElementById('avgSalary');
+    const salaryRaw = salaryEl.value.trim();
+    const salaryDigitsOnly = /^[0-9]+$/.test(salaryRaw);
+
+    const totalStaffEl = document.getElementById('totalStaff');
+    const totalStaffRaw = totalStaffEl.value.trim();
+    const totalDigitsOnly = /^[0-9]+$/.test(totalStaffRaw);
+
+    let hasError = false;
+    let message = '';
+
+    if (!culture) {
+      select.classList.add('input-error');
+      message += 'Please select your organisation\'s level of psychological safety.\n';
+      hasError = true;
+    }
+    if (!totalDigitsOnly || parseInt(totalStaffRaw || '0', 10) <= 0) {
+      totalStaffEl.classList.add('input-error');
+      message += 'Total Staff must be numbers only and greater than 0.\n';
+      hasError = true;
+    }
+    if (!salaryDigitsOnly) {
+      salaryEl.classList.add('input-error');
+      message += 'Average Annual Salary must be numbers only (no commas or periods).\n';
+      hasError = true;
     }
 
-    // -------- Helpers --------
-    function readIntFromText(id) {
-      // returns integer from a text input (digits only)
-      const el = document.getElementById(id);
-      const digits = (el.value || '').replace(/[^\d]/g, '');
-      return parseInt(digits || '0', 10);
-    }
+    // Validate race & gender sums
+    const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+    const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
+    const genderTotal = getPct('menPct') + getPct('womenPct');
 
-    // -------- Calculator --------
-    function calculateCosts() {
-      const errorBox = document.getElementById('error-message');
-
-      // 1) Clear previous errors first
-      document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-      errorBox.textContent = '';
-      errorBox.style.display = 'none';
-
-      const select = document.getElementById('cultureRating');
-      const culture = select.value;
-
-      // 2) Validate salary (numbers only; no comma/period)
-      const salaryEl = document.getElementById('avgSalary');
-      const salaryRaw = salaryEl.value.trim();
-      const salaryDigitsOnly = /^[0-9]+$/.test(salaryRaw);
-
-      // 3) Validate total staff (numbers only)
-      const totalStaffEl = document.getElementById('totalStaff');
-      const totalStaffRaw = totalStaffEl.value.trim();
-      const totalDigitsOnly = /^[0-9]+$/.test(totalStaffRaw);
-
-      let hasError = false;
-      let message = '';
-
-      if (!culture) {
-        select.classList.add('input-error');
-        message += 'Please select your organisation\'s level of psychological safety.\n';
-        hasError = true;
-      }
-
-      if (!totalDigitsOnly || parseInt(totalStaffRaw || '0', 10) <= 0) {
-        totalStaffEl.classList.add('input-error');
-        message += 'Total Staff must be numbers only and greater than 0.\n';
-        hasError = true;
-      }
-
-      if (!salaryDigitsOnly) {
-        salaryEl.classList.add('input-error');
-        message += 'Average Annual Salary must be numbers only (no commas or periods).\n';
-        hasError = true;
-      }
-
-      // Validate race & gender totals
-      const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
-      const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
-      const genderTotal = getPct('menPct') + getPct('womenPct');
-
-      if (Math.abs(raceTotal - 1) > 0.01) {
-        ['blackPct','whitePct','colouredPct','indianasianPct'].forEach(id => {
-          document.getElementById(id).classList.add('input-error');
-        });
-        message += 'Race percentages must add up to 100%.\n';
-        hasError = true;
-      }
-
-      if (Math.abs(genderTotal - 1) > 0.01) {
-        ['womenPct','menPct'].forEach(id => {
-          document.getElementById(id).classList.add('input-error');
-        });
-        message += 'Gender percentages must add up to 100%.\n';
-        hasError = true;
-      }
-
-      if (hasError) {
-        errorBox.textContent = message.trim();
-        errorBox.style.display = 'block';
-        return;
-      }
-
-      // Inputs
-      const total = parseInt(totalStaffRaw, 10);
-      const avgSalary = parseInt(salaryRaw, 10);
-      const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
-
-      const raceGroups = {
-        black: { pct: getPct('blackPct'), salary: avgSalary },
-        white: { pct: getPct('whitePct'), salary: avgSalary },
-        coloured: { pct: getPct('colouredPct'), salary: avgSalary },
-        indianasian: { pct: getPct('indianasianPct'), salary: avgSalary }
-      };
-      const genderSplit = { men: getPct('menPct'), women: getPct('womenPct') };
-
-      // Costs
-      let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
-
-      for (const [race, group] of Object.entries(raceGroups)) {
-        const headcount = total * group.pct;
-        const maleHeadcount = headcount * genderSplit.men;
-        const femaleHeadcount = headcount * genderSplit.women;
-        const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
-        totalExits += exits;
-
-        turnoverCost     += exits * (0.5 * group.salary);
-        absenteeismCost  += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
-        presenteeismCost += headcount * group.salary * presenteeismRates[race];
-      }
-
-      const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
-
-      // Display (resignations whole number; calc kept decimals)
-      document.getElementById('resignations').textContent = Math.floor(totalExits).toLocaleString();
-      document.getElementById('turnover').textContent     = 'R ' + Math.round(turnoverCost).toLocaleString();
-      document.getElementById('absenteeism').textContent  = 'R ' + Math.round(absenteeismCost).toLocaleString();
-      document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
-      document.getElementById('total').textContent        = 'R ' + Math.round(totalCost).toLocaleString();
-
-      // Reveal + scroll
-      document.getElementById('calcBox').classList.add('shrink');
-      document.getElementById('resultBox').style.display = 'block';
-      document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // -------- Modal helpers --------
-    function openEmailModal() {
-      document.getElementById('emailModal').style.display = 'flex';
-      const totalCost = document.getElementById('total').textContent;
-      document.getElementById('hiddenTotalCost').value = totalCost;
-    }
-    function closeEmailModal() { document.getElementById('emailModal').style.display = 'none'; }
-    function closeModal()      { document.getElementById('enquiryModal').style.display = 'none'; }
-
-    function resetCalculator() {
-      const inputs = document.querySelectorAll('input, select');
-      inputs.forEach(input => {
-        if (input.tagName === 'SELECT') input.selectedIndex = 0;
-        else input.value = '';
+    if (Math.abs(raceTotal - 1) > 0.01) {
+      ['blackPct','whitePct','colouredPct','indianasianPct'].forEach(id => {
+        document.getElementById(id).classList.add('input-error');
       });
-      document.getElementById('resultBox').style.display = 'none';
-      document.getElementById('calcBox').classList.remove('shrink');
-      const errorBox = document.getElementById('error-message');
-      errorBox.textContent = '';
-      errorBox.style.display = 'none';
-      document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+      message += 'Race percentages must add up to 100%.\n';
+      hasError = true;
+    }
+    if (Math.abs(genderTotal - 1) > 0.01) {
+      ['womenPct','menPct'].forEach(id => {
+        document.getElementById(id).classList.add('input-error');
+      });
+      message += 'Gender percentages must add up to 100%.\n';
+      hasError = true;
     }
 
-    // -------- Page wiring --------
-    document.addEventListener('DOMContentLoaded', () => {
-      // Open enquiry modal
-      const enquireBtn = document.getElementById('enquireBtn');
-      if (enquireBtn) {
-        enquireBtn.addEventListener('click', () => {
-          document.getElementById('enquiryModal').style.display = 'flex';
-        });
-      }
+    if (hasError) {
+      errorBox.textContent = message.trim();
+      errorBox.style.display = 'block';
+      return;
+    }
 
-      // Close modals when clicking the backdrop
-      ['enquiryModal', 'emailModal'].forEach(id => {
-        const modal = document.getElementById(id);
-        if (!modal) return;
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) modal.style.display = 'none';
-        });
+    // Inputs
+    const total = parseInt(totalStaffRaw, 10);
+    const avgSalary = parseInt(salaryRaw, 10);
+    const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
+
+    const raceGroups = {
+      black: { pct: getPct('blackPct'), salary: avgSalary },
+      white: { pct: getPct('whitePct'), salary: avgSalary },
+      coloured: { pct: getPct('colouredPct'), salary: avgSalary },
+      indianasian: { pct: getPct('indianasianPct'), salary: avgSalary }
+    };
+    const genderSplit = { men: getPct('menPct'), women: getPct('womenPct') };
+
+    // Costs
+    let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
+
+    for (const [race, group] of Object.entries(raceGroups)) {
+      const headcount = total * group.pct;
+      const maleHeadcount = headcount * genderSplit.men;
+      const femaleHeadcount = headcount * genderSplit.women;
+      const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
+      totalExits += exits;
+
+      turnoverCost     += exits * (0.5 * group.salary);
+      absenteeismCost  += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
+      presenteeismCost += headcount * group.salary * presenteeismRates[race];
+    }
+
+    const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
+
+    // Display (resignations shown as whole number; calc keeps decimals)
+    document.getElementById('resignations').textContent = Math.floor(totalExits).toLocaleString();
+    document.getElementById('turnover').textContent     = 'R ' + Math.round(turnoverCost).toLocaleString();
+    document.getElementById('absenteeism').textContent  = 'R ' + Math.round(absenteeismCost).toLocaleString();
+    document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
+    document.getElementById('total').textContent        = 'R ' + Math.round(totalCost).toLocaleString();
+
+    // Reveal + scroll
+    document.getElementById('calcBox').classList.add('shrink');
+    document.getElementById('resultBox').style.display = 'block';
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // -------- Modal helpers --------
+  function openEmailModal() {
+    document.getElementById('emailModal').style.display = 'flex';
+    const totalCost = document.getElementById('total').textContent;
+    document.getElementById('hiddenTotalCost').value = totalCost;
+  }
+  function closeEmailModal() { document.getElementById('emailModal').style.display = 'none'; }
+  function closeModal()      { document.getElementById('enquiryModal').style.display = 'none'; }
+
+  function resetCalculator() {
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+      if (input.tagName === 'SELECT') input.selectedIndex = 0;
+      else input.value = '';
+    });
+    document.getElementById('resultBox').style.display = 'none';
+    document.getElementById('calcBox').classList.remove('shrink');
+    const errorBox = document.getElementById('error-message');
+    errorBox.textContent = '';
+    errorBox.style.display = 'none';
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  }
+
+  // -------- Page wiring --------
+  document.addEventListener('DOMContentLoaded', () => {
+    // Open enquiry modal
+    const enquireBtn = document.getElementById('enquireBtn');
+    if (enquireBtn) {
+      enquireBtn.addEventListener('click', () => {
+        document.getElementById('enquiryModal').style.display = 'flex';
       });
+    }
 
-      // Close on ESC key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          const enquiry = document.getElementById('enquiryModal');
-          const email = document.getElementById('emailModal');
-          if (enquiry && enquiry.style.display === 'flex') enquiry.style.display = 'none';
-          if (email && email.style.display === 'flex') email.style.display = 'none';
-        }
+    // Close modals when clicking the backdrop
+    ['enquiryModal', 'emailModal'].forEach(id => {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
       });
+    });
 
-      // Remove red highlight and hide error message as user types
-      document.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('input', () => {
-          input.classList.remove('input-error');
-          document.getElementById('error-message').style.display = 'none';
-        });
-      });
-
-      // Force numeric keypad for total staff; we still validate manually
-      const totalEl = document.getElementById('totalStaff');
-      if (totalEl) {
-        totalEl.setAttribute('inputmode','numeric');
-        totalEl.setAttribute('pattern','[0-9]*');
-      }
-
-      // Optional: hint numeric keypad for salary as well
-      const salaryEl = document.getElementById('avgSalary');
-      if (salaryEl) {
-        salaryEl.setAttribute('inputmode','numeric');
-      }
-
-      // ----- Formspree handlers -----
-      // Enquiry (no attachment)
-      const enquiryForm = document.getElementById('enquiryForm');
-      if (enquiryForm) {
-        enquiryForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const data = new FormData(enquiryForm);
-          fetch(enquiryForm.action, {
-            method: 'POST',
-            body: data,
-            headers: { 'Accept': 'application/json' }
-          }).then(res => {
-            if (res.ok) {
-              window.open('https://your-thank-you-page.com', '_blank'); // optional
-              closeModal();
-              enquiryForm.reset();
-            } else {
-              alert('Oops! There was a problem submitting your form.');
-            }
-          }).catch(() => alert('Oops! There was a network problem.'));
-        });
-      }
-
-      // Email report (attach PDF placeholder)
-      const emailForm = document.getElementById('emailForm');
-      if (emailForm) {
-        emailForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const data = new FormData(emailForm);
-
-          // TODO: replace with your real PDF generator
-          const pdfBlob = new Blob(
-            ["Replace this text with the actual PDF content from your generatePDF() function"],
-            { type: 'application/pdf' }
-          );
-          data.append('attachment', pdfBlob, 'PsychSafetyReport.pdf');
-
-          fetch(emailForm.action, {
-            method: 'POST',
-            body: data,
-            headers: { 'Accept': 'application/json' }
-          }).then(res => {
-            if (res.ok) {
-              window.open('https://your-thank-you-page.com', '_blank'); // optional
-              closeEmailModal();
-              emailForm.reset();
-            } else {
-              alert('Oops! There was a problem submitting your form.');
-            }
-          }).catch(() => alert('Oops! There was a network problem.'));
-        });
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const enquiry = document.getElementById('enquiryModal');
+        const email = document.getElementById('emailModal');
+        if (enquiry && enquiry.style.display === 'flex') enquiry.style.display = 'none';
+        if (email && email.style.display === 'flex') email.style.display = 'none';
       }
     });
-  </script>
+
+    // Remove red highlight and hide error message as user types
+    document.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('input', () => {
+        input.classList.remove('input-error');
+        document.getElementById('error-message').style.display = 'none';
+      });
+    });
+
+    // Input hints
+    const totalEl = document.getElementById('totalStaff');
+    if (totalEl) { totalEl.setAttribute('inputmode','numeric'); totalEl.setAttribute('pattern','[0-9]*'); }
+    const salaryEl = document.getElementById('avgSalary');
+    if (salaryEl) { salaryEl.setAttribute('inputmode','numeric'); }
+
+    // ----- Formspree handlers -----
+
+    // Enquiry (no attachment)
+    const enquiryForm = document.getElementById('enquiryForm');
+    if (enquiryForm) {
+      enquiryForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(enquiryForm);
+        fetch(enquiryForm.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        }).then(res => {
+          if (res.ok) {
+            window.open('https://runtothemonster.com/thankyou', '_blank'); // optional
+            closeModal();
+            enquiryForm.reset();
+          } else {
+            res.text().then(t => console.error('Formspree error:', res.status, t));
+            alert('Oops! There was a problem submitting your form.');
+          }
+        }).catch(err => {
+          console.error('Network error:', err);
+          alert('Oops! There was a network problem.');
+        });
+      });
+    }
+
+    // Email form (with attachment)
+    const emailForm = document.getElementById('emailForm');
+    if (emailForm) {
+      emailForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = new FormData(emailForm);
+
+        // Placeholder PDF; replace with your real PDF bytes if you have a generator
+        const pdfBlob = new Blob(
+          ["Psych Safety Report\n\n(This is a test placeholder PDF body.)"],
+          { type: 'application/pdf' }
+        );
+
+        // If your Formspree supports attachments, keep size < ~10MB
+        if (pdfBlob.size > 9_500_000) {
+          alert('Report is too large to send. Please try with smaller inputs.');
+          return;
+        }
+
+        // IMPORTANT: many Formspree plans expect the field name "file"
+        data.append('file', pdfBlob, 'PsychSafetyReport.pdf');
+
+        try {
+          const res = await fetch(emailForm.action, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          });
+          const text = await res.text();
+          if (!res.ok) {
+            console.error('Formspree error:', res.status, text);
+            alert('Form submit failed. Check the browser console for details.');
+            return;
+          }
+          window.open('https://runtothemonster.com/thankyou', '_blank'); // optional
+          closeEmailModal();
+          emailForm.reset();
+        } catch (err) {
+          console.error('Network error:', err);
+          alert('Network error submitting the form.');
+        }
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
