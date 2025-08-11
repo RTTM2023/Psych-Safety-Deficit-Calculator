@@ -259,7 +259,7 @@ select {
   <div class="main-wrapper">
     <div class="container" id="calcBox">
       <div class="card">
-        <h1>Psychological Safety Deficit Calculator</h1>
+        <h1>How Much Does Psychological (Un)Safety Cost Us?</h1>
       </div>
       <div class="card purple-card">
         <h2>Total Staff Complement</h2>
@@ -278,7 +278,7 @@ select {
         </div>
       </div>
 <div class="card">
-  <h2>Average Annual Salary (ZAR)</h2>
+  <h2>Average Annual Salary</h2>
   <input type="number" id="avgSalary" placeholder="e.g. 350000" />
 </div>
       <div class="card purple-card">
@@ -299,11 +299,11 @@ select {
     </div>
 
     <div class="result-wrapper" id="resultBox">
-      <h2>Estimated Annual Cost of Psych Safety Neglect</h2>
+      <h2>Estimated Financial Losses due to Psychological Unsafety per Year</h2>
 <div class="result-line">
   <span>
     Excess Resignations:
-    <span class="tooltip" data-tooltip="Number of unnecessary staff churn owing to lower levels of psychological safety calculated at X% of XXX when XXX level of psychological safety selected.">
+    <span class="tooltip" data-tooltip="Number of employees leaving over-and-above normal company churn due to psychological safety.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -312,7 +312,7 @@ select {
 <div class="result-line">
   <span>
     Cost of Excess Staff Turnover:
-    <span class="tooltip" data-tooltip="Cost of staff churn calculated at 50% of average annual salary per demographic group.">
+    <span class="tooltip" data-tooltip="HR resources, recruitment costs and lower productivity during onboarding of new recruits to fill vacancies left by excess resignations">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -320,8 +320,8 @@ select {
 </div>      
 <div class="result-line">
   <span>
-    Absenteeism:
-    <span class="tooltip" data-tooltip="Based on excess leave days multiplied by daily salary and adjusted by 88% to reflect average working time.">
+    Excess Sick Days/Absenteeism:
+    <span class="tooltip" data-tooltip="Days and hours paid for, but lost due to mental stress and related illness.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
@@ -329,8 +329,8 @@ select {
 </div>
 <div class="result-line">
   <span>
-    Presenteeism:
-    <span class="tooltip" data-tooltip="Calculated using average presenteeism rates (%) applied to total salary cost per demographic group.">
+    On-the-job Underperformance:
+    <span class="tooltip" data-tooltip="Days and weeks paid for, but lost due to disengagement and low productivity. Poor collaboration in diverse teams leads to time lost on resolving conflicts or repeating work due to miscommunication instead of productive activity.">
       <img src="Untitled design.svg" alt="info icon" />
     </span>
   </span>
