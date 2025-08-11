@@ -9,8 +9,8 @@
       margin: 0;
       background-color: transparent;
     }
-h1:first-of-type {
-  display: none;
+.page-header h1.project-name {
+  display: none !important;
 }
 
     .main-wrapper {
