@@ -252,7 +252,30 @@ select {
   border: 2px solid #ea0b82 !important;
   background-color: #fff0f5 !important;
 }
+/* Modal content needs positioning context */
+.modal-content {
+  position: relative;           /* so the X can sit in the top-right of this box */
+}
 
+/* The blue X button */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 28px;
+  color: #5700ff;               /* blue */
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  opacity: 0.8;
+  outline: none;
+}
   </style>
 </head>
 <body>
@@ -520,6 +543,7 @@ select {
   function closeEmailModal() {
     document.getElementById('emailModal').style.display = 'none';
   }
+  
   function resetCalculator() {
     const inputs = document.querySelectorAll('input, select');
     inputs.forEach(input => {
@@ -544,11 +568,11 @@ select {
   }
 </script>
 
-  <div id="enquiryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-  <div style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
-    <button onclick="closeModal()" style="position:absolute; top:10px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+<div id="enquiryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
     <h2 style="margin-top:0;">Enquire About Our Solution</h2>
-    <form action="https://formspree.io/f/movlkdbj" method="POST">
+    <form id="enquiryForm" action="https://formspree.io/f/movlkdbj" method="POST">
       <label for="name">Name</label>
       <input type="text" name="name" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;">
 
@@ -563,10 +587,10 @@ select {
   </div>
 </div>
 <div id="emailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-  <div style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
-    <button onclick="closeEmailModal()" style="position:absolute; top:10px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+  <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
+    <button class="modal-close" onclick="closeEmailModal()" aria-label="Close">&times;</button>
     <h2 style="margin-top:0;">Get Your Report by Email</h2>
-    <form action="https://formspree.io/f/movlkdbj" method="POST">
+    <form id="emailForm" action="https://formspree.io/f/movlkdbj" method="POST">
       <label for="firstName">First Name</label>
       <input type="text" name="firstName" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;" />
 
@@ -578,12 +602,75 @@ select {
 
       <input type="hidden" name="totalCost" id="hiddenTotalCost" />
 
-      <input type="hidden" name="_cc" value="roy@runtothemonster.com" />
-
       <button type="submit" style="background-color:#5700ff; color:white; border:none; padding:1rem 2rem; border-radius:999px; font-weight:500; cursor:pointer;">Send Report</button>
     </form>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function handleFormSubmit(formId, thankYouURL) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // stop the normal redirect
+
+      const data = new FormData(form);
+      const action = form.action;
+
+      fetch(action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(response => {
+        if (response.ok) {
+          // Open thank-you page in a new tab (optional)
+          if (thankYouURL) window.open(thankYouURL, '_blank');
+
+          // Close the right modal
+          if (formId === 'enquiryForm') closeModal();
+          if (formId === 'emailForm') closeEmailModal();
+
+          // Reset the form
+          form.reset();
+        } else {
+          alert('Oops! There was a problem submitting your form.');
+        }
+      }).catch(() => {
+        alert('Oops! There was a network problem.');
+      });
+    });
+  }
+
+  // Hook up both forms (change URLs to your real thank-you page if you have one)
+  handleFormSubmit('enquiryForm', 'https://your-thank-you-page.com');
+  handleFormSubmit('emailForm', 'https://your-thank-you-page.com');
+});
+<script>
+// Close when clicking outside the modal content
+document.addEventListener('DOMContentLoaded', () => {
+  ['enquiryModal', 'emailModal'].forEach(id => {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  // Close on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const enquiry = document.getElementById('enquiryModal');
+      const email = document.getElementById('emailModal');
+      if (enquiry && enquiry.style.display === 'flex') enquiry.style.display = 'none';
+      if (email && email.style.display === 'flex') email.style.display = 'none';
+    }
+  });
+});
+</script>
 <script>
   document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', () => {
