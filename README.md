@@ -588,7 +588,7 @@ const pdfBlob = doc.output('blob');
         }
 
 // IMPORTANT: many Formspree plans expect the field name "attachment"
-data.append('attachment', pdfBlob, 'PsychSafetyReport.pdf');
+// data.append('attachment', pdfBlob, 'PsychSafetyReport.pdf');
 
 
         try {
