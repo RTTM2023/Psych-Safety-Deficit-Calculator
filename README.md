@@ -360,66 +360,83 @@ header[role="banner"] {
   .result-line { font-size: 0.9rem; }
 }
 
-/* ======= Fix: Remove outer GitHub theme scroll ======= */
-body {
-  overflow-y: visible !important;   /* Let the main page scroll naturally */
-}
-
-html {
-  overflow-y: auto !important;      /* Single unified scroll */
-}
-
-.main-content,
-.markdown-body,
-.container-lg,
-#readme,
-#repo-content-turbo-frame,
-.site-container {
-  max-height: none !important;
-  overflow: visible !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: transparent !important;
-}
-
-section.page-header,
-header.page-header {
-  display: none !important;
-}
-
 /* ===========================
-   Fix double scroll + page layout
+   FINAL FIX — full-page embed, single scroll, background match, visible tooltips
    =========================== */
 html, body {
   width: 100%;
   height: auto !important;
   min-height: 100%;
+  margin: 0;
+  padding: 0;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  background-color: #e9d3f8; /* same soft lilac as your site */
+  background-color: #e9d3f8 !important; /* match RTTM site tone */
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* Disable GitHub Pages markdown container scroll */
+/* Remove all outer containers from GitHub Pages/Jekyll that add scroll or different bg */
 .markdown-body,
 .container-lg,
 #readme,
 .main-content,
-.site-container {
+.site-container,
+.repository-content,
+#repo-content-turbo-frame,
+#js-repo-pjax-container {
   max-height: none !important;
+  height: auto !important;
   overflow: visible !important;
-  margin: 0 auto !important;
   padding: 0 !important;
+  margin: 0 auto !important;
   background: transparent !important;
+  box-shadow: none !important;
 }
 
-/* Hide the extra theme header */
+/* Hide the GitHub header/footer wrappers */
 header.page-header,
-section.page-header {
+section.page-header,
+footer {
   display: none !important;
 }
 
- 
-  </style>
+/* Ensure main wrapper sits naturally centered */
+.main-wrapper {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  overflow: visible;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Prevent nested scrollbars inside GitHub's injected wrappers */
+body > div:first-of-type {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Tooltips always visible inside viewport on small screens */
+.tooltip:hover::after {
+  position: fixed !important;
+  z-index: 9999 !important;
+  max-width: 85vw !important;
+  white-space: normal !important;
+  top: auto !important;
+  bottom: 10px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: rgba(0,0,0,0.9) !important;
+  font-size: 0.9rem !important;
+  color: #fff !important;
+  text-align: left !important;
+  padding: 0.6rem 0.8rem !important;
+  border-radius: 6px !important;
+}
+</style>
 </head>
 <body>
   <div class="main-wrapper">
