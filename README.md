@@ -4,17 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Psychological Safety Cost Calculator</title>
   <style>
-body, html {
-  font-family: 'Montserrat', sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  background: transparent;
-  overflow-x: hidden;     /* prevent sideways scroll */
-  overflow-y: auto;       /* allow one natural page scroll */
-}
-
 
     /* Mobile base */
 * { box-sizing: border-box; }
@@ -267,73 +256,6 @@ header[role="banner"] {
 
   /* Tooltips stay inside the screen */
   .tooltip:hover::after {
-  max-width: 85vw;
-  left: 50%;
-  transform: translate(-50%, 0);
-  bottom: auto;
-  top: calc(100% + 10px);
-  font-size: 0.9rem;
-  white-space: normal;
-  z-index: 9999;
-  position: fixed; /* keeps tooltip visible inside viewport */
-}
-
-
-  /* Modals fit small screens and scroll if tall */
-  #enquiryModal .modal-content,
-  #emailModal .modal-content {
-    width: 92%;
-    max-width: 520px;
-    max-height: 85vh;
-    overflow: auto;
-    padding: 1.25rem;
-    border-radius: 16px;
-  }
-  .modal-close { font-size: 32px; right: 10px; top: 8px; }
-}
-
-
-  /* Make the left column full width on mobile */
-  .container { width: 100%; }
-  .container.shrink { width: 100%; }
-
-  /* Make the results panel full width too */
-  .result-wrapper {
-    width: 100%;
-    margin-top: 0.75rem;
-    border-radius: 16px;
-    padding: 1rem;
-    min-height: auto;
-  }
-
-  /* Inputs/text a bit tighter for small screens */
-  .card, .subcard { padding: 1rem; border-radius: 16px; }
-  h1 { font-size: 1.25rem; margin-bottom: 0.25rem; }
-  h2 { font-size: 1rem; margin: 0.75rem 0 0.5rem; }
-
-  /* Turn the 2-column grids into single column */
-  .grid { grid-template-columns: 1fr; gap: 0.75rem; }
-
-  /* Bigger tap targets and prevent iOS zoom-on-focus */
-  input, select, button, textarea {
-    font-size: 16px;
-    line-height: 1.25;
-    padding: 0.9rem;
-    border-radius: 16px;
-  }
-
-  .result-line { font-size: 0.95rem; }
-  .result-buttons { gap: 0.75rem; }
-  .result-buttons .primary,
-  .result-buttons .secondary {
-    width: 100%;
-    padding: 0.9rem 1rem;
-    border-radius: 999px;
-    font-size: 1rem;
-  }
-
-  /* Tooltips stay inside the screen */
-  .tooltip:hover::after {
     max-width: 80vw;
     left: 50%;
     transform: translateX(-50%);
@@ -361,8 +283,9 @@ header[role="banner"] {
 }
 
 /* ===========================
-   FINAL FIX — full-page embed, single scroll, background match, visible tooltips
+   FINAL FIX — unify scroll, match background, fix tooltip overflow
    =========================== */
+
 html, body {
   width: 100%;
   height: auto !important;
@@ -370,12 +293,12 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
-  background-color: #e9d3f8 !important; /* match RTTM site tone */
+  overflow-y: visible !important;     /* natural unified scroll */
+  background-color: #e9d3f8 !important; /* exact RTTM lilac tone */
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Remove all outer containers from GitHub Pages/Jekyll that add scroll or different bg */
+/* Remove GitHub/Jekyll outer containers that add their own scroll or bg */
 .markdown-body,
 .container-lg,
 #readme,
@@ -393,14 +316,21 @@ html, body {
   box-shadow: none !important;
 }
 
-/* Hide the GitHub header/footer wrappers */
+/* Remove white background GitHub wrapper */
+body > div:first-of-type {
+  background: transparent !important;
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Hide GitHub’s header/footer */
 header.page-header,
 section.page-header,
 footer {
   display: none !important;
 }
 
-/* Ensure main wrapper sits naturally centered */
+/* Center and free-flow main wrapper */
 .main-wrapper {
   position: relative;
   z-index: 2;
@@ -413,28 +343,44 @@ footer {
   max-width: 1200px;
 }
 
-/* Prevent nested scrollbars inside GitHub's injected wrappers */
-body > div:first-of-type {
+/* ===========================
+   Tooltip visibility fixes (desktop + mobile)
+   =========================== */
+
+/* General tooltip fix: allow overflow */
+.tooltip {
   overflow: visible !important;
-  height: auto !important;
 }
 
-/* Tooltips always visible inside viewport on small screens */
+/* Default tooltip hover state */
 .tooltip:hover::after {
   position: fixed !important;
   z-index: 9999 !important;
   max-width: 85vw !important;
   white-space: normal !important;
+  bottom: auto !important;
   top: auto !important;
-  bottom: 10px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  background: rgba(0,0,0,0.9) !important;
+  background: rgba(0, 0, 0, 0.9) !important;
   font-size: 0.9rem !important;
   color: #fff !important;
   text-align: left !important;
   padding: 0.6rem 0.8rem !important;
   border-radius: 6px !important;
+}
+
+/* Tooltip specifically for elements near bottom (e.g. Turnover, Presenteeism) */
+.result-wrapper .tooltip:hover::after {
+  bottom: 30px !important;    /* was 12px */
+  top: auto !important;
+}
+
+
+/* Tooltip near top of page (e.g. “How would you rate…” question) */
+.card .tooltip:hover::after {
+  top: 60px !important;       /* pushes tooltip downward slightly */
+  bottom: auto !important;
 }
 </style>
 </head>
