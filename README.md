@@ -35,13 +35,17 @@ header[role="banner"] {
 
 
     .main-wrapper {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center;      /* centers horizontally */
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
     .container {
       width: 580px;
@@ -263,12 +267,17 @@ header[role="banner"] {
 
   /* Tooltips stay inside the screen */
   .tooltip:hover::after {
-    max-width: 80vw;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 110%;
-    font-size: 0.9rem;
-  }
+  max-width: 85vw;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: auto;
+  top: calc(100% + 10px);
+  font-size: 0.9rem;
+  white-space: normal;
+  z-index: 9999;
+  position: fixed; /* keeps tooltip visible inside viewport */
+}
+
 
   /* Modals fit small screens and scroll if tall */
   #enquiryModal .modal-content,
@@ -375,6 +384,37 @@ html {
 
 section.page-header,
 header.page-header {
+  display: none !important;
+}
+
+/* ===========================
+   Fix double scroll + page layout
+   =========================== */
+html, body {
+  width: 100%;
+  height: auto !important;
+  min-height: 100%;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background-color: #e9d3f8; /* same soft lilac as your site */
+}
+
+/* Disable GitHub Pages markdown container scroll */
+.markdown-body,
+.container-lg,
+#readme,
+.main-content,
+.site-container {
+  max-height: none !important;
+  overflow: visible !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Hide the extra theme header */
+header.page-header,
+section.page-header {
   display: none !important;
 }
 
