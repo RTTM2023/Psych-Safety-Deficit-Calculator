@@ -35,17 +35,13 @@ header[role="banner"] {
 
 
     .main-wrapper {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  justify-content: center;      /* centers horizontally */
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-}
-
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
     .container {
       width: 580px;
@@ -267,17 +263,12 @@ header[role="banner"] {
 
   /* Tooltips stay inside the screen */
   .tooltip:hover::after {
-  max-width: 85vw;
-  left: 50%;
-  transform: translate(-50%, 0);
-  bottom: auto;
-  top: calc(100% + 10px);
-  font-size: 0.9rem;
-  white-space: normal;
-  z-index: 9999;
-  position: fixed; /* keeps tooltip visible inside viewport */
-}
-
+    max-width: 80vw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 110%;
+    font-size: 0.9rem;
+  }
 
   /* Modals fit small screens and scroll if tall */
   #enquiryModal .modal-content,
@@ -360,83 +351,8 @@ header[role="banner"] {
   .result-line { font-size: 0.9rem; }
 }
 
-/* ===========================
-   FINAL FIX — full-page embed, single scroll, background match, visible tooltips
-   =========================== */
-html, body {
-  width: 100%;
-  height: auto !important;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  background-color: #e9d3f8 !important; /* match RTTM site tone */
-  font-family: 'Montserrat', sans-serif;
-}
-
-/* Remove all outer containers from GitHub Pages/Jekyll that add scroll or different bg */
-.markdown-body,
-.container-lg,
-#readme,
-.main-content,
-.site-container,
-.repository-content,
-#repo-content-turbo-frame,
-#js-repo-pjax-container {
-  max-height: none !important;
-  height: auto !important;
-  overflow: visible !important;
-  padding: 0 !important;
-  margin: 0 auto !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Hide the GitHub header/footer wrappers */
-header.page-header,
-section.page-header,
-footer {
-  display: none !important;
-}
-
-/* Ensure main wrapper sits naturally centered */
-.main-wrapper {
-  position: relative;
-  z-index: 2;
-  background: transparent;
-  overflow: visible;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Prevent nested scrollbars inside GitHub's injected wrappers */
-body > div:first-of-type {
-  overflow: visible !important;
-  height: auto !important;
-}
-
-/* Tooltips always visible inside viewport on small screens */
-.tooltip:hover::after {
-  position: fixed !important;
-  z-index: 9999 !important;
-  max-width: 85vw !important;
-  white-space: normal !important;
-  top: auto !important;
-  bottom: 10px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  background: rgba(0,0,0,0.9) !important;
-  font-size: 0.9rem !important;
-  color: #fff !important;
-  text-align: left !important;
-  padding: 0.6rem 0.8rem !important;
-  border-radius: 6px !important;
-}
-</style>
+ 
+  </style>
 </head>
 <body>
   <div class="main-wrapper">
