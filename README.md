@@ -351,6 +351,33 @@ header[role="banner"] {
   .result-line { font-size: 0.9rem; }
 }
 
+/* ======= Fix: Remove outer GitHub theme scroll ======= */
+body {
+  overflow-y: visible !important;   /* Let the main page scroll naturally */
+}
+
+html {
+  overflow-y: auto !important;      /* Single unified scroll */
+}
+
+.main-content,
+.markdown-body,
+.container-lg,
+#readme,
+#repo-content-turbo-frame,
+.site-container {
+  max-height: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+section.page-header,
+header.page-header {
+  display: none !important;
+}
+
  
   </style>
 </head>
