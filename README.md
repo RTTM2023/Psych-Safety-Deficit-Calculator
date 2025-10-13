@@ -183,6 +183,30 @@ header[role="banner"] {
     gap: 0.75rem;
     padding: 1rem;
     max-width: 100%;
+    /* Keep currency + amount together; align right */
+.result-line {
+  display: grid;                 /* overrides flex on mobile */
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  column-gap: 0.5rem;
+}
+
+/* The right-side value */
+.result-line > span:last-child {
+  white-space: nowrap;           /* prevents "R" from breaking to a new line */
+  text-align: right;
+  font-variant-numeric: tabular-nums; /* nicer digit alignment */
+}
+
+/* Do the same layout for the "Total Estimated Cost" row */
+.result-line.total-divider {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+/* (Optional) slightly smaller tooltip icon on mobile to free space */
+.tooltip img { width: 12px; height: 12px; }
+
   }
 
   /* Make the left column full width on mobile */
@@ -531,10 +555,10 @@ header[role="banner"] {
 
     // Display (resignations shown as whole number; calc keeps decimals)
     document.getElementById('resignations').textContent = Math.floor(totalExits).toLocaleString();
-    document.getElementById('turnover').textContent     = 'R ' + Math.round(turnoverCost).toLocaleString();
-    document.getElementById('absenteeism').textContent  = 'R ' + Math.round(absenteeismCost).toLocaleString();
-    document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
-    document.getElementById('total').textContent        = 'R ' + Math.round(totalCost).toLocaleString();
+document.getElementById('turnover').textContent     = 'R\u00A0' + Math.round(turnoverCost).toLocaleString();
+document.getElementById('absenteeism').textContent  = 'R\u00A0' + Math.round(absenteeismCost).toLocaleString();
+document.getElementById('presenteeism').textContent = 'R\u00A0' + Math.round(presenteeismCost).toLocaleString();
+document.getElementById('total').textContent        = 'R\u00A0' + Math.round(totalCost).toLocaleString();
 
     // Reveal + scroll
     document.getElementById('calcBox').classList.add('shrink');
