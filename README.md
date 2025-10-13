@@ -4,11 +4,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Psychological Safety Cost Calculator</title>
   <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      background-color: transparent;
-    }
+body, html {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  background: transparent;
+  overflow-x: hidden;     /* prevent sideways scroll */
+  overflow-y: auto;       /* allow one natural page scroll */
+}
+
 
     /* Mobile base */
 * { box-sizing: border-box; }
@@ -42,6 +48,13 @@ header[role="banner"] {
       flex-shrink: 0;
       transition: width 0.3s ease;
     }
+
+    html, body, .main-wrapper {
+  height: auto !important;       /* stretch naturally with content */
+  min-height: 100%;
+  overflow: visible !important;  /* disable internal scrollbars */
+}
+
 
     .container.shrink { width: 480px; }
 
