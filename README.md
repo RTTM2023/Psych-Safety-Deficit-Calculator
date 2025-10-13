@@ -10,6 +10,11 @@
       background-color: transparent;
     }
 
+    /* Mobile base */
+* { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; } /* stop horizontal scroll */
+
+
 /* Keep my app title visible */
 #appTitle { display: block !important; }
 
@@ -168,6 +173,86 @@ header[role="banner"] {
       font-size: 28px; color: #5700ff; cursor: pointer; line-height: 1; padding: 0;
     }
     .modal-close:hover, .modal-close:focus { opacity: 0.8; outline: none; }
+/* ========================
+   Mobile / Small screens
+   ======================== */
+@media (max-width: 768px) {
+  /* Stack the two columns vertically */
+  .main-wrapper {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  /* Make the left column full width on mobile */
+  .container { width: 100%; }
+  .container.shrink { width: 100%; }
+
+  /* Make the results panel full width too */
+  .result-wrapper {
+    width: 100%;
+    margin-top: 0.75rem;
+    border-radius: 16px;
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  /* Inputs/text a bit tighter for small screens */
+  .card, .subcard { padding: 1rem; border-radius: 16px; }
+  h1 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1rem; margin: 0.75rem 0 0.5rem; }
+
+  /* Turn the 2-column grids into single column */
+  .grid { grid-template-columns: 1fr; gap: 0.75rem; }
+
+  /* Bigger tap targets and prevent iOS zoom-on-focus */
+  input, select, button, textarea {
+    font-size: 16px;
+    line-height: 1.25;
+    padding: 0.9rem;
+    border-radius: 16px;
+  }
+
+  .result-line { font-size: 0.95rem; }
+  .result-buttons { gap: 0.75rem; }
+  .result-buttons .primary,
+  .result-buttons .secondary {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 999px;
+    font-size: 1rem;
+  }
+
+  /* Tooltips stay inside the screen */
+  .tooltip:hover::after {
+    max-width: 80vw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 110%;
+    font-size: 0.9rem;
+  }
+
+  /* Modals fit small screens and scroll if tall */
+  #enquiryModal .modal-content,
+  #emailModal .modal-content {
+    width: 92%;
+    max-width: 520px;
+    max-height: 85vh;
+    overflow: auto;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  .modal-close { font-size: 32px; right: 10px; top: 8px; }
+}
+
+/* Extra-narrow phones */
+@media (max-width: 360px) {
+  h1 { font-size: 1.1rem; }
+  .result-line { font-size: 0.9rem; }
+}
+
+ 
   </style>
 </head>
 <body>
