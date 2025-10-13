@@ -9,6 +9,11 @@
       margin: 0;
       background-color: transparent;
     }
+    /* Mobile base */
+* { box-sizing: border-box; }
+html, body { width: 100%; max-width: 100%; }
+body { -webkit-text-size-adjust: 100%; } /* avoid iOS auto-zoom */
+
 
 /* Keep my app title visible */
 #appTitle { display: block !important; }
@@ -144,6 +149,9 @@ header[role="banner"] {
       transform: translateX(-50%); display: block; max-width: 240px; width: max-content; min-width: 120px;
       white-space: normal; font-size: 0.8rem; z-index: 999; text-align: left;
     }
+    /* General image safety */
+img { max-width: 100%; height: auto; }
+
 
     .container h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: none; }
     h2 > a { display: none; }
@@ -153,6 +161,11 @@ header[role="banner"] {
       background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
       background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem;
     }
+
+    /* Ensure custom select arrow renders crisply */
+select { background-size: 1rem; }
+@media (max-width: 768px) { select { background-size: 0.9rem; } }
+
 
     #error-message {
       color: #a80000; background-color: #fdecea; border: 1px solid #f5c2c0;
@@ -168,6 +181,82 @@ header[role="banner"] {
       font-size: 28px; color: #5700ff; cursor: pointer; line-height: 1; padding: 0;
     }
     .modal-close:hover, .modal-close:focus { opacity: 0.8; outline: none; }
+ /* ========================
+   Mobile / Small screens
+   ======================== */
+@media (max-width: 768px) {
+  .main-wrapper {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .container { width: 100%; }
+  .container.shrink { width: 100%; }
+
+  .card, .subcard { padding: 1rem; border-radius: 16px; }
+
+  /* Typography scale-down for mobile */
+  h1 { font-size: 1.25rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1rem; margin: 0.75rem 0 0.5rem; }
+
+  /* Stack the two-column grids */
+  .grid { grid-template-columns: 1fr; gap: 0.75rem; }
+
+  /* Bigger tap targets, stop iOS zoom on focus */
+  input, select, button, textarea {
+    font-size: 16px;
+    line-height: 1.25;
+    padding: 0.9rem;
+    border-radius: 16px;
+  }
+
+  .result-wrapper {
+    width: 100%;
+    margin-top: 0.75rem;
+    border-radius: 16px;
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .result-line { font-size: 0.95rem; }
+
+  .result-buttons { gap: 0.75rem; }
+  .result-buttons .primary,
+  .result-buttons .secondary {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 999px;
+    font-size: 1rem;
+  }
+
+  .tooltip:hover::after {
+    max-width: 80vw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 110%;
+    font-size: 0.9rem;
+  }
+
+  #enquiryModal .modal-content,
+  #emailModal .modal-content {
+    width: 92%;
+    max-width: 520px;
+    max-height: 85vh;
+    overflow: auto;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  .modal-close { font-size: 32px; right: 10px; top: 8px; }
+}
+
+/* Extra-narrow phones */
+@media (max-width: 360px) {
+  h1 { font-size: 1.1rem; }
+  .result-line { font-size: 0.9rem; }
+}
+
   </style>
 </head>
 <body>
@@ -454,7 +543,8 @@ header[role="banner"] {
     // Reveal + scroll
     document.getElementById('calcBox').classList.add('shrink');
     document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+const opts = window.matchMedia('(max-width: 768px)').matches ? { behavior: 'auto' } : { behavior: 'smooth', block: 'start' };
+document.getElementById('resultBox').scrollIntoView(opts);
   }
 
   // -------- Modal helpers --------
