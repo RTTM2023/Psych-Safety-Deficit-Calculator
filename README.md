@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Psychological Safety Cost Calculator</title>
   <style>
+        /* Removes the GitHub auto-generated header and title line */
+header, 
+#header,
+.site-header,
+h1:first-of-type {
+  display: none !important;
+}
+
+/* If the blue text is wrapped in a specific GitHub ID */
+#title-with-line {
+  display: none !important;
+}
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
