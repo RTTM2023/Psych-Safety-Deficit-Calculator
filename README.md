@@ -156,7 +156,7 @@ h1:first-of-type {
 
     /* Tooltips */
     .tooltip { position: relative; display: inline-block; vertical-align: super; margin-left: 2px; top: -0.2em; }
-    .tooltip img { width: 14px; height: 14px; display: inline; vertical-align: middle; }
+    .tooltip img { width: 14px; height: 14px; display: inline; vertical-align: middle; background: transparent !important; }
     .tooltip:hover::after {
       content: attr(data-tooltip);
       position: absolute;
