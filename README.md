@@ -5,79 +5,75 @@
   <title>Psychological Safety Cost Calculator</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    /* 1. NUCLEAR RESET & GITHUB HEADER CLEANUP */
-    * { box-sizing: border-box; }
+    /* 1. GITHUB & NUCLEAR RESET */
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       background-color: transparent;
       overflow-x: hidden;
-      width: 100%;
     }
 
     #appTitle { display: block !important; }
-    section.page-header, header.page-header, .page-header, header[role="banner"] {
+
+    section.page-header, header.page-header, .page-header .project-name, .page-header .project-tagline, header[role="banner"] {
       display: none !important;
     }
 
-    /* 2. MAIN WRAPPER & CONTAINER RESPONSIVENESS */
+    /* 2. LAYOUT ENGINE */
     .main-wrapper {
       display: flex;
-      flex-direction: column; /* Stacked for mobile */
+      flex-direction: column; /* Mobile first */
       gap: 1rem;
-      align-items: center;
+      align-items: center; /* Center on mobile */
       padding: 1rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
+    .container {
+      width: 100%; /* Mobile full width */
+      transition: width 0.3s ease;
+    }
+
+    /* Desktop proportions */
     @media (min-width: 1024px) {
       .main-wrapper {
         flex-direction: row;
         align-items: flex-start;
         padding: 2rem;
       }
-      .container {
-        width: 580px;
-        flex-shrink: 0;
-        transition: width 0.3s ease;
-      }
+      .container { width: 580px; flex-shrink: 0; }
       .container.shrink { width: 480px; }
-      .result-wrapper { flex: 1; }
+      .result-wrapper { flex: 1; margin-top: 0; }
     }
-
-    .container { width: 100%; }
 
     .result-wrapper {
       width: 100%;
       background-color: #5700ff;
       color: white;
       min-height: 300px;
+      align-self: flex-start;
       display: none;
       border-radius: 20px;
       padding: 2rem;
       box-sizing: border-box;
+      margin-top: 1rem; /* Gap for mobile stack */
     }
 
-    /* 3. CARD STYLE RESTORATION */
+    /* 3. CARD & INPUT STYLES (EXACT RESTORATION) */
     .card, .subcard {
       border-radius: 24px;
-      padding: 1.5rem; /* Mobile padding */
+      padding: 2rem;
       margin-bottom: 1rem;
       border: 1px solid #E3C8F7;
       width: 100%;
     }
-    
-    @media (min-width: 1024px) {
-        .card, .subcard { padding: 2rem; margin-bottom: 1rem; }
-    }
-
     .card { background-color: white; }
     .purple-card { background-color: #e4c8f7; }
 
     h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
-    h2 { font-size: 1.1rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
-
+    h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: none; }
+    
     label { font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 0.25rem; }
 
     input, select {
@@ -86,9 +82,11 @@
       border: none;
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 16px;
+      font-size: 16px; /* Prevents mobile zoom */
+      box-sizing: border-box;
     }
 
+    /* Specific Input Colors per original */
     .purple-card input, .purple-card select { background-color: white; }
     .card input, .card select { background-color: #E3C8F7; }
 
@@ -109,7 +107,7 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-    /* 4. RESULT STYLING RESTORATION */
+    /* 4. RESULTS SECTION (EXACT RESTORATION) */
     .result-wrapper h2 {
       font-size: 1.2rem;
       font-weight: 700;
@@ -135,43 +133,35 @@
       font-weight: bold;
     }
 
-    .result-buttons { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-    
-    .result-buttons .primary {
-      background-color: white; color: #5700ff; border: 2px dotted #ea0b82;
-      font-weight: 500; padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; 
-      cursor: pointer; font-family: 'Montserrat', sans-serif;
-    }
-
-    .result-buttons .secondary {
-      background-color: #ea0b82; color: white; border: none; font-weight: 500;
-      padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; 
-      cursor: pointer; font-family: 'Montserrat', sans-serif;
-    }
-
     /* 5. TOOLTIPS & MODALS */
-    .tooltip { position: relative; cursor: pointer; vertical-align: super; top: -0.1em; }
-    .tooltip img { width: 14px; height: 14px; background: transparent !important; }
+    .tooltip { position: relative; display: inline-block; vertical-align: super; margin-left: 2px; top: -0.2em; }
+    .tooltip img { width: 14px; height: 14px; display: inline; background-color: transparent; vertical-align: middle; }
     .tooltip:hover::after {
       content: attr(data-tooltip);
       position: absolute;
       background: rgba(0,0,0,0.85);
       color: #fff; padding: 0.6rem 0.8rem; border-radius: 5px; top: 120%; left: 50%;
-      transform: translateX(-50%); display: block; width: 200px; font-size: 0.8rem; z-index: 999;
+      transform: translateX(-50%); display: block; max-width: 240px; width: max-content; min-width: 120px;
+      white-space: normal; font-size: 0.8rem; z-index: 999; text-align: left;
     }
+
+    .result-buttons { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .result-buttons .primary {
+      background-color: white; color: #5700ff; border: 2px dotted #ea0b82;
+      font-weight: 500; padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; cursor: pointer;
+    }
+    .result-buttons .secondary {
+      background-color: #ea0b82; color: white; border: none; font-weight: 500;
+      padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; cursor: pointer;
+    }
+
+    /* Modal Styling */
+    .modal-content { position: relative; background: white; padding: 2rem; border-radius: 20px; max-width: 500px; width: 90%; font-family: 'Montserrat', sans-serif; }
+    .modal-close { position: absolute; top: 10px; right: 12px; border: none; background: none; font-size: 28px; color: #5700ff; cursor: pointer; }
 
     #error-message {
       color: #a80000; background-color: #fdecea; border: 1px solid #f5c2c0;
-      padding: 1rem; border-radius: 10px; margin-top: 1rem; display: none; font-size: 0.9rem;
-    }
-
-    .modal-content { 
-        position: relative; background: white; padding: 2rem; border-radius: 20px; 
-        max-width: 500px; width: 90%; font-family: 'Montserrat', sans-serif; 
-    }
-    .modal-close { 
-        position: absolute; top: 10px; right: 12px; border: none; background: none;
-        font-size: 28px; color: #5700ff; cursor: pointer; 
+      padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: none; font-size: 0.9rem;
     }
   </style>
 </head>
@@ -208,8 +198,8 @@
 
       <div class="card purple-card">
         <h2>
-          Current Psych-Safety Level
-          <span class="tooltip" data-tooltip="Self-assessment based on employee feedback, surveys, or observed behaviours.">
+          Organisation's psych-safety rating?
+          <span class="tooltip" data-tooltip="Based on employee feedback, surveys, exit interviews, or observed behaviours.">
             <img src="Untitled design.svg" alt="info icon" />
           </span>
         </h2>
@@ -226,7 +216,7 @@
     </div>
 
     <div class="result-wrapper" id="resultBox">
-      <h2>Estimated Annual Financial Losses</h2>
+      <h2>Estimated Financial Losses Per Year</h2>
 
       <div class="result-line">
         <span>Excess Resignations:</span>
@@ -244,7 +234,7 @@
       </div>
 
       <div class="result-line">
-        <span>Underperformance:</span>
+        <span>Underperformance Cost:</span>
         <span id="presenteeism">RXXX</span>
       </div>
 
