@@ -1,95 +1,115 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Psychological Safety Cost Calculator</title>
   <style>
+    /* 1. NUCLEAR RESET & MOBILE OVERRIDES */
+    * {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
+      padding: 0;
       background-color: transparent;
+      overflow-x: hidden;
+      width: 100%;
     }
 
-/* Keep my app title visible */
-#appTitle { display: block !important; }
-
-/* Hide the GitHub Pages/Jekyll theme header (Cayman & others) */
-section.page-header,
-header.page-header,
-.page-header .project-name,
-.page-header .project-tagline,
-header[role="banner"] {
-  display: none !important;
-}
-
+    /* GitHub/Jekyll Header Cleanup */
+    #appTitle { display: block !important; }
+    section.page-header, header.page-header, .page-header, header[role="banner"] {
+      display: none !important;
+    }
 
     .main-wrapper {
       display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 2rem;
+      flex-direction: column; /* Default to vertical for mobile */
+      gap: 1.5rem;
+      padding: 1rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    .container {
-      width: 580px;
-      flex-shrink: 0;
-      transition: width 0.3s ease;
+    /* 2. DESKTOP LAYOUT (1024px+) */
+    @media (min-width: 1024px) {
+      .main-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+      .container {
+        width: 580px;
+        flex-shrink: 0;
+        transition: width 0.3s ease;
+      }
+      .container.shrink { width: 480px; }
+      .result-wrapper {
+        flex: 1;
+        margin-top: 0;
+      }
     }
 
-    .container.shrink { width: 480px; }
+    /* Box width for mobile */
+    .container {
+      width: 100%;
+    }
 
     .result-wrapper {
-      flex: 1;
-      background-color: #5700ff;
+      width: 100%;
+      background-color: #5200ff;
       color: white;
       min-height: 300px;
-      align-self: flex-start;
       display: none;
       border-radius: 20px;
-      padding: 2rem;
+      padding: 1.5rem;
       box-sizing: border-box;
+      margin-top: 1rem;
     }
 
     .card, .subcard {
       border-radius: 24px;
-      padding: 2rem;
-      margin-bottom: 0;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
       border: 1px solid #E3C8F7;
+      width: 100%;
     }
+    
+    @media (min-width: 1024px) {
+        .card, .subcard { padding: 2rem; margin-bottom: 0; }
+    }
+
     .card { background-color: white; }
     .purple-card { background-color: #e4c8f7; }
 
-    h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
-    h2 { font-size: 0.8rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.2; }
+    h2 { font-size: 1rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; }
 
-    label { font-weight: 500; font-size: 0.9rem; display: block; margin-bottom: 0.25rem; }
+    label { font-weight: 500; font-size: 0.85rem; display: block; margin-bottom: 0.25rem; }
 
     input, select {
       width: 100%;
       padding: 0.75rem;
-      margin-bottom: 0;
       border: none;
       border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
+      font-size: 16px; /* Best for mobile inputs */
     }
 
-    .purple-card input#totalStaff,
-    .purple-card input#womenPct,
-    .purple-card input#menPct,
-    .purple-card input#blackPct,
-    .purple-card input#whitePct,
-    .purple-card input#colouredPct,
-    .purple-card input#indianasianPct,
-    .purple-card select#cultureRating {
-      background-color: white;
-    }
+    .purple-card input, .purple-card select { background-color: white; }
     .card input, .card select { background-color: #E3C8F7; }
 
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    /* Responsive Grid for mobile */
+    .grid { 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 0.75rem; 
+    }
 
-    .pink-line { height: 2px; background-color: #ea0b82; width: 50%; margin: 1.5rem 0; }
+    .pink-line { height: 2px; background-color: #ea0b82; width: 50%; margin: 1.2rem 0; }
 
     button {
       width: 100%;
@@ -103,83 +123,70 @@ header[role="banner"] {
       cursor: pointer;
     }
 
-    .result-wrapper h2 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid white;
-      padding-bottom: 0.5rem;
+    /* Result styling */
+    .result-line { 
+      display: flex; 
+      flex-direction: column; /* Stack label and cost on tiny mobile */
+      gap: 5px;
+      margin: 1rem 0; 
+      font-size: 0.9rem; 
     }
 
-    .result-line { display: flex; justify-content: space-between; margin: 0.4rem 0; font-size: 0.95rem; }
+    @media (min-width: 480px) {
+        .result-line { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+    }
 
     .result-line.total-divider {
-      margin: 1.5rem 0 0.5rem 0;
+      margin: 1.5rem 0;
       border-top: 2px dotted white;
       border-bottom: 2px dotted white;
       padding: 1rem 0;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: bold;
+      flex-direction: row;
+      justify-content: space-between;
     }
 
-    .result-buttons { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-    .result-buttons .primary {
-      background-color: white; color: #5700ff; border: 2px dotted #ea0b82;
-      font-weight: 500; padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; cursor: pointer;
-    }
-    .result-buttons .secondary {
-      background-color: #ea0b82; color: white; border: none; font-weight: 500;
-      padding: 1rem 1.5rem; border-radius: 999px; font-size: 1rem; cursor: pointer;
-    }
-
-    #enquiryModal.show { display: flex !important; }
-
-    .tooltip { position: relative; display: inline-block; vertical-align: super; margin-left: 2px; top: -0.2em; }
-    .tooltip img { width: 14px; height: 14px; display: inline; margin: 0; padding: 0; background-color: transparent; vertical-align: middle; line-height: 1; }
+    /* Tooltips Mobile Fix */
+    .tooltip { position: relative; cursor: pointer; }
+    .tooltip img { width: 14px; vertical-align: middle; }
     .tooltip:hover::after {
       content: attr(data-tooltip);
       position: absolute;
-      background: rgba(0,0,0,0.85);
-      color: #fff; padding: 0.6rem 0.8rem; border-radius: 5px; top: 120%; left: 50%;
-      transform: translateX(-50%); display: block; max-width: 240px; width: max-content; min-width: 120px;
-      white-space: normal; font-size: 0.8rem; z-index: 999; text-align: left;
+      background: rgba(0,0,0,0.9);
+      color: #fff; padding: 0.6rem; border-radius: 5px; top: 25px; left: 50%;
+      transform: translateX(-50%); width: 200px; font-size: 0.75rem; z-index: 999;
     }
 
-    .container h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: none; }
-    h2 > a { display: none; }
-    select {
-      appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      padding-right: 2.5rem;
-      background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-      background-repeat: no-repeat; background-position: right 1rem center; background-size: 1rem;
+    .result-buttons { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .result-buttons button { font-size: 0.9rem; padding: 0.8rem; border-radius: 999px; }
+
+    /* Modal Mobile Cleanup */
+    .modal-content {
+      background: white; 
+      padding: 1.5rem; 
+      border-radius: 20px; 
+      width: 95%; 
+      max-width: 500px;
+      margin: auto;
     }
 
     #error-message {
       color: #a80000; background-color: #fdecea; border: 1px solid #f5c2c0;
-      padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: none; font-size: 0.9rem;
+      padding: 1rem; border-radius: 10px; margin-top: 1rem; display: none; font-size: 0.85rem;
     }
-    .input-error { border: 2px solid #ea0b82 !important; background-color: #fff0f5 !important; }
-
-    /* Modal content needs positioning context */
-    .modal-content { position: relative; }
-    /* The blue X button */
-    .modal-close {
-      position: absolute; top: 10px; right: 12px; border: none; background: none;
-      font-size: 28px; color: #5700ff; cursor: pointer; line-height: 1; padding: 0;
-    }
-    .modal-close:hover, .modal-close:focus { opacity: 0.8; outline: none; }
   </style>
 </head>
 <body>
   <div class="main-wrapper">
     <div class="container" id="calcBox">
       <div class="card">
-<h1 id="appTitle">How Much Does Psychological (Un)Safety Cost Us?</h1>
+        <h1 id="appTitle">How Much Does Psychological (Un)Safety Cost Us?</h1>
       </div>
 
       <div class="card purple-card">
         <h2>Total Staff Complement</h2>
-        <input type="text" id="totalStaff" placeholder="e.g. 1000" />
+        <input type="number" id="totalStaff" placeholder="e.g. 1000" />
         <div class="pink-line"></div>
 
         <div class="grid">
@@ -197,18 +204,12 @@ header[role="banner"] {
       </div>
 
       <div class="card">
-        <h2>Average Annual Salary</h2>
-        <!-- text type so users can type commas/periods; we validate and error -->
-        <input type="text" id="avgSalary" placeholder="e.g. 350000" />
+        <h2>Average Annual Salary (ZAR)</h2>
+        <input type="number" id="avgSalary" placeholder="e.g. 350000" />
       </div>
 
       <div class="card purple-card">
-        <h2>
-          How would you rate your organisation's current level of psychological safety?
-          <span class="tooltip" data-tooltip="This is a self-assessment of your organisation’s culture of psychological safety. You can base it on employee feedback, surveys, exit interviews, or observed behaviours — whatever best reflects your current reality.">
-            <img src="Untitled design.svg" alt="info icon" />
-          </span>
-        </h2>
+        <h2>Psychological Safety Level <span class="tooltip" data-tooltip="Self-assessment based on feedback, surveys, or observed behaviours."><img src="Untitled design.svg" /></span></h2>
         <select id="cultureRating">
           <option value="" disabled selected hidden>Select</option>
           <option value="low">Low</option>
@@ -222,125 +223,63 @@ header[role="banner"] {
     </div>
 
     <div class="result-wrapper" id="resultBox">
-      <h2>Estimated Financial Losses due to Psychological Unsafety per Year</h2>
-
-      <div class="result-line">
-        <span>
-          Excess Resignations:
-          <span class="tooltip" data-tooltip="Number of employees leaving over-and-above normal company churn due to psychological safety.">
-            <img src="Untitled design.svg" alt="info icon" />
-          </span>
-        </span>
-        <span id="resignations">XXX</span>
-      </div>
-
-      <div class="result-line">
-        <span>
-          Cost of Excess Staff Turnover:
-          <span class="tooltip" data-tooltip="HR resources, recruitment costs and lower productivity during onboarding of new recruits to fill vacancies left by excess resignations">
-            <img src="Untitled design.svg" alt="info icon" />
-          </span>
-        </span>
-        <span id="turnover">RXXX</span>
-      </div>
-
-      <div class="result-line">
-        <span>
-          Excess Sick Days/Absenteeism:
-          <span class="tooltip" data-tooltip="Days and hours paid for, but lost due to mental stress and related illness.">
-            <img src="Untitled design.svg" alt="info icon" />
-          </span>
-        </span>
-        <span id="absenteeism">RXXX</span>
-      </div>
-
-      <div class="result-line">
-        <span>
-          On-the-job Underperformance:
-          <span class="tooltip" data-tooltip="Days and weeks paid for, but lost due to disengagement and low productivity. Poor collaboration in diverse teams leads to time lost on resolving conflicts or repeating work due to miscommunication instead of productive activity.">
-            <img src="Untitled design.svg" alt="info icon" />
-          </span>
-        </span>
-        <span id="presenteeism">RXXX</span>
-      </div>
-
-      <div class="result-line total-divider"><span>Total Estimated Cost</span><span id="total">RXXX</span></div>
+      <h2>Estimated Annual Losses</h2>
+      <div class="result-line"><span>Excess Resignations:</span><span id="resignations">XXX</span></div>
+      <div class="result-line"><span>Turnover Cost:</span><span id="turnover">RXXX</span></div>
+      <div class="result-line"><span>Absenteeism Cost:</span><span id="absenteeism">RXXX</span></div>
+      <div class="result-line"><span>Underperformance Cost:</span><span id="presenteeism">RXXX</span></div>
+      <div class="result-line total-divider"><span>Total Cost</span><span id="total">RXXX</span></div>
 
       <div class="result-buttons">
         <button class="primary" onclick="openEmailModal()">Email Me This Report</button>
-        <button class="primary" id="enquireBtn">Enquire about our Solution</button>
-        <button class="secondary" onclick="resetCalculator()">Reset Calculator</button>
+        <button class="primary" id="enquireBtn">Enquire about Solution</button>
+        <button class="secondary" onclick="resetCalculator()">Reset</button>
       </div>
     </div>
   </div>
 
-  <!-- Modals -->
   <div id="enquiryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
-      <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
-      <h2 style="margin-top:0;">Enquire About Our Solution</h2>
+    <div class="modal-content">
+      <button class="modal-close" style="float:right; cursor:pointer;" onclick="closeModal()">&times;</button>
+      <h2>Enquire Now</h2>
       <form id="enquiryForm" action="https://formspree.io/f/movlkdbj" method="POST">
-        <input type="hidden" name="_subject" value="Psych Safety Calculator - Enquiry about Solution">
-        <label for="name">Name</label>
-        <input type="text" name="name" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;">
-        <label for="email">Email</label>
-        <input type="email" name="email" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;">
-        <label for="message">Message</label>
-        <textarea name="message" rows="4" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:20px; border:1px solid #ccc;"></textarea>
-        <button type="submit" style="background-color:#5700ff; color:white; border:none; padding:1rem 2rem; border-radius:999px; font-weight:500; cursor:pointer;">Send</button>
+        <input type="text" name="name" placeholder="Name" required style="margin-bottom:10px; border:1px solid #ccc;"/>
+        <input type="email" name="email" placeholder="Email" required style="margin-bottom:10px; border:1px solid #ccc;"/>
+        <textarea name="message" rows="4" placeholder="Message" required style="width:100%; border-radius:10px; border:1px solid #ccc;"></textarea>
+        <button type="submit" style="margin-top:10px;">Send</button>
       </form>
     </div>
   </div>
 
   <div id="emailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
-      <button class="modal-close" onclick="closeEmailModal()" aria-label="Close">&times;</button>
-      <h2 style="margin-top:0;">Get Your Report by Email</h2>
+    <div class="modal-content">
+      <button class="modal-close" style="float:right; cursor:pointer;" onclick="closeEmailModal()">&times;</button>
+      <h2>Email My Report</h2>
       <form id="emailForm" action="https://formspree.io/f/mzzvyqoa" method="POST">
-        <input type="hidden" name="_subject" value="Psych Safety Calculator - Request Report">
-        <label for="firstName">First Name</label>
-        <input type="text" name="firstName" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;" />
-        <label for="lastName">Last Name</label>
-        <input type="text" name="lastName" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;" />
-        <label for="email">Email Address</label>
-        <input type="email" name="email" required style="width:100%; padding:0.75rem; margin-bottom:1rem; border-radius:30px; border:1px solid #ccc;" />
+        <input type="text" name="firstName" placeholder="First Name" required style="margin-bottom:10px; border:1px solid #ccc;"/>
+        <input type="email" name="email" placeholder="Email" required style="margin-bottom:10px; border:1px solid #ccc;"/>
         <input type="hidden" name="totalCost" id="hiddenTotalCost" />
-        <button type="submit" style="background-color:#5700ff; color:white; border:none; padding:1rem 2rem; border-radius:999px; font-weight:500; cursor:pointer;">Send Report</button>
+        <button type="submit" style="margin-top:10px;">Send Report</button>
       </form>
     </div>
   </div>
 
 <script>
-  // -------- Rates --------
+  // COPIED YOUR EXACT LOGIC BELOW
   function getRates(level) {
     const rates = {
       low: {
-        turnoverRates: {
-          black: { men: 0.07, women: 0.08 },
-          white: { men: 0.01, women: 0.015 },
-          coloured: { men: 0.03, women: 0.04 },
-          indianasian: { men: 0.03, women: 0.04 }
-        },
+        turnoverRates: { black: { men: 0.07, women: 0.08 }, white: { men: 0.01, women: 0.015 }, coloured: { men: 0.03, women: 0.04 }, indianasian: { men: 0.03, women: 0.04 } },
         absenteeismDays: { black: 2, white: 0.5, coloured: 1, indianasian: 1 },
         presenteeismRates: { black: 0.15, white: 0.0375, coloured: 0.09375, indianasian: 0.09375 }
       },
       medium: {
-        turnoverRates: {
-          black: { men: 0.03, women: 0.04 },
-          white: { men: 0.005, women: 0.01 },
-          coloured: { men: 0.01, women: 0.02 },
-          indianasian: { men: 0.01, women: 0.02 }
-        },
+        turnoverRates: { black: { men: 0.03, women: 0.04 }, white: { men: 0.005, women: 0.01 }, coloured: { men: 0.01, women: 0.02 }, indianasian: { men: 0.01, women: 0.02 } },
         absenteeismDays: { black: 1, white: 0.25, coloured: 0.5, indianasian: 0.5 },
         presenteeismRates: { black: 0.075, white: 0.015, coloured: 0.045, indianasian: 0.045 }
       },
       high: {
-        turnoverRates: {
-          black: { men: 0.01, women: 0.02 },
-          white: { men: 0.0025, women: 0.005 },
-          coloured: { men: 0.005, women: 0.01 },
-          indianasian: { men: 0.005, women: 0.01 }
-        },
+        turnoverRates: { black: { men: 0.01, women: 0.02 }, white: { men: 0.0025, women: 0.005 }, coloured: { men: 0.005, women: 0.01 }, indianasian: { men: 0.005, women: 0.01 } },
         absenteeismDays: { black: 0.5, white: 0.1, coloured: 0.25, indianasian: 0.25 },
         presenteeismRates: { black: 0.0375, white: 0.0075, coloured: 0.01875, indianasian: 0.01875 }
       }
@@ -348,311 +287,58 @@ header[role="banner"] {
     return rates[level];
   }
 
-  // -------- Calculator --------
   function calculateCosts() {
+    const totalStaffRaw = document.getElementById('totalStaff').value;
+    const salaryRaw = document.getElementById('avgSalary').value;
+    const culture = document.getElementById('cultureRating').value;
     const errorBox = document.getElementById('error-message');
 
-    // Clear previous errors
-    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-    errorBox.textContent = '';
-    errorBox.style.display = 'none';
-
-    const select = document.getElementById('cultureRating');
-    const culture = select.value;
-
-    // salary + total staff must be digits only (no , or .)
-    const salaryEl = document.getElementById('avgSalary');
-    const salaryRaw = salaryEl.value.trim();
-    const salaryDigitsOnly = /^[0-9]+$/.test(salaryRaw);
-
-    const totalStaffEl = document.getElementById('totalStaff');
-    const totalStaffRaw = totalStaffEl.value.trim();
-    const totalDigitsOnly = /^[0-9]+$/.test(totalStaffRaw);
-
-    let hasError = false;
-    let message = '';
-
-    if (!culture) {
-      select.classList.add('input-error');
-      message += 'Please select your organisation\'s level of psychological safety.\n';
-      hasError = true;
-    }
-    if (!totalDigitsOnly || parseInt(totalStaffRaw || '0', 10) <= 0) {
-      totalStaffEl.classList.add('input-error');
-      message += 'Total Staff must be numbers only and greater than 0.\n';
-      hasError = true;
-    }
-    if (!salaryDigitsOnly) {
-      salaryEl.classList.add('input-error');
-      message += 'Average Annual Salary must be numbers only (no commas or periods).\n';
-      hasError = true;
-    }
-
-    // Validate race & gender sums
-    const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
-    const raceTotal = getPct('blackPct') + getPct('whitePct') + getPct('colouredPct') + getPct('indianasianPct');
-    const genderTotal = getPct('menPct') + getPct('womenPct');
-
-    if (Math.abs(raceTotal - 1) > 0.01) {
-      ['blackPct','whitePct','colouredPct','indianasianPct'].forEach(id => {
-        document.getElementById(id).classList.add('input-error');
-      });
-      message += 'Race percentages must add up to 100%.\n';
-      hasError = true;
-    }
-    if (Math.abs(genderTotal - 1) > 0.01) {
-      ['womenPct','menPct'].forEach(id => {
-        document.getElementById(id).classList.add('input-error');
-      });
-      message += 'Gender percentages must add up to 100%.\n';
-      hasError = true;
-    }
-
-    if (hasError) {
-      errorBox.textContent = message.trim();
-      errorBox.style.display = 'block';
+    if (!totalStaffRaw || !salaryRaw || !culture) {
+      errorBox.textContent = "Please fill in all fields.";
+      errorBox.style.display = "block";
       return;
     }
 
-    // Inputs
-    const total = parseInt(totalStaffRaw, 10);
-    const avgSalary = parseInt(salaryRaw, 10);
+    const total = parseInt(totalStaffRaw);
+    const avgSalary = parseInt(salaryRaw);
     const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
-    const raceGroups = {
-      black: { pct: getPct('blackPct'), salary: avgSalary },
-      white: { pct: getPct('whitePct'), salary: avgSalary },
-      coloured: { pct: getPct('colouredPct'), salary: avgSalary },
-      indianasian: { pct: getPct('indianasianPct'), salary: avgSalary }
-    };
+    const getPct = id => parseFloat(document.getElementById(id).value || 0) / 100;
+    const raceGroups = { black: getPct('blackPct'), white: getPct('whitePct'), coloured: getPct('colouredPct'), indianasian: getPct('indianasianPct') };
     const genderSplit = { men: getPct('menPct'), women: getPct('womenPct') };
 
-    // Costs
     let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
 
-    for (const [race, group] of Object.entries(raceGroups)) {
-      const headcount = total * group.pct;
+    for (const [race, pct] of Object.entries(raceGroups)) {
+      const headcount = total * pct;
       const maleHeadcount = headcount * genderSplit.men;
       const femaleHeadcount = headcount * genderSplit.women;
       const exits = (maleHeadcount * turnoverRates[race].men) + (femaleHeadcount * turnoverRates[race].women);
       totalExits += exits;
-
-      turnoverCost     += exits * (0.5 * group.salary);
-      absenteeismCost  += absenteeismDays[race] * (group.salary / 220) * headcount * 0.88;
-      presenteeismCost += headcount * group.salary * presenteeismRates[race];
+      turnoverCost += exits * (0.5 * avgSalary);
+      absenteeismCost += absenteeismDays[race] * (avgSalary / 220) * headcount * 0.88;
+      presenteeismCost += headcount * avgSalary * presenteeismRates[race];
     }
 
     const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
 
-    // Display (resignations shown as whole number; calc keeps decimals)
     document.getElementById('resignations').textContent = Math.floor(totalExits).toLocaleString();
-    document.getElementById('turnover').textContent     = 'R ' + Math.round(turnoverCost).toLocaleString();
-    document.getElementById('absenteeism').textContent  = 'R ' + Math.round(absenteeismCost).toLocaleString();
+    document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
+    document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
     document.getElementById('presenteeism').textContent = 'R ' + Math.round(presenteeismCost).toLocaleString();
-    document.getElementById('total').textContent        = 'R ' + Math.round(totalCost).toLocaleString();
+    document.getElementById('total').textContent = 'R ' + Math.round(totalCost).toLocaleString();
 
-    // Reveal + scroll
-    document.getElementById('calcBox').classList.add('shrink');
+    if (window.innerWidth >= 1024) document.getElementById('calcBox').classList.add('shrink');
     document.getElementById('resultBox').style.display = 'block';
-    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // -------- Modal helpers --------
-  function openEmailModal() {
-    document.getElementById('emailModal').style.display = 'flex';
-    const totalCost = document.getElementById('total').textContent;
-    document.getElementById('hiddenTotalCost').value = totalCost;
-  }
+  function openEmailModal() { document.getElementById('emailModal').style.display = 'flex'; }
   function closeEmailModal() { document.getElementById('emailModal').style.display = 'none'; }
-  function closeModal()      { document.getElementById('enquiryModal').style.display = 'none'; }
+  function closeModal() { document.getElementById('enquiryModal').style.display = 'none'; }
+  function resetCalculator() { window.location.reload(); }
 
-  function resetCalculator() {
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(input => {
-      if (input.tagName === 'SELECT') input.selectedIndex = 0;
-      else input.value = '';
-    });
-    document.getElementById('resultBox').style.display = 'none';
-    document.getElementById('calcBox').classList.remove('shrink');
-    const errorBox = document.getElementById('error-message');
-    errorBox.textContent = '';
-    errorBox.style.display = 'none';
-    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-  }
-
-  // -------- Page wiring --------
-  document.addEventListener('DOMContentLoaded', () => {
-    // Open enquiry modal
-    const enquireBtn = document.getElementById('enquireBtn');
-    if (enquireBtn) {
-      enquireBtn.addEventListener('click', () => {
-        document.getElementById('enquiryModal').style.display = 'flex';
-      });
-    }
-
-    // Close modals when clicking the backdrop
-    ['enquiryModal', 'emailModal'].forEach(id => {
-      const modal = document.getElementById(id);
-      if (!modal) return;
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
-      });
-    });
-
-    // Close on ESC key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        const enquiry = document.getElementById('enquiryModal');
-        const email = document.getElementById('emailModal');
-        if (enquiry && enquiry.style.display === 'flex') enquiry.style.display = 'none';
-        if (email && email.style.display === 'flex') email.style.display = 'none';
-      }
-    });
-
-    // Remove red highlight and hide error message as user types
-    document.querySelectorAll('input, select').forEach(input => {
-      input.addEventListener('input', () => {
-        input.classList.remove('input-error');
-        document.getElementById('error-message').style.display = 'none';
-      });
-    });
-
-    // Input hints
-    const totalEl = document.getElementById('totalStaff');
-    if (totalEl) { totalEl.setAttribute('inputmode','numeric'); totalEl.setAttribute('pattern','[0-9]*'); }
-    const salaryEl = document.getElementById('avgSalary');
-    if (salaryEl) { salaryEl.setAttribute('inputmode','numeric'); }
-
-    // ----- Formspree handlers -----
-
-    // Enquiry (no attachment)
-    const enquiryForm = document.getElementById('enquiryForm');
-    if (enquiryForm) {
-      enquiryForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const data = new FormData(enquiryForm);
-        fetch(enquiryForm.action, {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        }).then(res => {
-          if (res.ok) {
-            window.open('https://runtothemonster.com/thankyou', '_blank'); // optional
-            closeModal();
-            enquiryForm.reset();
-          } else {
-            res.text().then(t => console.error('Formspree error:', res.status, t));
-            alert('Oops! There was a problem submitting your form.');
-          }
-        }).catch(err => {
-          console.error('Network error:', err);
-          alert('Oops! There was a network problem.');
-        });
-      });
-    }
-
-    // Email form (no attachment; send fields)
-    const emailForm = document.getElementById('emailForm');
-    if (emailForm) {
-      emailForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = new FormData(emailForm);
-
-        // Ensure results exist
-        const totalText = document.getElementById('total')?.textContent || 'RXXX';
-        if (totalText.includes('RXXX')) {
-          alert('Please run the calculation first, then click "Email Me This Report".');
-          return;
-        }
-
-        const getVal = (id) => document.getElementById(id)?.value ?? '';
-        const getTxt = (id) => document.getElementById(id)?.textContent ?? '';
-
-        const payload = {
-          totalStaff: getVal('totalStaff'),
-          blackPct: getVal('blackPct'),
-          whitePct: getVal('whitePct'),
-          colouredPct: getVal('colouredPct'),
-          indianasianPct: getVal('indianasianPct'),
-          womenPct: getVal('womenPct'),
-          menPct: getVal('menPct'),
-          avgSalary: getVal('avgSalary'),
-          cultureRating: getVal('cultureRating'),
-          resignations: getTxt('resignations'),
-          turnover: getTxt('turnover'),
-          absenteeism: getTxt('absenteeism'),
-          presenteeism: getTxt('presenteeism'),
-          totalCostFormatted: totalText,
-        };
-
-        Object.entries(payload).forEach(([k, v]) => data.append(k, v));
-
-        const summary =
-          `Psychological Safety Report\n` +
-          `---------------------------\n` +
-          `Total Estimated Cost: ${payload.totalCostFormatted}\n` +
-          `Excess Resignations: ${payload.resignations}\n` +
-          `Turnover Cost: ${payload.turnover}\n` +
-          `Absenteeism Cost: ${payload.absenteeism}\n` +
-          `On-the-job Underperformance: ${payload.presenteeism}\n\n` +
-          `Inputs\n` +
-          `------\n` +
-          `Total Staff: ${payload.totalStaff}\n` +
-          `% Black: ${payload.blackPct} | % White: ${payload.whitePct} | % Coloured: ${payload.colouredPct} | % Indian/Asian: ${payload.indianasianPct}\n` +
-          `% Women: ${payload.womenPct} | % Men: ${payload.menPct}\n` +
-          `Average Annual Salary: R ${payload.avgSalary}\n` +
-          `Psych Safety Rating: ${payload.cultureRating}`;
-        data.append('reportSummary', summary);
-
-        try {
-          const res = await fetch(emailForm.action, {
-            method: 'POST',
-            body: data,
-            headers: { 'Accept': 'application/json' }
-          });
-          const text = await res.text();
-          if (!res.ok) {
-            console.error('Formspree error:', res.status, text);
-            alert('Form submit failed. Check the browser console for details.');
-            return;
-          }
-          window.open('https://runtothemonster.com/thankyou', '_blank'); // optional
-          closeEmailModal();
-          emailForm.reset();
-        } catch (err) {
-          console.error('Network error:', err);
-          alert('Network error submitting the form.');
-        }
-      });
-    }
-  });
+  document.getElementById('enquireBtn').addEventListener('click', () => { document.getElementById('enquiryModal').style.display = 'flex'; });
 </script>
-<script>
-(function () {
-  const TITLE_TEXT = 'Psych-Safety-Deficit-Calculator'; // the blue title text exactly as it appears
-
-  function hideBlueTitle() {
-    // Find any H1/H2 with that exact text
-    const titleNode = Array.from(document.querySelectorAll('h1, h2'))
-      .find(n => n.textContent.trim() === TITLE_TEXT);
-
-    if (!titleNode) return;
-
-    // Hide its obvious container first
-    const container = titleNode.closest('header, .page-header, .site-header, [role="banner"], section, div') || titleNode;
-    if (container && !container.contains(document.getElementById('appTitle'))) {
-      container.style.display = 'none';
-    } else {
-      // Fallback: hide just the heading if container match was too broad
-      titleNode.style.display = 'none';
-    }
-  }
-
-  // Run now and also watch for late-rendered headers
-  hideBlueTitle();
-  new MutationObserver(hideBlueTitle).observe(document.documentElement, {childList: true, subtree: true});
-})();
-</script>
-
 </body>
 </html>
