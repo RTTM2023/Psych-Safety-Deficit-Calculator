@@ -627,32 +627,5 @@ header[role="banner"] {
     }
   });
 </script>
-<script>
-(function () {
-  const TITLE_TEXT = 'Psych-Safety-Deficit-Calculator'; // the blue title text exactly as it appears
-
-  function hideBlueTitle() {
-    // Find any H1/H2 with that exact text
-    const titleNode = Array.from(document.querySelectorAll('h1, h2'))
-      .find(n => n.textContent.trim() === TITLE_TEXT);
-
-    if (!titleNode) return;
-
-    // Hide its obvious container first
-    const container = titleNode.closest('header, .page-header, .site-header, [role="banner"], section, div') || titleNode;
-    if (container && !container.contains(document.getElementById('appTitle'))) {
-      container.style.display = 'none';
-    } else {
-      // Fallback: hide just the heading if container match was too broad
-      titleNode.style.display = 'none';
-    }
-  }
-
-  // Run now and also watch for late-rendered headers
-  hideBlueTitle();
-  new MutationObserver(hideBlueTitle).observe(document.documentElement, {childList: true, subtree: true});
-})();
-</script>
-
 </body>
 </html>
