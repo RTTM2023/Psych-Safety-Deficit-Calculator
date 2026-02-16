@@ -254,7 +254,7 @@ h1:first-of-type {
       </div>
 
       <div class="card">
-        <h2>Average Annual Salary</h2>
+        <h2>Average ANNUAL Salary</h2>
         <input type="text" id="avgSalary" placeholder="e.g. 350000" />
       </div>
 
