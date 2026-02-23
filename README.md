@@ -1,21 +1,23 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Psychological Safety Cost Calculator</title>
   <style>
-        /* Removes the GitHub auto-generated header and title line */
-header, 
-#header,
-.site-header,
-h1:first-of-type {
-  display: none !important;
-}
+    /* Removes the GitHub auto-generated header and title line */
+    header,
+    #header,
+    .site-header,
+    h1:first-of-type {
+      display: none !important;
+    }
 
-/* If the blue text is wrapped in a specific GitHub ID */
-#title-with-line {
-  display: none !important;
-}
+    /* If the blue text is wrapped in a specific GitHub ID */
+    #title-with-line {
+      display: none !important;
+    }
+
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
@@ -50,19 +52,19 @@ h1:first-of-type {
     /* --- UPDATED DESKTOP WIDTHS --- */
     .container {
       width: 100%;
-      max-width: 550px;      /* Slightly narrower base for better desktop fit */
-      flex-shrink: 1;        /* Allows the calc box to yield space if needed */
+      max-width: 550px;
+      flex-shrink: 1;
       transition: max-width 0.3s ease;
     }
 
     /* When the result box appears, we shrink the calculator to allow side-by-side view */
-    .container.shrink { 
-      max-width: 440px; 
+    .container.shrink {
+      max-width: 440px;
     }
 
     .result-wrapper {
       flex: 1;
-      min-width: 340px;      /* Ensures the results remain readable on smaller laptops */
+      min-width: 340px;
       background-color: #5700ff;
       color: white;
       min-height: 300px;
@@ -176,6 +178,7 @@ h1:first-of-type {
     #error-message {
       color: #a80000; background-color: #fdecea; border: 1px solid #f5c2c0;
       padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: none; font-size: 0.9rem;
+      white-space: pre-line;
     }
     .input-error { border: 2px solid #ea0b82 !important; background-color: #fff0f5 !important; }
 
@@ -197,9 +200,9 @@ h1:first-of-type {
         max-width: 100%;
       }
 
-      .container, .container.shrink { 
-        width: 100%; 
-        max-width: 100%; 
+      .container, .container.shrink {
+        width: 100%;
+        max-width: 100%;
       }
 
       .result-wrapper {
@@ -349,6 +352,57 @@ h1:first-of-type {
   </div>
 
   <script>
+    /* ============================================================
+       IFRAME AUTO-RESIZE (CHILD / GITHUB PAGE) — OPTION 3
+       IMPORTANT: This MUST match the iframe id used on Squarespace.
+       You will use: id="psychCalcFrame" in Squarespace.
+       ============================================================ */
+    (function () {
+      const IFRAME_ID = "psychCalcFrame";
+
+      function getDocHeight() {
+        const body = document.body;
+        const html = document.documentElement;
+        return Math.max(
+          body.scrollHeight, body.offsetHeight,
+          html.clientHeight, html.scrollHeight, html.offsetHeight
+        );
+      }
+
+      function postHeight() {
+        try {
+          const height = getDocHeight();
+          // Send height to parent (Squarespace)
+          window.parent.postMessage(
+            { type: "RTTM_IFRAME_HEIGHT", iframeId: IFRAME_ID, height: height },
+            "*"
+          );
+        } catch (e) {
+          // Do nothing - safe fail
+        }
+      }
+
+      // Post on load (and again after assets/fonts settle)
+      window.addEventListener("load", function () {
+        postHeight();
+        setTimeout(postHeight, 150);
+        setTimeout(postHeight, 600);
+      });
+
+      // Post on resize/orientation
+      window.addEventListener("resize", function () {
+        postHeight();
+        setTimeout(postHeight, 150);
+      });
+
+      // Post when DOM changes (results appear, modals open, etc.)
+      const observer = new MutationObserver(function () { postHeight(); });
+      observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+      // Manual trigger
+      window.__postIframeHeight = postHeight;
+    })();
+
     function getRates(level) {
       const rates = {
         low: {
@@ -414,12 +468,17 @@ h1:first-of-type {
 
       if (hasError) { errorBox.textContent = message; errorBox.style.display = 'block'; return; }
 
-      const total = parseInt(totalStaffRaw);
-      const avgSalary = parseInt(salaryRaw);
+      const total = parseInt(totalStaffRaw, 10);
+      const avgSalary = parseInt(salaryRaw, 10);
       const { turnoverRates, absenteeismDays, presenteeismRates } = getRates(culture);
 
       let turnoverCost = 0, absenteeismCost = 0, presenteeismCost = 0, totalExits = 0;
-      const racePctMap = { black: getPct('blackPct'), white: getPct('whitePct'), coloured: getPct('colouredPct'), indianasian: getPct('indianasianPct') };
+      const racePctMap = {
+        black: getPct('blackPct'),
+        white: getPct('whitePct'),
+        coloured: getPct('colouredPct'),
+        indianasian: getPct('indianasianPct')
+      };
       const mPct = getPct('menPct'), wPct = getPct('womenPct');
 
       for (const race in racePctMap) {
@@ -441,23 +500,37 @@ h1:first-of-type {
       document.getElementById('calcBox').classList.add('shrink');
       document.getElementById('resultBox').style.display = 'block';
       document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+
+      // Trigger iframe resize after layout changes
+      if (window.__postIframeHeight) window.__postIframeHeight();
     }
 
-    function openEmailModal() { 
-      document.getElementById('emailModal').style.display = 'flex'; 
+    function openEmailModal() {
+      document.getElementById('emailModal').style.display = 'flex';
       document.getElementById('hiddenTotalCost').value = document.getElementById('total').textContent;
+      if (window.__postIframeHeight) window.__postIframeHeight();
     }
-    function closeEmailModal() { document.getElementById('emailModal').style.display = 'none'; }
-    function closeModal() { document.getElementById('enquiryModal').style.display = 'none'; }
+    function closeEmailModal() {
+      document.getElementById('emailModal').style.display = 'none';
+      if (window.__postIframeHeight) window.__postIframeHeight();
+    }
+    function closeModal() {
+      document.getElementById('enquiryModal').style.display = 'none';
+      if (window.__postIframeHeight) window.__postIframeHeight();
+    }
     function resetCalculator() { location.reload(); }
 
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('enquireBtn').onclick = () => document.getElementById('enquiryModal').style.display = 'flex';
-      
+      document.getElementById('enquireBtn').onclick = () => {
+        document.getElementById('enquiryModal').style.display = 'flex';
+        if (window.__postIframeHeight) window.__postIframeHeight();
+      };
+
       // Close on backdrop click
       window.onclick = (e) => {
         if (e.target.id === 'enquiryModal' || e.target.id === 'emailModal') {
           e.target.style.display = 'none';
+          if (window.__postIframeHeight) window.__postIframeHeight();
         }
       };
     });
