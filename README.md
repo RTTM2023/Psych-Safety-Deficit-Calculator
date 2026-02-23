@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -22,6 +21,7 @@
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       background-color: transparent;
+      padding-bottom: 24px; /* prevents bottom clipping in iframe */
     }
 
     /* Mobile base */
@@ -317,7 +317,7 @@
   </div>
 
   <div id="enquiryModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
+    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family:'Montserrat', sans-serif;">
       <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
       <h2>Enquire About Our Solution</h2>
       <form id="enquiryForm" action="https://formspree.io/f/movlkdbj" method="POST">
@@ -334,7 +334,7 @@
   </div>
 
   <div id="emailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family: 'Montserrat', sans-serif;">
+    <div class="modal-content" style="background:white; padding:2rem; border-radius:20px; max-width:500px; width:90%; position:relative; font-family:'Montserrat', sans-serif;">
       <button class="modal-close" onclick="closeEmailModal()" aria-label="Close">&times;</button>
       <h2>Get Your Report by Email</h2>
       <form id="emailForm" action="https://formspree.io/f/mzzvyqoa" method="POST">
@@ -353,9 +353,8 @@
 
   <script>
     /* ============================================================
-       IFRAME AUTO-RESIZE (CHILD / GITHUB PAGE) — OPTION 3
-       IMPORTANT: This MUST match the iframe id used on Squarespace.
-       You will use: id="psychCalcFrame" in Squarespace.
+       IFRAME AUTO-RESIZE (CHILD / GITHUB PAGE)
+       MUST match Squarespace iframe id="psychCalcFrame"
        ============================================================ */
     (function () {
       const IFRAME_ID = "psychCalcFrame";
@@ -372,34 +371,28 @@
       function postHeight() {
         try {
           const height = getDocHeight();
-          // Send height to parent (Squarespace)
           window.parent.postMessage(
             { type: "RTTM_IFRAME_HEIGHT", iframeId: IFRAME_ID, height: height },
             "*"
           );
-        } catch (e) {
-          // Do nothing - safe fail
-        }
+        } catch (e) {}
       }
 
-      // Post on load (and again after assets/fonts settle)
       window.addEventListener("load", function () {
         postHeight();
         setTimeout(postHeight, 150);
         setTimeout(postHeight, 600);
       });
 
-      // Post on resize/orientation
       window.addEventListener("resize", function () {
         postHeight();
         setTimeout(postHeight, 150);
       });
 
-      // Post when DOM changes (results appear, modals open, etc.)
+      // Observe only structural DOM changes (avoids runaway resize loops)
       const observer = new MutationObserver(function () { postHeight(); });
-      observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+      observer.observe(document.body, { childList: true, subtree: true });
 
-      // Manual trigger
       window.__postIframeHeight = postHeight;
     })();
 
@@ -447,8 +440,10 @@
 
       const select = document.getElementById('cultureRating');
       const culture = select.value;
+
       const salaryEl = document.getElementById('avgSalary');
       const salaryRaw = salaryEl.value.trim();
+
       const totalStaffEl = document.getElementById('totalStaff');
       const totalStaffRaw = totalStaffEl.value.trim();
 
@@ -491,6 +486,7 @@
       }
 
       const totalCost = turnoverCost + absenteeismCost + presenteeismCost;
+
       document.getElementById('resignations').textContent = Math.floor(totalExits).toLocaleString();
       document.getElementById('turnover').textContent = 'R ' + Math.round(turnoverCost).toLocaleString();
       document.getElementById('absenteeism').textContent = 'R ' + Math.round(absenteeismCost).toLocaleString();
@@ -501,36 +497,55 @@
       document.getElementById('resultBox').style.display = 'block';
       document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
 
-      // Trigger iframe resize after layout changes
-      if (window.__postIframeHeight) window.__postIframeHeight();
+      if (window.__postIframeHeight) {
+        window.__postIframeHeight();
+        setTimeout(window.__postIframeHeight, 250);
+      }
     }
 
     function openEmailModal() {
       document.getElementById('emailModal').style.display = 'flex';
       document.getElementById('hiddenTotalCost').value = document.getElementById('total').textContent;
-      if (window.__postIframeHeight) window.__postIframeHeight();
+      if (window.__postIframeHeight) {
+        window.__postIframeHeight();
+        setTimeout(window.__postIframeHeight, 250);
+      }
     }
+
     function closeEmailModal() {
       document.getElementById('emailModal').style.display = 'none';
-      if (window.__postIframeHeight) window.__postIframeHeight();
+      if (window.__postIframeHeight) {
+        window.__postIframeHeight();
+        setTimeout(window.__postIframeHeight, 250);
+      }
     }
+
     function closeModal() {
       document.getElementById('enquiryModal').style.display = 'none';
-      if (window.__postIframeHeight) window.__postIframeHeight();
+      if (window.__postIframeHeight) {
+        window.__postIframeHeight();
+        setTimeout(window.__postIframeHeight, 250);
+      }
     }
+
     function resetCalculator() { location.reload(); }
 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('enquireBtn').onclick = () => {
         document.getElementById('enquiryModal').style.display = 'flex';
-        if (window.__postIframeHeight) window.__postIframeHeight();
+        if (window.__postIframeHeight) {
+          window.__postIframeHeight();
+          setTimeout(window.__postIframeHeight, 250);
+        }
       };
 
-      // Close on backdrop click
       window.onclick = (e) => {
         if (e.target.id === 'enquiryModal' || e.target.id === 'emailModal') {
           e.target.style.display = 'none';
-          if (window.__postIframeHeight) window.__postIframeHeight();
+          if (window.__postIframeHeight) {
+            window.__postIframeHeight();
+            setTimeout(window.__postIframeHeight, 250);
+          }
         }
       };
     });
